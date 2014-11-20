@@ -15,7 +15,7 @@ public class GoogleSearch {
 
         String keyword = "java books";
         String encodedKeyword = URLEncoder.encode(keyword, "utf-8");
-        String url = String.format("http://www.google.com.tr/?l#q=%s", encodedKeyword);
+        String url = String.format("http://www.google.com/?l#q=%s", encodedKeyword);
 
         BrowserEngine webkit = BrowserFactory.getWebKit();
         Page page = webkit.navigate(url);
