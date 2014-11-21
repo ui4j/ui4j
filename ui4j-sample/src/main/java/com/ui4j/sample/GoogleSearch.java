@@ -1,7 +1,9 @@
 package com.ui4j.sample;
 
-import java.net.URLEncoder;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import com.ui4j.api.browser.BrowserEngine;
 import com.ui4j.api.browser.BrowserFactory;
@@ -12,18 +14,19 @@ import com.ui4j.api.dom.Element;
 public class GoogleSearch {
 
     public static void main(String[] args) throws Exception {
-
-        String keyword = "java books";
-        String encodedKeyword = URLEncoder.encode(keyword, "utf-8");
-        String url = String.format("http://www.google.com/?l#q=%s", encodedKeyword);
-
         BrowserEngine webkit = BrowserFactory.getWebKit();
-        Page page = webkit.navigate(url);
-        page.waitUntilDocReady();
-
+		Page page = webkit.navigate("http://www.google.com");
         page.show();
 
         Document document = page.getDocument();
+
+        document.query("input[name='q']").setAttribute("value", "java book").focus();
+
+        // Send key press event using java.awt.Robot
+        Robot robot = new Robot();
+        robot.keyPress(KeyEvent.VK_ENTER);
+
+        page.waitUntilDocReady(1, TimeUnit.SECONDS);
 
         // list all search results
         List<Element> results = document.queryAll("h3.r a");
