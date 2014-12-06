@@ -63,20 +63,25 @@ Ui4j has been tested under Windows 8.1 and Ubuntu 14.04, but should work on any 
 Headless Mode
 -------------
 
-Ui4j can be run in "headless" mode using Xfvb.
+Ui4j can be run in "headless" mode using [Xfvb](http://en.wikipedia.org/wiki/Xvfb) or with using [Monocle](https://wiki.openjdk.java.net/display/OpenJFX/Monocle).
+
+**Headless Mode with Xfvb**
 
 Sample configuration for ubuntu running with *headless* mode:
 
-First install these packages:
+1. First install these packages:
 ```sudo apt-get install xvfb x11-xkb-utils libxrender-dev libxtst-dev libgtk2.0-0```
 
-Then start the xvfb
+2. Then start the xvfb
 ```nohup xvfb :99 -ac &```
 
-Then export the DISPLAY variable
+3. Then export the DISPLAY variable
 ```export DISPLAY=:99.0```
 
-Finally execute the ui4j Java application
+**Headless Mode with Monocle**
+
+1. Download or add the maven dependency of latest [openjfx-monocle](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22openjfx-monocle%22)
+2. Add **-Dui4j.headless** Java system parameter from command line or with using api ```System.setProperty("ui4j.headless", "true");```
 
 Logging
 -------
