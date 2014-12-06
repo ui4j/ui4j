@@ -65,6 +65,19 @@ Headless Mode
 
 Ui4j can be run in "headless" mode using Xfvb.
 
+Sample configuration for ubuntu running with *headless* mode:
+
+First install these packages:
+```sudo apt-get install xvfb x11-xkb-utils libxrender-dev libxtst-dev libgtk2.0-0```
+
+Then start the xvfb
+```nohup xvfb :99 -ac &```
+
+Then export the DISPLAY variable
+```export DISPLAY=:99.0```
+
+Finally execute the ui4j Java application
+
 Logging
 -------
 Both simple logger for java (SLF4J) and Java utility logger (JUL) is supported.
