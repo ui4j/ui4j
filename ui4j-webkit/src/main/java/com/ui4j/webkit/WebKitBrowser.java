@@ -110,9 +110,15 @@ class WebKitBrowser implements BrowserEngine {
 
     public static class LauncherThread extends Thread {
     
+    	private boolean headless;
+
+    	public LauncherThread(boolean headless) {
+    		this.headless = headless;
+		}
+
         @Override
-        public void run() {            
-            Application.launch(ApplicationImpl.class);
+        public void run() {
+        	new ApplicationLauncher().launch(ApplicationImpl.class, headless);
         }
     }
 
@@ -294,7 +300,8 @@ class WebKitBrowser implements BrowserEngine {
     public synchronized void start() {
         if (launchedJFX.compareAndSet(false, true) &&
                             !Platform.isFxApplicationThread()) {
-            new LauncherThread().start();
+        	boolean headless = System.getProperty("ui4j.headless") != null ? true : false;
+            new LauncherThread(headless).start();
             try {
                 startupLatch.await(10, TimeUnit.SECONDS);
             } catch (InterruptedException e) {
