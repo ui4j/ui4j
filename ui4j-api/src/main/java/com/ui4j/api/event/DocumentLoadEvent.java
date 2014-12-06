@@ -7,11 +7,8 @@ public class DocumentLoadEvent {
 
     private Window window;
 
-    private Document document;
-
-    public DocumentLoadEvent(Window window, Document document) {
+    public DocumentLoadEvent(Window window) {
         this.window = window;
-        this.document = document;
     }
 
     public Window getWindow() {
@@ -19,12 +16,11 @@ public class DocumentLoadEvent {
     }
 
     public Document getDocument() {
-        return document;
+        return window.getDocument();
     }
 
-    @Override
-    public String toString() {
-        return "DocumentLoadEvent [window=" + window + ", document=" + document
-                + "]";
-    }
+	@Override
+	public String toString() {
+		return "DocumentLoadEvent [window=" + window + "]";
+	}
 }
