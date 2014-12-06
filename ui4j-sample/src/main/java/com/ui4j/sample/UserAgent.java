@@ -13,7 +13,7 @@ public class UserAgent {
 		PageConfiguration config = new PageConfiguration();
 		config.setUserAgent("Custom User Agent String");
 
-		Page page = webKit.navigate("http://www.whatsmyua.com", config);
+		Page page = webKit.navigate("http://httpbin.org/user-agent", config);
 		page.show();
 	}
 }
