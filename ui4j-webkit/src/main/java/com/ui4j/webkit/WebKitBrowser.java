@@ -171,7 +171,7 @@ class WebKitBrowser implements BrowserEngine {
                 Document document = configuration.createDocument(engine);
                 configuration.onLoad(document);
                 Window window = configuration.createWindow(document);
-                DocumentLoadEvent event = new DocumentLoadEvent(window, document);
+                DocumentLoadEvent event = new DocumentLoadEvent(window);
                 documentListener.onLoad(event);
             }
         }

@@ -128,14 +128,11 @@ public class WebKitPage implements Page, PageView, JavaScriptEngine {
 
     public static class DocumentDelegationListener implements ChangeListener<Worker.State> {
 
-        private Document document;
-
         private Window window;
 
         private DocumentListener listener;
 
-        public DocumentDelegationListener(Window window, Document document, DocumentListener listener) {
-            this.document = document;
+        public DocumentDelegationListener(Window window, DocumentListener listener) {
             this.window = window;
             this.listener = listener;
         }
@@ -143,7 +140,7 @@ public class WebKitPage implements Page, PageView, JavaScriptEngine {
         @Override
         public void changed(ObservableValue<? extends Worker.State> ov, Worker.State oldState, Worker.State newState) {
             if (newState == Worker.State.SUCCEEDED) {
-                DocumentLoadEvent event = new DocumentLoadEvent(window, document);
+                DocumentLoadEvent event = new DocumentLoadEvent(window);
                 listener.onLoad(event);
             }
         }
@@ -180,7 +177,7 @@ public class WebKitPage implements Page, PageView, JavaScriptEngine {
     @Override
     public void addDocumentListener(DocumentListener listener) {
         WebEngine engine = webView.getEngine();
-        DocumentDelegationListener delegationListener = new DocumentDelegationListener(window, document, listener);
+        DocumentDelegationListener delegationListener = new DocumentDelegationListener(window, listener);
         listeners.add(delegationListener);
         engine.getLoadWorker().stateProperty().addListener(delegationListener);
     }
