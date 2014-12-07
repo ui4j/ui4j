@@ -85,7 +85,7 @@ Sample configuration for ubuntu running with *headless* mode:
 
 Add openjfx-monocle depdency to run headless mode:
 
-```
+```xml
 <dependency>
         <groupId>org.jfxtras</groupId>
 		<artifactId>openjfx-monocle</artifactId>
