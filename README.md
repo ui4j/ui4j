@@ -83,6 +83,15 @@ Sample configuration for ubuntu running with *headless* mode:
 1. Download or add the maven dependency of latest [openjfx-monocle](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22openjfx-monocle%22)
 2. Add **-Dui4j.headless** Java system parameter from command line or with using api ```System.setProperty("ui4j.headless", "true");```
 
+Add openjfx-monocle depdency to run headless mode:
+
+```
+<dependency>
+        <groupId>org.jfxtras</groupId>
+		<artifactId>openjfx-monocle</artifactId>
+		<version>1.8.0_20</version>
+</dependency>
+```	
 Logging
 -------
 Both simple logger for java (SLF4J) and Java utility logger (JUL) is supported.
