@@ -160,6 +160,14 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+                <version>3.0.1</version>
+                <configuration>
+                    <repoToken>${coveralls.token}</repoToken>
+                </configuration>
+            </plugin>
         </plugins>
         <pluginManagement>
             <plugins>
@@ -243,4 +251,7 @@
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
         </repository>
     </distributionManagement>
+    <properties>
+        <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
+    </properties>
 </project>

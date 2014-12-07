@@ -80,14 +80,6 @@
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.eluder.coveralls</groupId>
-                <artifactId>coveralls-maven-plugin</artifactId>
-                <version>3.0.1</version>
-                <configuration>
-                    <repoToken>${coveralls.token}</repoToken>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
     <properties>
