@@ -36,7 +36,9 @@ import com.ui4j.webkit.dom.WebKitDocument;
 import com.ui4j.webkit.dom.WebKitElement;
 import com.ui4j.webkit.proxy.WebKitProxy;
 import com.ui4j.webkit.spi.WebKitJavaScriptEngine;
- 
+
+import netscape.javascript.JSObject;
+
 class WebKitBrowser implements BrowserEngine {
 
     private static CountDownLatch startupLatch = new CountDownLatch(1);
@@ -247,12 +249,19 @@ class WebKitBrowser implements BrowserEngine {
             } else {
                 engine.getEngine().getLoadWorker().stateProperty().addListener(loadListener);
             }
+            installErrorHandler();
             if (latch != null) {
                 latch.countDown();
             }
         }
 
-        public WebView getWebView() {
+        protected void installErrorHandler() {
+            JSObject objWindow = (JSObject) engine.getEngine().executeScript("window");
+            objWindow.setMember("Ui4jErrorHandler", new WebKitErrorHandler());
+            engine.getEngine().executeScript("window.onerror = function(message, url, lineNumber) { Ui4jErrorHandler.onError(message, url, lineNumber); return false; }");
+		}
+
+		public WebView getWebView() {
             return webView;
         }
 
