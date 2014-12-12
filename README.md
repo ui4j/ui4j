@@ -1,7 +1,7 @@
 Ui4j
 ====
 
-[![Download](http://img.shields.io/badge/download-latest--jar-orange.svg)](https://repo1.maven.org/maven2/com/ui4j/ui4j-all/1.0.2/ui4j-all-1.0.2.jar) [![Version](http://img.shields.io/badge/version-1.0.2-green.svg)](https://github.com/ui4j/ui4j) [![License](http://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT) [![Build Status](https://drone.io/github.com/ui4j/ui4j/status.png)](https://drone.io/github.com/ui4j/ui4j/latest) [![Coverage Status](https://img.shields.io/coveralls/ui4j/ui4j.svg)](https://coveralls.io/r/ui4j/ui4j?branch=master)
+[![Download](http://img.shields.io/badge/download-latest--jar-orange.svg)](https://repo1.maven.org/maven2/com/ui4j/ui4j-all/1.0.2/ui4j-all-1.0.2.jar) [![Maven](http://img.shields.io/maven-central/v/com.ui4j/ui4j-all.svg)](http://search.maven.org/#search%7Cga%7C1%7Cui4j) [![License](http://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT) [![Build Status](https://drone.io/github.com/ui4j/ui4j/status.png)](https://drone.io/github.com/ui4j/ui4j/latest) [![Coverage Status](https://img.shields.io/coveralls/ui4j/ui4j.svg)](https://coveralls.io/r/ui4j/ui4j?branch=master)
 
 #### Talk with us and ask questions via Gitter
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/ui4j/ui4j?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
@@ -38,7 +38,6 @@ If you have found a defect or you want to request a feature enhancement an issue
 
 Integration with Maven
 ----------------------
-[![Maven](http://img.shields.io/maven-central/v/com.ui4j/ui4j-all.svg)](http://search.maven.org/#search%7Cga%7C1%7Cui4j)
 
 To use the official release of Ui4j, please use the following snippet in your pom.xml
 
