@@ -9,11 +9,11 @@ public class RadioButton {
     }
 
     public boolean isChecked() {
-        return Boolean.parseBoolean(String.valueOf(element.getData("checked")));
+        return Boolean.parseBoolean(String.valueOf(element.getProperty("checked")));
     }
 
     public RadioButton setChecked(boolean state) {
-        element.setData("checked", state);
+        element.setProperty("checked", state);
         return this;
     }
 

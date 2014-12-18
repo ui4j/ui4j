@@ -9,12 +9,12 @@ public class CheckBox {
     }
 
     public boolean isChecked() {
-        String checked = String.valueOf(element.getData("checked"));
+        String checked = String.valueOf(element.getProperty("checked"));
         return Boolean.parseBoolean(checked);
     }
 
     public CheckBox setChecked(boolean state) {
-        element.setData("checked", state);
+        element.setProperty("checked", state);
         return this;
     }
 

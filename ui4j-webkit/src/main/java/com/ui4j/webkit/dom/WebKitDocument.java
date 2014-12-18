@@ -88,19 +88,19 @@ public class WebKitDocument implements Document, EventTarget {
     }
 
     @Override
-    public void removeData(String key) {
+    public void removeProperty(String key) {
         com.sun.webkit.dom.DocumentImpl doc = (com.sun.webkit.dom.DocumentImpl) getEngine().getDocument();
         doc.removeMember(key);
     }
 
     @Override
-    public Object getData(String key) {
+    public Object getProperty(String key) {
         com.sun.webkit.dom.DocumentImpl doc = (com.sun.webkit.dom.DocumentImpl) getEngine().getDocument();
         return doc.getMember(key);
     }
 
     @Override
-    public void setData(String key, Object value) {
+    public void setProperty(String key, Object value) {
         com.sun.webkit.dom.DocumentImpl doc = (com.sun.webkit.dom.DocumentImpl) getEngine().getDocument();
         doc.setMember(key, value);
     }

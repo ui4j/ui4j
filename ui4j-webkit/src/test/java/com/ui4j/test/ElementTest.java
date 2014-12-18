@@ -151,11 +151,11 @@ public class ElementTest {
     @Test public void t10_data() {
         Element div = document.createElement("div");
         document.getBody().append(div);
-        Assert.assertNull(div.getData("foo"));
-        div.setData("foo", Collections.emptyList());
-        Assert.assertEquals(Collections.emptyList(), div.getData("foo"));
-        div.removeData("foo");
-        Assert.assertNull(div.getData("foo"));
+        Assert.assertNull(div.getProperty("foo"));
+        div.setProperty("foo", Collections.emptyList());
+        Assert.assertEquals(Collections.emptyList(), div.getProperty("foo"));
+        div.removeProperty("foo");
+        Assert.assertNull(div.getProperty("foo"));
         div.remove();
     }
 

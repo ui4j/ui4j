@@ -87,7 +87,7 @@ public class WebKitPageContext implements PageContext {
             for (Element next : elements) {
                 next.unbind();
                 next.removeAttribute("ui4j-registered-event");
-                next.removeData("events");
+                next.removeProperty("events");
             }
         }
     }

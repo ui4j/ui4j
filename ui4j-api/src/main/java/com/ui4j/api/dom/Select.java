@@ -45,7 +45,7 @@ public class Select {
     }
 
     public void setSelectedIndex(int index) {
-        element.setData("selectedIndex", index);
+        element.setProperty("selectedIndex", index);
     }
 
     public Option getOption(int index) {

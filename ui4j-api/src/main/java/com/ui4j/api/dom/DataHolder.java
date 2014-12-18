@@ -2,9 +2,9 @@ package com.ui4j.api.dom;
 
 public interface DataHolder {
 
-    void removeData(String key);
+    void removeProperty(String key);
 
-    Object getData(String key);
+    Object getProperty(String key);
 
-    void setData(String key, Object value);
+    void setProperty(String key, Object value);
 }

@@ -96,28 +96,28 @@ public class WebKitElement implements Element, EventTarget {
 
     @Override
     public Element addClass(String name) {
-        JSObject classList = (JSObject) getData("classList");
+        JSObject classList = (JSObject) getProperty("classList");
         classList.call("add", name);
         return this;
     }
 
     @Override
     public Element removeClass(String name) {
-        JSObject classList = (JSObject) getData("classList");
+        JSObject classList = (JSObject) getProperty("classList");
         classList.call("remove", name);
         return this;
     }
 
     @Override
     public Element toggleClass(String name) {
-        JSObject classList = (JSObject) getData("classList");
+        JSObject classList = (JSObject) getProperty("classList");
         classList.call("toggle", name);
         return this;
     }
 
     @Override
     public boolean hasClass(String name) {
-        JSObject classList = (JSObject) getData("classList");
+        JSObject classList = (JSObject) getProperty("classList");
         Object result = classList.call("contains", name);
         return Boolean.parseBoolean(result.toString());
     }
@@ -353,19 +353,19 @@ public class WebKitElement implements Element, EventTarget {
     }
 
     @Override
-    public void setData(String key, Object value) {
+    public void setProperty(String key, Object value) {
         JSObject obj = (JSObject) getHtmlElement();
         obj.setMember(key, value);
     }
 
     @Override
-    public void removeData(String key) {
+    public void removeProperty(String key) {
         JSObject obj = (JSObject) getHtmlElement();
         obj.removeMember(key);
     }
 
     @Override
-    public Object getData(String key) {
+    public Object getProperty(String key) {
         JSObject obj = (JSObject) getHtmlElement();
         Object member = obj.getMember(key);
         if (member instanceof String && "undefined".equals(member)) {

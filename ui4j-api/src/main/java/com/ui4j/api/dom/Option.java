@@ -15,7 +15,7 @@ public class Option {
     }
 
     public String getValue() {
-        return String.valueOf(element.getData("value"));
+        return String.valueOf(element.getProperty("value"));
     }
 
     public Element getElement() {
@@ -27,11 +27,11 @@ public class Option {
     }
 
     public boolean isSelected() {
-        return parseBoolean(String.valueOf(element.getData("selected")));
+        return parseBoolean(String.valueOf(element.getProperty("selected")));
     }
 
     public Option setSelected(boolean selected) {
-        element.setData("selected", selected);
+        element.setProperty("selected", selected);
         return this;
     }
 

@@ -9,20 +9,20 @@ public class Input {
     }
 
     public boolean isDisabled() {
-        return Boolean.parseBoolean(String.valueOf(element.getData("disabled")));
+        return Boolean.parseBoolean(String.valueOf(element.getProperty("disabled")));
     }
 
     public Input setDisabled(boolean disabled) {
-        element.setData("disabled", disabled);
+        element.setProperty("disabled", disabled);
         return this;
     }
 
     public boolean isReadOnly() {
-        return Boolean.parseBoolean(String.valueOf(element.getData("readOnly")));
+        return Boolean.parseBoolean(String.valueOf(element.getProperty("readOnly")));
     }
 
     public Input setReadOnly(boolean readOnly) {
-        element.setData("readOnly", readOnly);
+        element.setProperty("readOnly", readOnly);
         return this;
     }
 
