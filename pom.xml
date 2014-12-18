@@ -4,7 +4,7 @@
     <groupId>com.ui4j</groupId>
     <artifactId>ui4j</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <name>Ui4j - Web Automation for Java</name>
     <description>Web Automation for Java</description>
     <url>https://github.com/ui4j/ui4j</url>
