@@ -17,7 +17,7 @@ import net.bytebuddy.instrumentation.method.bytecode.bind.annotation.Origin;
 import net.bytebuddy.instrumentation.method.bytecode.bind.annotation.RuntimeType;
 import net.bytebuddy.instrumentation.method.bytecode.bind.annotation.SuperCall;
 import net.bytebuddy.instrumentation.method.bytecode.bind.annotation.This;
-import net.bytebuddy.instrumentation.method.matcher.MethodMatchers;
+import net.bytebuddy.matcher.ElementMatchers;
 
 import com.ui4j.api.dom.Element;
 import com.ui4j.api.util.Ui4jException;
@@ -108,9 +108,9 @@ public class WebKitProxy {
 	public WebKitProxy(Class<?> klass, Class<?>[] constructorArguments) {
     	Class<?> loaded = new ByteBuddy()
 								.subclass(klass)
-								.method(MethodMatchers.any()
-												.and(MethodMatchers.not(MethodMatchers.isDeclaredByAny(Object.class))
-												.and(MethodMatchers.not(MethodMatchers.nameStartsWith("wait")))))
+								.method(ElementMatchers.any()
+												.and(ElementMatchers.not(ElementMatchers.isDeclaredBy(Object.class))
+												.and(ElementMatchers.not(ElementMatchers.nameStartsWith("wait")))))
 						    	.intercept(MethodDelegation.to(WebKitInterceptor.class))
 						    	.make()
 						    	.load(WebKitProxy.class.getClassLoader(), ClassLoadingStrategy.Default.WRAPPER)
