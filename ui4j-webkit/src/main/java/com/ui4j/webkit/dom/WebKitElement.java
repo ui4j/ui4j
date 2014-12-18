@@ -95,16 +95,24 @@ public class WebKitElement implements Element, EventTarget {
     }
 
     @Override
-    public Element addClass(String name) {
-        JSObject classList = (JSObject) getProperty("classList");
-        classList.call("add", name);
+    public Element addClass(String... names) {
+    	if (names != null && names.length > 0) {
+    		for (String name : names) {
+    			JSObject classList = (JSObject) getProperty("classList");
+    			classList.call("add", name);
+    		}
+    	}
         return this;
     }
 
     @Override
-    public Element removeClass(String name) {
-        JSObject classList = (JSObject) getProperty("classList");
-        classList.call("remove", name);
+    public Element removeClass(String... names) {
+    	if (names != null && names.length > 0) {
+    		for (String name : names) {
+    			JSObject classList = (JSObject) getProperty("classList");
+    			classList.call("remove", name);
+    		}
+    	}
         return this;
     }
 

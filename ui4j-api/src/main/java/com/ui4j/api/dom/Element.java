@@ -18,9 +18,9 @@ public interface Element extends Node {
 
     boolean hasAttribute(String name);
 
-    Element addClass(String name);
+    Element addClass(String... names);
 
-    Element removeClass(String name);
+    Element removeClass(String... names);
 
     boolean hasClass(String name);
 
