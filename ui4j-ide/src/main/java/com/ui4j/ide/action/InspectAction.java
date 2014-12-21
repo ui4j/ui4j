@@ -45,6 +45,8 @@ public class InspectAction extends ExecuteAction {
 		private JScrollPane scroll = new JScrollPane();
 
 		public InspectElementDialog(List<Element> elements) {
+			setModalityType(ModalityType.APPLICATION_MODAL);
+
 			setLayout(new BorderLayout());
 			scroll.setViewportView(list);
 			JLabel lblCnt = new JLabel(String.valueOf(elements.size()) + " Elements found");
@@ -68,8 +70,8 @@ public class InspectAction extends ExecuteAction {
 
 			pack();
 
-			setLocationRelativeTo(null);
-
+			setLocationRelativeTo(getParent());
+			
 			if (elements.size() > 0) {
 				requestFocus();
 				list.requestFocus();
@@ -178,9 +180,9 @@ public class InspectAction extends ExecuteAction {
 		}
 	}
 
-	public InspectAction(PageManager pageManager, EditorManager editorManager,
+	public InspectAction(Component parent, PageManager pageManager, EditorManager editorManager,
 			ScriptManager scriptManager) {
-		super(pageManager, editorManager, scriptManager);
+		super(parent, pageManager, editorManager, scriptManager);
 
 		putValue(NAME, "Inspect");
 		int mask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();

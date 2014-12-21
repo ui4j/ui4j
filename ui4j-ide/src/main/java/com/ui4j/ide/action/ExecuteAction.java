@@ -2,6 +2,7 @@ package com.ui4j.ide.action;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
+import java.awt.Component;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -21,14 +22,16 @@ public class ExecuteAction extends AbstractAction {
 
 	private static final long serialVersionUID = -8282610682521986612L;
 
+	private Component parent;
+
 	private PageManager pageManager;
 
 	private EditorManager editorManager;
 
 	private ScriptManager scriptManager;
 
-
-	public ExecuteAction(PageManager pageManager, EditorManager editorManager, ScriptManager scriptManager) {
+	public ExecuteAction(Component parent, PageManager pageManager, EditorManager editorManager, ScriptManager scriptManager) {
+		this.parent = parent;
 		this.pageManager = pageManager;
 		this.editorManager = editorManager;
 		this.scriptManager = scriptManager;
@@ -56,7 +59,7 @@ public class ExecuteAction extends AbstractAction {
 		try {
 			return scriptManager.execute(text, bindings);
 		} catch (Throwable ex) {
-			showMessageDialog(null, ex.getMessage(), "Execution Error", JOptionPane.ERROR_MESSAGE);
+			showMessageDialog(parent, ex.getMessage(), "Execution Error", JOptionPane.ERROR_MESSAGE);
 		}
 		return null;
 	}
@@ -83,5 +86,9 @@ public class ExecuteAction extends AbstractAction {
 		bindings.put("body", page.getDocument().getBody());
 		bindings.put("window", page.getWindow());
 		return bindings;
+	}
+
+	protected Component getParent() {
+		return parent;
 	}
 }

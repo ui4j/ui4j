@@ -1,9 +1,12 @@
 package com.ui4j.ide;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
+import java.util.Enumeration;
+import java.util.Locale;
 
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
@@ -14,6 +17,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
@@ -47,6 +52,7 @@ public class Application extends JFrame implements PageManager, EditorManager, R
 		setTitle("Ui4j");
 
 		JMenuBar menubar = new JMenuBar();
+		menubar.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 
 		JMenu menuFile = new JMenu("File");
 		menuFile.setMnemonic('F');
@@ -61,8 +67,8 @@ public class Application extends JFrame implements PageManager, EditorManager, R
 		menuFile.addSeparator();
 		menuFile.add(new ExitAction());
 		
-		menuRun.add(new ExecuteAction(this, this, scriptManager));
-		menuRun.add(new InspectAction(this, this, scriptManager));
+		menuRun.add(new ExecuteAction(this, this, this, scriptManager));
+		menuRun.add(new InspectAction(this, this, this, scriptManager));
 
 		setLayout(new BorderLayout());
 
@@ -73,8 +79,10 @@ public class Application extends JFrame implements PageManager, EditorManager, R
 		splitPane.setBorder(BorderFactory.createEmptyBorder());
 
 		area = new RSyntaxTextArea(120, 40);
+		area.setBorder(BorderFactory.createEmptyBorder());
 		area.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
 		RTextScrollPane rpane = new RTextScrollPane(area);
+		rpane.setBorder(BorderFactory.createEmptyBorder());
 		rpane.setMinimumSize(new Dimension(400, 400));
 
 		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -115,7 +123,23 @@ public class Application extends JFrame implements PageManager, EditorManager, R
 		return area.getSelectedText();
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		String os = System.getProperty("os.name");
+		if (os.toLowerCase(Locale.ENGLISH).contains("windows")) {
+			UIManager.put("MenuItem.border", BorderFactory.createEmptyBorder());
+			UIManager.put("Menu.border", BorderFactory.createEmptyBorder());
+			UIManager.put("PopupMenu.border", BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(0xCCCCCC)));
+			Font font = Font.decode("Segoe UI-Plain-12");
+			Enumeration<Object> keys = UIManager.getDefaults().keys();
+			while (keys.hasMoreElements()) {
+				Object key = keys.nextElement();
+				Object value = UIManager.get (key);
+				if (value != null && value instanceof javax.swing.plaf.FontUIResource)
+					UIManager.put (key, font);
+			}			
+		}
+        UIManager.put("Ui4jSplitPane.background", new Color(0xCCCCCC));
 		Application application = new Application();
 		application.pack();
 		application.setVisible(false);
@@ -128,6 +152,7 @@ public class Application extends JFrame implements PageManager, EditorManager, R
 		WebView view = (WebView) currentPage.getView();
 		BorderLayout layout = new BorderLayout();
 		fxPanel.setLayout(layout);
+		fxPanel.setBorder(BorderFactory.createEmptyBorder());
 		fxPanel.setScene(new Scene(view));
 		splitPane.setRightComponent(fxPanel);
 		setVisible(true);
