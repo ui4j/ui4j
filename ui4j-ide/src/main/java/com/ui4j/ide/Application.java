@@ -17,6 +17,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -27,11 +28,13 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 import com.ui4j.api.browser.BrowserEngine;
 import com.ui4j.api.browser.BrowserFactory;
 import com.ui4j.api.browser.Page;
+import com.ui4j.ide.action.AboutAction;
 import com.ui4j.ide.action.ExecuteAction;
 import com.ui4j.ide.action.ExitAction;
 import com.ui4j.ide.action.InspectAction;
 import com.ui4j.ide.action.OpenFileAction;
 import com.ui4j.ide.action.SaveAction;
+import com.ui4j.ide.action.SaveAsAction;
 
 public class Application extends JFrame implements PageManager, EditorManager, Runnable {
 
@@ -62,13 +65,22 @@ public class Application extends JFrame implements PageManager, EditorManager, R
 		menubar.add(menuFile);
 		menubar.add(menuRun);
 
-		menuFile.add(new OpenFileAction());
-		menuFile.add(new SaveAction());
+		menuFile.add(new OpenFileAction(this, this));
+		menuFile.addSeparator();
+		menuFile.add(new SaveAction(this, this));
+		menuFile.add(new SaveAsAction(this, this));
 		menuFile.addSeparator();
 		menuFile.add(new ExitAction());
 		
 		menuRun.add(new ExecuteAction(this, this, this, scriptManager));
 		menuRun.add(new InspectAction(this, this, this, scriptManager));
+
+		JMenu menuHelp = new JMenu("Help");
+		menuHelp.setMnemonic('H');
+		JMenuItem about = new JMenuItem(new AboutAction(this));
+		menuHelp.add(about);
+
+		menubar.add(menuHelp);
 
 		setLayout(new BorderLayout());
 
@@ -156,5 +168,10 @@ public class Application extends JFrame implements PageManager, EditorManager, R
 		fxPanel.setScene(new Scene(view));
 		splitPane.setRightComponent(fxPanel);
 		setVisible(true);
+	}
+
+	@Override
+	public void setText(String text) {
+		area.setText(text);
 	}
 }

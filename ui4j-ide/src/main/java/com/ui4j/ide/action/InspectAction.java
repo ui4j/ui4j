@@ -31,6 +31,7 @@ import com.ui4j.api.dom.Element;
 import com.ui4j.ide.EditorManager;
 import com.ui4j.ide.PageManager;
 import com.ui4j.ide.ScriptManager;
+import com.ui4j.ide.UIUtils;
 
 public class InspectAction extends ExecuteAction {
 
@@ -206,7 +207,9 @@ public class InspectAction extends ExecuteAction {
 			new InspectElementDialog(elements).setVisible(true);
 			return result;
 		}
-		JOptionPane.showMessageDialog(null, String.valueOf(result));
+		JLabel label = new JLabel("<html>" + String.valueOf(result) + "</html>");
+		label.setPreferredSize(UIUtils.getPreferredSize(String.valueOf(result), true, 400));
+		JOptionPane.showMessageDialog(getParent(), label, "Inspect Value", JOptionPane.INFORMATION_MESSAGE);
 		return result;
 	}
 }

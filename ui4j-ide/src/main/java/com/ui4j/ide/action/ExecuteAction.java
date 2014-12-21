@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import javax.script.Bindings;
 import javax.script.SimpleBindings;
 import javax.swing.AbstractAction;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
@@ -17,6 +18,7 @@ import com.ui4j.api.browser.Page;
 import com.ui4j.ide.EditorManager;
 import com.ui4j.ide.PageManager;
 import com.ui4j.ide.ScriptManager;
+import com.ui4j.ide.UIUtils;
 
 public class ExecuteAction extends AbstractAction {
 
@@ -30,7 +32,8 @@ public class ExecuteAction extends AbstractAction {
 
 	private ScriptManager scriptManager;
 
-	public ExecuteAction(Component parent, PageManager pageManager, EditorManager editorManager, ScriptManager scriptManager) {
+	public ExecuteAction(Component parent, PageManager pageManager,
+			EditorManager editorManager, ScriptManager scriptManager) {
 		this.parent = parent;
 		this.pageManager = pageManager;
 		this.editorManager = editorManager;
@@ -59,7 +62,10 @@ public class ExecuteAction extends AbstractAction {
 		try {
 			return scriptManager.execute(text, bindings);
 		} catch (Throwable ex) {
-			showMessageDialog(parent, ex.getMessage(), "Execution Error", JOptionPane.ERROR_MESSAGE);
+			JLabel label = new JLabel("<html>" + ex.getMessage() + "</html>");
+			label.setPreferredSize(UIUtils.getPreferredSize(ex.getMessage(), true, 400));
+			showMessageDialog(parent, label, "Execution Error",
+					JOptionPane.ERROR_MESSAGE);
 		}
 		return null;
 	}

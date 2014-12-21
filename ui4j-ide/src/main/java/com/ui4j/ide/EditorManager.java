@@ -5,4 +5,6 @@ public interface EditorManager {
 	String getText();
 
 	String getSelection();
+
+	void setText(String text);
 }
