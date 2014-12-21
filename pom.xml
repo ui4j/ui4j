@@ -26,6 +26,7 @@
         <module>ui4j-webkit</module>
         <module>ui4j-sample</module>
         <module>ui4j-all</module>
+        <module>ui4j-ide</module>
     </modules>
     <licenses>
         <license>
