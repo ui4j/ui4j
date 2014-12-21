@@ -4,6 +4,7 @@ import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -221,6 +222,12 @@ public class WebKitPage implements Page, PageView, JavaScriptEngine {
 
     @Override
     public void waitUntilDocReady(int timeout, TimeUnit unit) {
+    	String state = String.valueOf(engine.executeScript("document.readyState"))
+    							.trim()
+    							.toLowerCase(Locale.ENGLISH);
+    	if ("complete".equals(state)) {
+    		return;
+    	}
         LOG.debug("Waiting document ready, timeout=" + timeout + " " + unit.toString());
         CountDownLatch latch = new CountDownLatch(1);
         DocumentListener listener = new SyncDocumentListener(latch);
