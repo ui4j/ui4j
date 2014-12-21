@@ -278,7 +278,7 @@ public class WebKitElement implements Element, EventTarget {
 
     @Override
     public void remove() {
-        if (isHtmlElement()) {
+        if (isHtmlElement() && !getTagName().equals("body")) {
             unbind();
             new NodeUnbindVisitor(context, this).walk();
             if (isAttached()) {

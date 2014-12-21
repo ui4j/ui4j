@@ -534,4 +534,10 @@ public class ElementTest {
         Assert.assertEquals("div", div.getTagName());
         Assert.assertEquals(" my text", div.getNextSibling().getText());
     }
+
+    @Test public void t48_removeBody() {
+    	document.getBody().setAttribute("foo", "bar");
+    	document.getBody().remove();
+    	Assert.assertEquals("bar", document.getBody().getAttribute("foo"));
+    }
 }
