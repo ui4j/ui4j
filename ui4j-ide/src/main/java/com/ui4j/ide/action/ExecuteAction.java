@@ -44,13 +44,24 @@ public class ExecuteAction extends AbstractAction {
 		if (page == null) {
 			return;
 		}
+		Bindings bindings = createBindings(page);
+		String text = getText();
+		if (text == null) {
+			return;
+		}
+		execute(text, bindings);
+	}
 
-		Bindings bindings = new SimpleBindings();
-		bindings.put("page", page);
-		bindings.put("document", page.getDocument());
-		bindings.put("body", page.getDocument().getBody());
-		bindings.put("window", page.getWindow());
+	protected Object execute(String text, Bindings bindings) {
+		try {
+			return scriptManager.execute(text, bindings);
+		} catch (Throwable ex) {
+			showMessageDialog(null, ex.getMessage(), "Execution Error", JOptionPane.ERROR_MESSAGE);
+		}
+		return null;
+	}
 
+	protected String getText() {
 		String selection = editorManager.getSelection();
 		String text = null;
 		if (selection != null && !selection.trim().isEmpty()) {
@@ -60,13 +71,17 @@ public class ExecuteAction extends AbstractAction {
 		}
 
 		if (text.trim().isEmpty()) {
-			return;
+			return null;
 		}
+		return text;
+	}
 
-		try {
-			scriptManager.execute(text, bindings);
-		} catch (Throwable ex) {
-			showMessageDialog(null, ex.getMessage(), "Execution Error", JOptionPane.ERROR_MESSAGE);
-		}
+	protected Bindings createBindings(Page page) {
+		Bindings bindings = new SimpleBindings();
+		bindings.put("page", page);
+		bindings.put("document", page.getDocument());
+		bindings.put("body", page.getDocument().getBody());
+		bindings.put("window", page.getWindow());
+		return bindings;
 	}
 }

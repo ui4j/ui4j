@@ -24,6 +24,7 @@ import com.ui4j.api.browser.BrowserFactory;
 import com.ui4j.api.browser.Page;
 import com.ui4j.ide.action.ExecuteAction;
 import com.ui4j.ide.action.ExitAction;
+import com.ui4j.ide.action.InspectAction;
 import com.ui4j.ide.action.OpenFileAction;
 import com.ui4j.ide.action.SaveAction;
 
@@ -61,6 +62,7 @@ public class Application extends JFrame implements PageManager, EditorManager, R
 		menuFile.add(new ExitAction());
 		
 		menuRun.add(new ExecuteAction(this, this, scriptManager));
+		menuRun.add(new InspectAction(this, this, scriptManager));
 
 		setLayout(new BorderLayout());
 
