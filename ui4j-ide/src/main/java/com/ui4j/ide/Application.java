@@ -15,10 +15,12 @@ import javafx.scene.Scene;
 import javafx.scene.web.WebView;
 
 import javax.swing.BorderFactory;
+import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -52,6 +54,8 @@ public class Application extends JFrame implements PageManager, EditorManager, F
 	private Ui4jSplitPane splitPane;
 
 	private File currentFile;
+
+	private JEditorPane console;
 
 	public Application() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -117,6 +121,19 @@ public class Application extends JFrame implements PageManager, EditorManager, F
 		setLayout(new BorderLayout());
 		
 		add(splitPane, BorderLayout.CENTER);
+
+		console = new JEditorPane();
+		console.setPreferredSize(new Dimension(400, 100));
+		console.setBackground(new Color(0xEEEEEE));
+
+		ConsolePipe.redirectErr(console);
+		ConsolePipe.redirectOut(console);
+		ConsolePipe.redirectOutput(console);
+
+		JScrollPane consoleScroll = new JScrollPane(console, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+											JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		consoleScroll.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, new Color(0xCCCCCC)));
+		add(consoleScroll, BorderLayout.SOUTH);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);				
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
