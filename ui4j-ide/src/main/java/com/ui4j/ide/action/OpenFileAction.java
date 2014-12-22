@@ -19,6 +19,7 @@ import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.ui4j.ide.EditorManager;
+import com.ui4j.ide.FileManager;
 import com.ui4j.ide.UIUtils;
 
 public class OpenFileAction extends AbstractAction {
@@ -29,8 +30,13 @@ public class OpenFileAction extends AbstractAction {
 
 	private EditorManager editorManager;
 
-	public OpenFileAction(Component parent, EditorManager editorManager) {
+	private FileManager fileManager;
+
+	public OpenFileAction(Component parent, EditorManager editorManager, FileManager fileManager) {
+		this.parent = parent;
+
 		this.editorManager = editorManager;
+		this.fileManager = fileManager;
 
 		putValue(NAME, "Open File...");
 		putValue(SMALL_ICON, new ImageIcon(getClass().getResource("/com/ui4j/ide/icon/small/open.png")));
@@ -55,6 +61,7 @@ public class OpenFileAction extends AbstractAction {
 		if (selectedFile.isDirectory()) {
 			return;
 		}
+		fileManager.setCurrentFile(selectedFile);
 		List<String> lines = Collections.emptyList();
 		try {
 			lines = Files.readAllLines(selectedFile.toPath());

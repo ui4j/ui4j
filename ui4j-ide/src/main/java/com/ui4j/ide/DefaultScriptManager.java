@@ -1,5 +1,9 @@
 package com.ui4j.ide;
 
+import java.util.concurrent.CountDownLatch;
+
+import javafx.application.Platform;
+
 import javax.script.Bindings;
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
@@ -20,12 +24,27 @@ public class DefaultScriptManager implements ScriptManager {
 
 	@Override
 	public Object execute(String script, Bindings bindings) {
-		ScriptEngine engine = this.scriptEngine.get();
-		engine.setBindings(bindings, ScriptContext.ENGINE_SCOPE);
+		Object[] result = new Object[1];
+		CountDownLatch latch = new CountDownLatch(1);
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				ScriptEngine engine = scriptEngine.get();
+				engine.setBindings(bindings, ScriptContext.ENGINE_SCOPE);
+				try {
+					result[0] = engine.eval(script);
+					latch.countDown();
+				} catch (ScriptException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		});
 		try {
-			return engine.eval(script);
-		} catch (ScriptException e) {
-			throw new RuntimeException(e);
+			latch.await();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
+		return result[0];
 	}
 }

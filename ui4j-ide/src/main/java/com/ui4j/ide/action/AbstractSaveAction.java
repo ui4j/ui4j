@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.ui4j.ide.EditorManager;
+import com.ui4j.ide.FileManager;
 import com.ui4j.ide.UIUtils;
 
 public class AbstractSaveAction extends AbstractAction {
@@ -23,21 +24,17 @@ public class AbstractSaveAction extends AbstractAction {
 
 	private EditorManager editorManager;
 
-	private File lastSavedFile;
+	private FileManager fileManager;
 
-	public AbstractSaveAction(Component parent, EditorManager editorManager) {
+	public AbstractSaveAction(Component parent, EditorManager editorManager, FileManager fileManager) {
 		this.parent = parent;
 		this.editorManager = editorManager;
+		this.fileManager = fileManager;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		File selectedFile = null;
-		if (lastSavedFile != null) {
-			selectedFile = lastSavedFile;
-		} else {
-			selectedFile = showSaveDialog();
-		}
+		File selectedFile = showSaveDialog();
 		if (selectedFile == null) {
 			return;
 		}
@@ -47,7 +44,6 @@ public class AbstractSaveAction extends AbstractAction {
 	protected void save(File file) {
 		try (FileWriter writer = new FileWriter(file)) {
 			writer.write(editorManager.getText());
-			lastSavedFile = file;
 		} catch (IOException ex) {
 			JLabel label = new JLabel("<html>" + String.valueOf(ex.getMessage()) + "</html>");
 			label.setPreferredSize(UIUtils.getPreferredSize(String.valueOf(ex.getMessage()), true, 400));
@@ -92,5 +88,9 @@ public class AbstractSaveAction extends AbstractAction {
 			return null;
 		}
 		return selectedFile;
+	}
+
+	protected FileManager getFileManager() {
+		return fileManager;
 	}
 }

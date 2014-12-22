@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
+import java.io.File;
 import java.util.Enumeration;
 import java.util.Locale;
 
@@ -36,7 +37,7 @@ import com.ui4j.ide.action.OpenFileAction;
 import com.ui4j.ide.action.SaveAction;
 import com.ui4j.ide.action.SaveAsAction;
 
-public class Application extends JFrame implements PageManager, EditorManager, Runnable {
+public class Application extends JFrame implements PageManager, EditorManager, FileManager, Runnable {
 
 	private static final long serialVersionUID = 2401407900556583752L;
 
@@ -49,6 +50,8 @@ public class Application extends JFrame implements PageManager, EditorManager, R
 	private ScriptManager scriptManager = new DefaultScriptManager();
 
 	private Ui4jSplitPane splitPane;
+
+	private File currentFile;
 
 	public Application() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -65,10 +68,10 @@ public class Application extends JFrame implements PageManager, EditorManager, R
 		menubar.add(menuFile);
 		menubar.add(menuRun);
 
-		menuFile.add(new OpenFileAction(this, this));
+		menuFile.add(new OpenFileAction(this, this, this));
 		menuFile.addSeparator();
-		menuFile.add(new SaveAction(this, this));
-		menuFile.add(new SaveAsAction(this, this));
+		menuFile.add(new SaveAction(this, this, this));
+		menuFile.add(new SaveAsAction(this, this, this));
 		menuFile.addSeparator();
 		menuFile.add(new ExitAction());
 		
@@ -173,5 +176,15 @@ public class Application extends JFrame implements PageManager, EditorManager, R
 	@Override
 	public void setText(String text) {
 		area.setText(text);
+	}
+
+	@Override
+	public File getCurrentFile() {
+		return currentFile;
+	}
+
+	@Override
+	public void setCurrentFile(File file) {
+		this.currentFile = file;
 	}
 }

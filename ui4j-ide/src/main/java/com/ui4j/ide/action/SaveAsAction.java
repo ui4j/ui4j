@@ -5,13 +5,14 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 
 import com.ui4j.ide.EditorManager;
+import com.ui4j.ide.FileManager;
 
 public class SaveAsAction extends AbstractSaveAction {
 
 	private static final long serialVersionUID = -3724420288262935505L;
 
-	public SaveAsAction(Component parent, EditorManager editorManager) {
-		super(parent, editorManager);
+	public SaveAsAction(Component parent, EditorManager editorManager, FileManager fileManager) {
+		super(parent, editorManager, fileManager);
 
 		putValue(NAME, "Save As...");
 		putValue(MNEMONIC_KEY, "A".codePointAt(0));
