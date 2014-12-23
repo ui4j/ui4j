@@ -7,4 +7,6 @@ public interface EditorManager {
 	String getSelection();
 
 	void setText(String text);
+
+	void focus();
 }

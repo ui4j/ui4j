@@ -204,4 +204,9 @@ public class Application extends JFrame implements PageManager, EditorManager, F
 	public void setCurrentFile(File file) {
 		this.currentFile = file;
 	}
+
+	@Override
+	public void focus() {
+		area.requestFocus();
+	}
 }

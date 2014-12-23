@@ -76,5 +76,6 @@ public class OpenFileAction extends AbstractAction {
 			builder.append(System.lineSeparator());
 		}
 		editorManager.setText(builder.toString());
+		editorManager.focus();
 	}
 }
