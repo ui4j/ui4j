@@ -36,6 +36,10 @@ This library is suitable for use in production systems.
 If you have found a defect or you want to request a feature enhancement an issue report is the way to bring the attention to the Ui4j Community.
 
 
+Ui4j IDE
+--------
+Simple IDE to integrate javascript and Ui4j. Please check this [screencast](https://www.screenr.com/fsqN) for quick demonstration.
+
 Integration with Maven
 ----------------------
 
@@ -52,6 +56,7 @@ To use the official release of Ui4j, please use the following snippet in your po
 Using Ui4j without Maven
 ------------------------
 If you use Ui4j without Maven, download [pre built jar file](https://repo1.maven.org/maven2/com/ui4j/ui4j-all/1.1.0/ui4j-all-1.1.0.jar).
+
 
 Supported Platforms
 -------------------
