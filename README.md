@@ -40,6 +40,13 @@ Ui4j IDE
 --------
 Simple IDE to integrate javascript and Ui4j. Please check this [screencast](https://www.screenr.com/fsqN) for quick demonstration.
 
+Download IDE jar from this link: [https://repo1.maven.org/maven2/com/ui4j/ui4j-ide/1.1.0/ui4j-ide-1.1.0.jar](https://repo1.maven.org/maven2/com/ui4j/ui4j-ide/1.1.0/ui4j-ide-1.1.0.jar)
+
+Use the following command to run the IDE:
+```
+java -jar ui4j-ide-1.1.0.jar
+```
+
 Integration with Maven
 ----------------------
 
