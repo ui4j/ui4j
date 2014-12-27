@@ -13,6 +13,7 @@ import sun.net.www.protocol.http.Handler;
 
 import com.ui4j.api.browser.BrowserFactory;
 
+@SuppressWarnings("restriction")
 public class InterceptorSample {
 
     public static interface ConnectionInterceptor {
@@ -24,7 +25,7 @@ public class InterceptorSample {
 
         private Handler httpHandler = new Handler();
 
-        private sun.net.www.protocol.https.Handler httpsHandler = new sun.net.www.protocol.https.Handler();
+		private sun.net.www.protocol.https.Handler httpsHandler = new sun.net.www.protocol.https.Handler();
 
         private Method httpOpenConnection;
 
