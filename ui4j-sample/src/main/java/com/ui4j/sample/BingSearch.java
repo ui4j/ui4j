@@ -36,13 +36,12 @@ public class BingSearch {
             Document doc = page.getDocument();
 
             // set the searh criteria
-            doc.query(".b_searchbox").setValue(criteria);
+            doc.query("#sb_form_q").setValue(criteria);
 
             // click to search button
-            doc.query(".b_searchboxSubmit").click();
+            doc.query("#sb_form_go").click();
 
-            // wait until document ready
-            page.waitUntilDocReady();
+            page.wait(1000);
 
             // list all the results
             List<Element> result = doc.queryAll("h2 > a");
