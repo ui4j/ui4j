@@ -22,10 +22,10 @@
     </developers>
     <licenses>
         <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <name>The MIT License (MIT)</name>
+            <url>https://raw.githubusercontent.com/ui4j/ui4j/master/LICENSE</url>
             <distribution>repo</distribution>
-            <comments>A business-friendly OSS license</comments>
+            <comments>You are free to use Ui4j or any of its constituent parts in any other project (even commercial projects) so long as its copyright headers are left intact.</comments>
         </license>
     </licenses>
     <build>
