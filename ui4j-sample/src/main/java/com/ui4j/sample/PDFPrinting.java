@@ -42,6 +42,9 @@ public class PDFPrinting {
 
         WebEngine engine = (WebEngine) page.getEngine();
 
+        // Note: Optionally -webkit-print-color-adjust: exact; could be used for fix background-color problem
+        // @see http://stackoverflow.com/questions/14987496/background-color-not-showing-in-print-preview
+
         PrinterJob job = null;
         try {
             page.show();
