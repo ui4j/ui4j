@@ -22,6 +22,9 @@ public class CnnTechNews {
         // navigate to tech news
         doc.query("#nav-tech").click();
 
+        page.wait(1000); // tiny delay is important after click,
+                         // if we dont delay waitUntilDocReady executed immediately without affect
+
         // wait until document ready
         page.waitUntilDocReady();
 

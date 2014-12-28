@@ -222,12 +222,13 @@ public class WebKitPage implements Page, PageView, JavaScriptEngine {
 
     @Override
     public void waitUntilDocReady(int timeout, TimeUnit unit) {
-    	String state = String.valueOf(engine.executeScript("document.readyState"))
-    							.trim()
-    							.toLowerCase(Locale.ENGLISH);
-    	if ("complete".equals(state)) {
-    		return;
-    	}
+        String state = executeScript("document.readyState")
+                                .toString()
+                                .trim()
+                                .toLowerCase(Locale.ENGLISH);
+        if ("complete".equals(state)) {
+            return;
+        }
         LOG.debug("Waiting document ready, timeout=" + timeout + " " + unit.toString());
         CountDownLatch latch = new CountDownLatch(1);
         DocumentListener listener = new SyncDocumentListener(latch);
@@ -281,18 +282,18 @@ public class WebKitPage implements Page, PageView, JavaScriptEngine {
 
     @Override
     public Object executeScript(String script) {
-    	Object result = engine.executeScript(script);
+        Object result = engine.executeScript(script);
 
-    	String resultStr = String.valueOf(result);
+        String resultStr = String.valueOf(result);
 
-    	NumberFormat formatter = NumberFormat.getInstance();
-    	ParsePosition pos = new ParsePosition(0);
-    	Number number = formatter.parse(resultStr, pos);
-    	if (resultStr.length() == pos.getIndex()) {
-    		return number;
-    	}
+        NumberFormat formatter = NumberFormat.getInstance();
+        ParsePosition pos = new ParsePosition(0);
+        Number number = formatter.parse(resultStr, pos);
+        if (resultStr.length() == pos.getIndex()) {
+            return number;
+        }
 
-    	return result;
+        return result;
     }
 
     @Override
