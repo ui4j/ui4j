@@ -27,7 +27,6 @@
         <module>ui4j-sample</module>
         <module>ui4j-all</module>
         <module>ui4j-ide</module>
-        <module>ui4j-jxbrowser</module>
     </modules>
     <licenses>
         <license>

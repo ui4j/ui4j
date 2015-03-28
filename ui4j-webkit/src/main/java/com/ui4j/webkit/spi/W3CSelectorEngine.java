@@ -14,6 +14,7 @@ import com.ui4j.api.dom.Document;
 import com.ui4j.api.dom.Element;
 import com.ui4j.spi.PageContext;
 import com.ui4j.webkit.browser.WebKitPageContext;
+import com.ui4j.webkit.dom.WebKitDocument;
 import com.ui4j.webkit.dom.WebKitElement;
 
 public class W3CSelectorEngine implements SelectorEngine {
@@ -32,7 +33,7 @@ public class W3CSelectorEngine implements SelectorEngine {
 
     @Override
     public Element query(String selector) {
-        DocumentImpl documentImpl = (DocumentImpl) engine.getEngine().getDocument();
+        DocumentImpl documentImpl = ((WebKitDocument) document).getDocument();
         String escapedSelector = selector.replace('\'', '"');
         if (documentImpl == null) {
             return null;
@@ -47,7 +48,7 @@ public class W3CSelectorEngine implements SelectorEngine {
 
     @Override
     public List<Element> queryAll(String selector) {
-        DocumentImpl documentImpl = (DocumentImpl) engine.getEngine().getDocument();
+        DocumentImpl documentImpl = ((WebKitDocument) document).getDocument();
         String escapedSelector = selector.replace('\'', '"');
         if (documentImpl == null) {
             return Collections.emptyList();

@@ -1,6 +1,7 @@
 package com.ui4j.webkit.browser;
 
 import java.util.List;
+import java.util.WeakHashMap;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -9,6 +10,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebErrorEvent;
 import javafx.scene.web.WebView;
 
+import com.sun.webkit.dom.DocumentImpl;
 import com.ui4j.api.browser.PageConfiguration;
 import com.ui4j.api.browser.SelectorEngine;
 import com.ui4j.api.browser.SelectorType;
@@ -49,6 +51,10 @@ public class WebKitPageContext implements PageContext {
     private WebKitProxy windowFactory;
 
     private WebKitProxy pageFactory;
+
+    private WeakHashMap<DocumentImpl, Document> contentDocuments = new WeakHashMap<>();
+
+    private WeakHashMap<DocumentImpl, SelectorEngine> selectorEngines = new WeakHashMap<>();
 
     public static class DefaultErrorEventHandler implements EventHandler<WebErrorEvent> {
 
@@ -119,15 +125,34 @@ public class WebKitPageContext implements PageContext {
     }
 
     public Document createDocument(JavaScriptEngine engine) {
+    	DocumentImpl documentImpl = (DocumentImpl) ((WebKitJavaScriptEngine) engine).getEngine().getDocument();
+
         WebEngine webEngine = (WebEngine) engine.getEngine();
         if (configuration.getUserAgent() != null) {
         	webEngine.setUserAgent(configuration.getUserAgent());
         }
         webEngine.getLoadWorker().exceptionProperty().addListener(new ExceptionListener(log));
         webEngine.setOnError(new DefaultErrorEventHandler());
-        Document document = (Document) documentFactory.newInstance(new Object[] { this, engine });
-        initializeSizzle(document, (WebKitJavaScriptEngine) engine);
+        Document document = (Document) documentFactory.newInstance(new Object[] { this, documentImpl, engine });
+        selector = initializeSelectorEngine(document, (WebKitJavaScriptEngine) engine);
         return document;
+    }
+
+    public Document getContentDocument(DocumentImpl documentImpl, JavaScriptEngine engine) {
+    	synchronized (this) {
+    		Document existingDocument = contentDocuments.get(documentImpl);
+    		if (existingDocument != null) {
+    			return existingDocument;
+    		} else {
+    			Document document = (Document) documentFactory.newInstance(new Object[] { this, documentImpl, engine });
+    			contentDocuments.put(documentImpl, document);
+
+    			SelectorEngine selector = initializeSelectorEngine(document, (WebKitJavaScriptEngine) engine);
+    			selectorEngines.put(documentImpl, selector);
+
+    			return document;
+    		}
+		}
     }
 
     public void onLoad(Document document) {
@@ -150,7 +175,16 @@ public class WebKitPageContext implements PageContext {
         return selector;
     }
 
-    protected void initializeSizzle(Document document, WebKitJavaScriptEngine engine) {
+    public SelectorEngine getSelectorEngine(org.w3c.dom.Document documentImpl) {
+    	SelectorEngine contentDocumentSelectorEngine = selectorEngines.get(documentImpl);
+    	if (contentDocumentSelectorEngine == null) {
+    		return selector;
+    	}
+    	return contentDocumentSelectorEngine;
+    }
+
+    protected SelectorEngine initializeSelectorEngine(Document document, WebKitJavaScriptEngine engine) {
+    	SelectorEngine selector = null;
         if (configuration.getSelectorEngine().equals(SelectorType.SIZZLE)) {
             String sizzle = readSizzle();
             boolean foundSizzle = Boolean.parseBoolean(engine.getEngine().executeScript("typeof window.Sizzle === 'function'").toString());
@@ -161,6 +195,7 @@ public class WebKitPageContext implements PageContext {
         } else {
             selector = new W3CSelectorEngine(this, document, engine);
         }
+        return selector;
     }
 
     protected String readSizzle() {

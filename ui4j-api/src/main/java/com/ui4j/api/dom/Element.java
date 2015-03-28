@@ -181,4 +181,6 @@ public interface Element extends Node {
     Element getNextSibling();
 
     Element closest(String selector);
+
+    Document getContentDocument();
 }

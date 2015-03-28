@@ -14,12 +14,15 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.html.HTMLElement;
 import org.w3c.dom.html.HTMLFormElement;
+import org.w3c.dom.html.HTMLFrameElement;
+import org.w3c.dom.html.HTMLIFrameElement;
 import org.w3c.dom.html.HTMLInputElement;
 import org.w3c.dom.html.HTMLOptionElement;
 import org.w3c.dom.html.HTMLSelectElement;
 
 import com.sun.webkit.dom.DocumentImpl;
 import com.sun.webkit.dom.HTMLElementImpl;
+import com.sun.webkit.dom.HTMLFrameElementImpl;
 import com.sun.webkit.dom.NodeImpl;
 import com.ui4j.api.browser.SelectorType;
 import com.ui4j.api.dom.CheckBox;
@@ -33,9 +36,9 @@ import com.ui4j.api.dom.RadioButton;
 import com.ui4j.api.dom.Select;
 import com.ui4j.api.event.EventHandler;
 import com.ui4j.api.util.Point;
-import com.ui4j.spi.PageContext;
 import com.ui4j.spi.DelegatingEventHandler;
 import com.ui4j.spi.NodeUnbindVisitor;
+import com.ui4j.spi.PageContext;
 import com.ui4j.webkit.browser.WebKitPageContext;
 import com.ui4j.webkit.spi.WebKitJavaScriptEngine;
 
@@ -486,12 +489,12 @@ public class WebKitElement implements Element, EventTarget {
 
     @Override
     public Element query(String selector) {
-        return context.getSelectorEngine().query(this, selector);
+        return ((WebKitPageContext) context).getSelectorEngine(getHtmlElement().getOwnerDocument()).query(this, selector);
     }
 
     @Override
     public List<Element> queryAll(String selector) {
-        return context.getSelectorEngine().queryAll(this, selector);
+        return ((WebKitPageContext) context).getSelectorEngine(getHtmlElement().getOwnerDocument()).queryAll(this, selector);
     }
 
     @Override
@@ -850,7 +853,7 @@ public class WebKitElement implements Element, EventTarget {
             parent = (HTMLElementImpl) el.getParentElement();
             if (parent != null) {
                 Element pElement = ((WebKitPageContext) context).createElement(parent, document, engine);
-                Element found = context.getSelectorEngine().query(pElement, selector);
+                Element found = ((WebKitPageContext) context).getSelectorEngine(getHtmlElement().getOwnerDocument()).query(pElement, selector);
                 if (found != null) {
                     return found;
                 }
@@ -866,6 +869,21 @@ public class WebKitElement implements Element, EventTarget {
         Node sibling = el.getNextSibling();
         Element element = ((WebKitPageContext) context).createElement(sibling, document, engine);
         return element;
+    }
+
+    public Document getContentDocument() {
+    	if (element instanceof HTMLFrameElement) {
+    		DocumentImpl documentImpl = (DocumentImpl) ((HTMLFrameElementImpl) element).getContentDocument();
+    		WebKitPageContext webkitPageContext = (WebKitPageContext) context;
+    		Document document = webkitPageContext.getContentDocument(documentImpl, engine);
+            return document;
+    	} else if (element instanceof HTMLIFrameElement) {
+    		DocumentImpl documentImpl = (DocumentImpl) ((HTMLIFrameElement) element).getContentDocument();
+    		WebKitPageContext webkitPageContext = (WebKitPageContext) context;
+    		Document document = webkitPageContext.getContentDocument(documentImpl, engine);
+            return document;
+    	}
+    	return null;
     }
 
     @Override

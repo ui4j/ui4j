@@ -11,6 +11,7 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.events.Event;
 import org.w3c.dom.html.HTMLDocument;
 
+import com.sun.webkit.dom.DocumentImpl;
 import com.ui4j.api.dom.Document;
 import com.ui4j.api.dom.Element;
 import com.ui4j.api.dom.EventTarget;
@@ -25,27 +26,30 @@ public class WebKitDocument implements Document, EventTarget {
 
     private PageContext context;
 
+    private DocumentImpl document;
+
     private WebKitHtmlParser parser;
 
-    public WebKitDocument(PageContext context, WebKitJavaScriptEngine engine) {
+    public WebKitDocument(PageContext context, DocumentImpl document, WebKitJavaScriptEngine engine) {
         this.context = context;
+        this.document = document;
         this.engine = engine;
         this.parser = new WebKitHtmlParser(engine);
     }
 
     @Override
     public Element query(String selector) {
-        return context.getSelectorEngine().query(selector);
+        return ((WebKitPageContext) context).getSelectorEngine(document).query(selector);
     }
 
     @Override
     public List<Element> queryAll(String selector) {
-        return context.getSelectorEngine().queryAll(selector);
+        return ((WebKitPageContext) context).getSelectorEngine(document).queryAll(selector);
     }
 
     @Override
     public Element createElement(String tagName) {
-        org.w3c.dom.Element element = engine.getEngine().getDocument().createElement(tagName);
+        org.w3c.dom.Element element = document.createElement(tagName);
         return ((WebKitPageContext) context).createElement(element, this, engine);
     }
 
@@ -66,8 +70,7 @@ public class WebKitDocument implements Document, EventTarget {
 
     @Override
     public Element getBody() {
-        com.sun.webkit.dom.DocumentImpl doc = (com.sun.webkit.dom.DocumentImpl) getEngine().getDocument();
-        Element element = ((WebKitPageContext) context).createElement(doc.getBody(), this, engine);
+        Element element = ((WebKitPageContext) context).createElement(document.getBody(), this, engine);
         return element;
     }
 
@@ -77,38 +80,32 @@ public class WebKitDocument implements Document, EventTarget {
 
     @Override
     public String getTitle() {
-        com.sun.webkit.dom.DocumentImpl doc = (com.sun.webkit.dom.DocumentImpl) getEngine().getDocument();
-        return doc.getTitle();
+    	return document.getTitle();
     }
 
     @Override
     public void setTitle(String title) {
-        com.sun.webkit.dom.DocumentImpl doc = (com.sun.webkit.dom.DocumentImpl) getEngine().getDocument();        
-        doc.setTitle(title);
+    	document.setTitle(title);
     }
 
     @Override
     public void removeProperty(String key) {
-        com.sun.webkit.dom.DocumentImpl doc = (com.sun.webkit.dom.DocumentImpl) getEngine().getDocument();
-        doc.removeMember(key);
+    	document.removeMember(key);
     }
 
     @Override
     public Object getProperty(String key) {
-        com.sun.webkit.dom.DocumentImpl doc = (com.sun.webkit.dom.DocumentImpl) getEngine().getDocument();
-        return doc.getMember(key);
+    	return document.getMember(key);
     }
 
     @Override
     public void setProperty(String key, Object value) {
-        com.sun.webkit.dom.DocumentImpl doc = (com.sun.webkit.dom.DocumentImpl) getEngine().getDocument();
-        doc.setMember(key, value);
+    	document.setMember(key, value);
     }
 
     @Override
     public List<Element> parseHTML(String html) {
-        com.sun.webkit.dom.DocumentImpl doc = (com.sun.webkit.dom.DocumentImpl) getEngine().getDocument();
-        NodeList childNodes = parser.parse(html, (HTMLDocument) doc);
+        NodeList childNodes = parser.parse(html, (HTMLDocument) document);
         List<Element> list = new ArrayList<>();
         for (int i = 0; i < childNodes.getLength(); i++) {
             Node next = childNodes.item(i);
@@ -127,8 +124,7 @@ public class WebKitDocument implements Document, EventTarget {
         if (!(element instanceof WebKitElement)) {
             return;
         }
-        com.sun.webkit.dom.DocumentImpl doc = (com.sun.webkit.dom.DocumentImpl) getEngine().getDocument();
-        Event event = doc.createEvent("HTMLEvents");
+        Event event = document.createEvent("HTMLEvents");
         event.initEvent(eventType, true, true);
         WebKitElement elementImpl = (WebKitElement) element;
         elementImpl.getHtmlElement().dispatchEvent(event);
@@ -136,8 +132,11 @@ public class WebKitDocument implements Document, EventTarget {
 
     @Override
     public Element getElementFromPoint(int x, int y) {
-        com.sun.webkit.dom.DocumentImpl doc = (com.sun.webkit.dom.DocumentImpl) getEngine().getDocument();
-        Element element = ((WebKitPageContext) context).createElement(doc.elementFromPoint(x, y), this, engine);
+        Element element = ((WebKitPageContext) context).createElement(document.elementFromPoint(x, y), this, engine);
         return element;
     }
+
+	public DocumentImpl getDocument() {
+		return document;
+	}
 }

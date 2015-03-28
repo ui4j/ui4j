@@ -13,9 +13,11 @@ import javafx.concurrent.Worker;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import netscape.javascript.JSObject;
 
 import org.w3c.dom.Node;
 
+import com.sun.webkit.dom.DocumentImpl;
 import com.ui4j.api.browser.BrowserEngine;
 import com.ui4j.api.browser.BrowserType;
 import com.ui4j.api.browser.Page;
@@ -37,8 +39,6 @@ import com.ui4j.webkit.dom.WebKitElement;
 import com.ui4j.webkit.proxy.WebKitProxy;
 import com.ui4j.webkit.spi.WebKitJavaScriptEngine;
 
-import netscape.javascript.JSObject;
-
 class WebKitBrowser implements BrowserEngine {
 
     private static CountDownLatch startupLatch = new CountDownLatch(1);
@@ -51,11 +51,12 @@ class WebKitBrowser implements BrowserEngine {
 
     private WebKitProxy elementFactory = new WebKitProxy(WebKitElement.class, new Class[] {
 										    	Node.class, Document.class,
-										        PageContext.class, WebKitJavaScriptEngine.class
+										    	PageContext.class, WebKitJavaScriptEngine.class
     });
 
     private WebKitProxy documentFactory = new WebKitProxy(WebKitDocument.class, new Class[] {
-    											PageContext.class, WebKitJavaScriptEngine.class
+    											PageContext.class, DocumentImpl.class,
+    											WebKitJavaScriptEngine.class
     });
     
     private WebKitProxy windowFactory = new WebKitProxy(WebKitWindow.class, new Class[] {
