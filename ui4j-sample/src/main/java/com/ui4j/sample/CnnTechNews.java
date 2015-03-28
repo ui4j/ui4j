@@ -20,7 +20,7 @@ public class CnnTechNews {
         Document doc = page.getDocument();
 
         // navigate to tech news
-        doc.query("#nav-tech").click();
+        doc.query("[href=\"/tech\"]").click();
 
         page.wait(1000); // tiny delay is important after click,
                          // if we dont delay waitUntilDocReady executed immediately without affect
@@ -29,15 +29,10 @@ public class CnnTechNews {
         page.waitUntilDocReady();
 
         // iterate the titles
-        List<Element> techNews = doc.queryAll(".cnn_SRLTbbnstry1");
+        List<Element> techNews = doc.queryAll(".cd__headline-text");
 
         techNews.forEach(n -> {
-            Element next = n.getNext();
-            List<Element> anchor = next.find("a");
-            Element first = anchor.get(0);
-            String text = first.getText();
-            String newsTitle = text.trim();
-            System.out.println(newsTitle);
+            System.out.println(n.getText());
         });
 
         browser.shutdown();
