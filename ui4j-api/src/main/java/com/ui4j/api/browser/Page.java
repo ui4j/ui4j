@@ -1,5 +1,6 @@
 package com.ui4j.api.browser;
 
+import java.lang.AutoCloseable;
 import java.util.concurrent.TimeUnit;
 
 import com.ui4j.api.dialog.AlertHandler;
@@ -11,7 +12,7 @@ import com.ui4j.api.event.DocumentListener;
 import com.ui4j.spi.JavaScriptEngine;
 import com.ui4j.spi.PageView;
 
-public interface Page extends JavaScriptEngine, PageView {
+public interface Page extends JavaScriptEngine, PageView, AutoCloseable {
 
     void addDocumentListener(DocumentListener listener);
 
