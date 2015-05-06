@@ -25,7 +25,11 @@ public class WebKitWindow implements Window {
 
     @Override
     public String getLocation() {
-        return engine.getLocation();
+        String location = engine.getLocation();
+        if (location.startsWith("ui4j-")) {
+        	location = location.substring(location.indexOf(":") + 1, location.length());
+        }
+        return location;
     }
 
     @Override

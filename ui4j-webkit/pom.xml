@@ -226,7 +226,12 @@
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
-            <version>0.5.1</version>
+            <version>0.5.6</version>
+        </dependency>
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy-agent</artifactId>
+            <version>0.5.6</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -238,6 +243,12 @@
             <groupId>org.jfxtras</groupId>
             <artifactId>openjfx-monocle</artifactId>
             <version>1.8.0_20</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.eclipsesource.minimal-json</groupId>
+            <artifactId>minimal-json</artifactId>
+            <version>0.9.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

@@ -163,9 +163,9 @@ public class WebKitPageContext implements PageContext {
         return (Window) windowFactory.newInstance(new Object[] { document });
     }
 
-    public WebKitPage newPage(Object view, JavaScriptEngine engine, Window window, Document document) {
+    public WebKitPage newPage(Object view, JavaScriptEngine engine, Window window, Document document, int pageId) {
         WebView webView = (WebView) view;
-        WebKitPage page = (WebKitPage) pageFactory.newInstance(new Object[] { webView, engine, window, document });
+        WebKitPage page = (WebKitPage) pageFactory.newInstance(new Object[] { webView, engine, window, document, pageId });
         page.addDocumentListener(new GlobalEventCleaner());
         return page;
     }

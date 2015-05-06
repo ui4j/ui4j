@@ -1,10 +1,13 @@
 package com.ui4j.webkit.browser;
 
+import java.lang.reflect.Field;
+import java.net.URLStreamHandler;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -20,6 +23,7 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
+import com.sun.webkit.network.URLs;
 import com.ui4j.api.browser.BrowserType;
 import com.ui4j.api.browser.Page;
 import com.ui4j.api.dialog.AlertHandler;
@@ -56,6 +60,8 @@ public class WebKitPage implements Page, PageView, JavaScriptEngine {
     private List<DocumentDelegationListener> listeners = new ArrayList<>();
 
     private WebKitJavaScriptEngine engine;
+
+	private int pageId;
 
     public static class SyncDocumentListener implements DocumentListener {
 
@@ -151,11 +157,12 @@ public class WebKitPage implements Page, PageView, JavaScriptEngine {
         }
     }
 
-    public WebKitPage(WebView webView, WebKitJavaScriptEngine engine, Window window, Document document) {
+    public WebKitPage(WebView webView, WebKitJavaScriptEngine engine, Window window, Document document, int pageId) {
         this.webView = webView;
         this.window = window;
         this.document = document;
         this.engine = engine;
+        this.pageId = pageId;
     }
 
     @Override
@@ -193,8 +200,20 @@ public class WebKitPage implements Page, PageView, JavaScriptEngine {
         }
     }
 
-    @Override
+	@Override
+	@SuppressWarnings("unchecked")
     public void close() {
+		// HACK #26
+		Field handlerMap;
+		try {
+			handlerMap = URLs.class.getDeclaredField("handlerMap");
+			handlerMap.setAccessible(true);
+			Map<String, URLStreamHandler> handlers = (Map<String, URLStreamHandler>) handlerMap.get(null);
+			handlers.remove("ui4j-" + String.valueOf(pageId));
+		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+			throw new Ui4jException(e);
+		}
+		// HACK #26
         if (getStage() != null) {
             getStage().close();
         }
@@ -314,4 +333,8 @@ public class WebKitPage implements Page, PageView, JavaScriptEngine {
     public String getDocumentState() {
         return String.valueOf(webView.getEngine().executeScript("document.readyState"));
     }
+
+	public int getPageId() {
+		return pageId;
+	}
 }

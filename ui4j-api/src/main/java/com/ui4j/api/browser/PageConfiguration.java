@@ -1,5 +1,7 @@
 package com.ui4j.api.browser;
 
+import com.ui4j.api.interceptor.Interceptor;
+
 /**
  * The browser configuration to be used for requesting and processing a web page. This includes the
  * HTTP "User-Agent" string to be presented by the browser and which type of CSS selector engine
@@ -12,6 +14,16 @@ public class PageConfiguration {
     private SelectorType selectorEngine = SelectorType.W3C;
 
     private String userAgent;
+
+    private Interceptor interceptor;
+
+    public PageConfiguration() {
+    	this(null);
+    }
+
+    public PageConfiguration(Interceptor interceptor) {
+    	this.interceptor = interceptor;
+	}
 
     /**
      * Returns the type of CSS selector engine to be used when processing a web page.
@@ -34,8 +46,9 @@ public class PageConfiguration {
      *     then likely to result in a {@link NullPointerException} or other such failure - even
      *     where no CSS is involved).
      */
-    public void setSelectorEngine(SelectorType selectorEngine) {
+    public PageConfiguration setSelectorEngine(SelectorType selectorEngine) {
         this.selectorEngine = selectorEngine;
+        return this;
     }
 
     /**
@@ -69,9 +82,19 @@ public class PageConfiguration {
      *     Semantics and Content</a>). However, this method will accept any string value, including
      *     empty or all-whitespace strings.
      */
-    public void setUserAgent(String userAgent) {
+    public PageConfiguration setUserAgent(String userAgent) {
         this.userAgent = userAgent;
+        return this;
     }
+
+	public Interceptor getInterceptor() {
+		return interceptor;
+	}
+
+	public PageConfiguration setInterceptor(Interceptor interceptor) {
+		this.interceptor = interceptor;
+		return this;
+	}
 
     /**
      * Returns a string representation of this instance and its current properties.
@@ -80,9 +103,10 @@ public class PageConfiguration {
      *     properties. The precise content of this string is not defined here and is subject to
      *     change in future releases.
      */
-	@Override
+    @Override
 	public String toString() {
 		return "PageConfiguration [selectorEngine=" + selectorEngine
-				+ ", userAgent=" + userAgent + "]";
-	}
+				+ ", userAgent=" + userAgent + ", interceptor=" + interceptor
+				+ "]";
+	}	
 }

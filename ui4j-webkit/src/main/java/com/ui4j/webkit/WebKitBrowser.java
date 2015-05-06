@@ -1,8 +1,18 @@
 package com.ui4j.webkit;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.net.URLConnection;
+import java.net.URLStreamHandler;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -18,6 +28,7 @@ import netscape.javascript.JSObject;
 import org.w3c.dom.Node;
 
 import com.sun.webkit.dom.DocumentImpl;
+import com.sun.webkit.network.URLs;
 import com.ui4j.api.browser.BrowserEngine;
 import com.ui4j.api.browser.BrowserType;
 import com.ui4j.api.browser.Page;
@@ -26,11 +37,15 @@ import com.ui4j.api.dom.Document;
 import com.ui4j.api.dom.Window;
 import com.ui4j.api.event.DocumentListener;
 import com.ui4j.api.event.DocumentLoadEvent;
+import com.ui4j.api.interceptor.Interceptor;
+import com.ui4j.api.interceptor.Response;
 import com.ui4j.api.util.Logger;
 import com.ui4j.api.util.LoggerFactory;
+import com.ui4j.api.util.Ui4jException;
 import com.ui4j.spi.PageContext;
 import com.ui4j.spi.ShutdownListener;
 import com.ui4j.spi.Ui4jExecutionTimeoutException;
+import com.ui4j.webkit.browser.Ui4jHandler;
 import com.ui4j.webkit.browser.WebKitPage;
 import com.ui4j.webkit.browser.WebKitPageContext;
 import com.ui4j.webkit.browser.WebKitWindow;
@@ -46,6 +61,8 @@ class WebKitBrowser implements BrowserEngine {
     private static AtomicBoolean launchedJFX = new AtomicBoolean(false);
 
     private ShutdownListener shutdownListener;
+
+    private AtomicInteger pageCounter = new AtomicInteger(0);
 
     private static final Logger LOG = LoggerFactory.getLogger(WebKitBrowser.class);
 
@@ -65,7 +82,7 @@ class WebKitBrowser implements BrowserEngine {
     
     private WebKitProxy pageFactory = new WebKitProxy(WebKitPage.class, new Class[] {
 								                WebView.class, WebKitJavaScriptEngine.class,
-								                Window.class, Document.class
+								                Window.class, Document.class, int.class
     });
 
     WebKitBrowser(ShutdownListener shutdownListener) {
@@ -168,10 +185,13 @@ class WebKitBrowser implements BrowserEngine {
 
         private WebKitJavaScriptEngine engine;
 
-        public WorkerLoadListener(WebKitJavaScriptEngine engine, PageContext context, DocumentListener documentListener) {
+        private Ui4jHandler handler;
+
+        public WorkerLoadListener(WebKitJavaScriptEngine engine, PageContext context, DocumentListener documentListener, Ui4jHandler handler) {
             this.engine = engine;
             this.configuration = (WebKitPageContext) context;
             this.documentListener = documentListener;
+            this.handler = handler;
         }
 
         @Override
@@ -182,6 +202,13 @@ class WebKitBrowser implements BrowserEngine {
                 Window window = configuration.createWindow(document);
                 DocumentLoadEvent event = new DocumentLoadEvent(window);
                 documentListener.onLoad(event);
+
+                if (configuration.getConfiguration().getInterceptor() != null && handler != null) {
+                	URLConnection connection = handler.getConnection();
+                	Map<String, List<String>> headers = connection.getHeaderFields();
+                	Response response = new Response(window.getLocation(), Collections.unmodifiableMap(new HashMap<>(headers)));
+                	configuration.getConfiguration().getInterceptor().afterLoad(response);
+                }
             }
         }
     }
@@ -219,18 +246,21 @@ class WebKitBrowser implements BrowserEngine {
 
 		private PageConfiguration configuration;
 
+		private Ui4jHandler handler;
+
         public WebViewCreator(String url,
-                                PageContext context, DocumentListener listener, PageConfiguration configuration) {
-            this(url, context, listener, null, configuration);
+                                PageContext context, DocumentListener listener, PageConfiguration configuration, Ui4jHandler handler) {
+            this(url, context, listener, null, configuration, handler);
         }
 
         public WebViewCreator(String url,
-                PageContext context, DocumentListener listener, CountDownLatch latch, PageConfiguration configuration) {
+                PageContext context, DocumentListener listener, CountDownLatch latch, PageConfiguration configuration, Ui4jHandler handler) {
             this.url = url;
             this.latch = latch;
             this.context = context;
             this.listener = listener;
             this.configuration = configuration;
+            this.handler = handler;
         }
 
         @SuppressWarnings("unchecked")
@@ -242,7 +272,7 @@ class WebKitBrowser implements BrowserEngine {
             	engine.getEngine().setUserAgent(configuration.getUserAgent());
             }
             engine.getEngine().load(url);
-            WorkerLoadListener loadListener = new WorkerLoadListener(engine, context, listener);
+            WorkerLoadListener loadListener = new WorkerLoadListener(engine, context, listener, handler);
             webView.getEngine().getLoadWorker(). progressProperty().addListener(new ProgressListener(webView.getEngine()));
             // load blank pages immediately
             if (url == null || url.trim().equals("about:blank") || url.trim().equals("")) {
@@ -276,20 +306,44 @@ class WebKitBrowser implements BrowserEngine {
         return navigate(url, new PageConfiguration());
     }
 
-    @Override
+	@Override
+	@SuppressWarnings("unchecked")
     public Page navigate(String url, PageConfiguration configuration) {
         WebKitPageContext context = new WebKitPageContext(configuration,
                                 elementFactory, documentFactory,
                                 windowFactory, pageFactory);
+
+        int pageId = pageCounter.incrementAndGet();
+
+        Interceptor interceptor = configuration.getInterceptor();
+        String ui4jUrl = url;
+        Ui4jHandler handler = null;
+        if (interceptor != null) {
+        	String ui4jProtocol = "ui4j-" + pageId;
+        	ui4jUrl = ui4jProtocol + ":" + url;
+        	handler = new Ui4jHandler(interceptor);
+			try {
+				// HACK #26
+				Field handlerMap = URLs.class.getDeclaredField("handlerMap");
+				handlerMap.setAccessible(true);
+				Map<String, URLStreamHandler> handlers = (Map<String, URLStreamHandler>) handlerMap.get(null);
+				handlers.put(ui4jProtocol, handler);
+				// HACK #26
+			} catch (IllegalArgumentException | IllegalAccessException
+					| NoSuchFieldException | SecurityException e) {
+				throw new Ui4jException(e);
+			}
+        }
+
         CountDownLatch documentReadyLatch = new CountDownLatch(1);
         SyncDocumentListener adapter = new SyncDocumentListener(documentReadyLatch);
         WebViewCreator creator = null;
         if (Platform.isFxApplicationThread()) {
-            creator = new WebViewCreator(url, context, adapter, configuration);
+            creator = new WebViewCreator(ui4jUrl, context, adapter, configuration, handler);
             creator.run();
         } else {
             CountDownLatch webViewLatch = new CountDownLatch(1);
-            creator = new WebViewCreator(url, context, adapter, webViewLatch, configuration);
+            creator = new WebViewCreator(ui4jUrl, context, adapter, webViewLatch, configuration, handler);
             Platform.runLater(creator);
             try {
                 webViewLatch.await(10, TimeUnit.SECONDS);
@@ -302,14 +356,17 @@ class WebKitBrowser implements BrowserEngine {
         } catch (InterruptedException e) {
             throw new Ui4jExecutionTimeoutException(e, 60, TimeUnit.SECONDS);
         }
+
         WebView webView = creator.getWebView();
-        Page page = ((WebKitPageContext) context).newPage(webView, creator.getEngine(), adapter.getWindow(), adapter.getDocument());
+        WebKitPage page = ((WebKitPageContext) context).newPage(webView, creator.getEngine(), adapter.getWindow(), adapter.getDocument(), pageId);
+
         return page;
     }
 
     public synchronized void start() {
         if (launchedJFX.compareAndSet(false, true) &&
                             !Platform.isFxApplicationThread()) {
+        	applyURLsHack();
         	boolean headless = System.getProperty("ui4j.headless") != null ? true : false;
             new LauncherThread(headless).start();
             try {
@@ -320,7 +377,7 @@ class WebKitBrowser implements BrowserEngine {
         }
     }
 
-    @Override
+	@Override
     public synchronized void shutdown() {
         if (launchedJFX.get()) {
             CountDownLatch latch = new CountDownLatch(1);
@@ -338,4 +395,29 @@ class WebKitBrowser implements BrowserEngine {
     public BrowserType getBrowserType() {
         return BrowserType.WebKit;
     }
+
+	private void applyURLsHack() {
+		try {
+	    	ConcurrentHashMap<Object, Object> handlers = new ConcurrentHashMap<>();
+	        handlers.put("about", new com.sun.webkit.network.about.Handler());
+	        handlers.put("data", new com.sun.webkit.network.data.Handler());
+	    	setFinalStatic(URLs.class.getDeclaredField("handlerMap"), handlers);
+		} catch (NoSuchFieldException | SecurityException |
+								IllegalArgumentException e) {
+			throw new Ui4jException(e);
+		}
+	}
+
+    private static void setFinalStatic(Field field, Object newValue) {
+		try {
+			field.setAccessible(true);
+			Field modifiersField = Field.class.getDeclaredField("modifiers");
+			modifiersField.setAccessible(true);
+			modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+			field.set(null, newValue);
+		} catch (NoSuchFieldException | SecurityException |
+								IllegalArgumentException | IllegalAccessException e) {
+			throw new Ui4jException(e);
+		}
+     }
 }
