@@ -396,6 +396,18 @@ class WebKitBrowser implements BrowserEngine {
         return BrowserType.WebKit;
     }
 
+    // Hack #26
+    //
+    // https://github.com/ui4j/ui4j/issues/26
+    //
+    // WebView api doesnt let to intercept HTTP request.
+    // we need to apply our modifiable handlers hack until public api supports interceptors.
+    // 
+    // We register custom URLStreamHandler per web page.
+    // Each page has its own handler so that we could intercept the request.
+    // @see Ui4jHandler class for implementation details.
+    //
+    // Hack #26
 	private void applyURLsHack() {
 		try {
 	    	ConcurrentHashMap<Object, Object> handlers = new ConcurrentHashMap<>();
