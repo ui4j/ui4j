@@ -55,7 +55,8 @@ public class Ui4jHandler extends URLStreamHandler {
 			contextConnection = connection;
 		}
 
-		Request request = interceptor.beforeLoad(url);
+		Request request = new Request();
+		interceptor.beforeLoad(url, request);
 		if (request != null) {
 			for (Map.Entry<String, String> entry : request.getHeaders().entrySet()) {
 				connection.setRequestProperty(entry.getKey(), entry.getValue());

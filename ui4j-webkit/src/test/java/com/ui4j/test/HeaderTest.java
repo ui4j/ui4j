@@ -23,13 +23,12 @@ public class HeaderTest {
 		PageConfiguration config = new PageConfiguration(new Interceptor() {
 
 			@Override
-			public Request beforeLoad(String url) {
-				return new Request()
-							.setHeader("Foo", "bar");
+			public void beforeLoad(String url, Request request) {
+				request.setHeader("Foo", "bar");
 			}
-			
+
 			@Override
-			public void afterLoad(Response response) {
+			public void afterLoad(String url, Response response) {
 				HeaderTest.response = response;
 			}
 		});

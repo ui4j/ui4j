@@ -206,8 +206,9 @@ class WebKitBrowser implements BrowserEngine {
                 if (configuration.getConfiguration().getInterceptor() != null && handler != null) {
                 	URLConnection connection = handler.getConnection();
                 	Map<String, List<String>> headers = connection.getHeaderFields();
-                	Response response = new Response(window.getLocation(), Collections.unmodifiableMap(new HashMap<>(headers)));
-                	configuration.getConfiguration().getInterceptor().afterLoad(response);
+                	String location = window.getLocation();
+                	Response response = new Response(Collections.unmodifiableMap(new HashMap<>(headers)));
+                	configuration.getConfiguration().getInterceptor().afterLoad(location, response);
                 }
             }
         }

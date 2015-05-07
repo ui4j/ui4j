@@ -8,17 +8,10 @@ import java.util.Map;
 
 public class Response {
 
-	private String uri;
-
 	private Map<String, List<String>> headers;
 
-	public Response(String uri, Map<String, List<String>> headers) {
-		this.uri = uri;
+	public Response(Map<String, List<String>> headers) {
 		this.headers = headers;
-	}
-
-	public String getUri() {
-		return uri;
 	}
 
 	public Map<String, List<String>> getHeaders() {
