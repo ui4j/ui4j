@@ -29,11 +29,11 @@ public class CookieTest {
 		PageConfiguration config = new PageConfiguration(new Interceptor() {
 
 			@Override
-			public void beforeLoad(String url, Request request) {
+			public void beforeLoad(Request request) {
 			}
 			
 			@Override
-			public void afterLoad(String url, Response response) {
+			public void afterLoad(Response response) {
 				CookieTest.response = response;
 			}
 		});
@@ -53,12 +53,12 @@ public class CookieTest {
 		PageConfiguration config = new PageConfiguration(new Interceptor() {
 
 			@Override
-			public void beforeLoad(String url, Request request) {
+			public void beforeLoad(Request request) {
 				request.setCookies(asList(new HttpCookie("Cookie1", "Value1"), new HttpCookie("Cookie2", "Value2")));
 			}
 
 			@Override
-			public void afterLoad(String url, Response response) {
+			public void afterLoad(Response response) {
 				CookieTest.response = response;
 			}
 		});

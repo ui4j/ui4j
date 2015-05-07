@@ -2,7 +2,7 @@ package com.ui4j.api.interceptor;
 
 public interface Interceptor {
 
-	void beforeLoad(String url, Request request);
+	void beforeLoad(Request request);
 
-	void afterLoad(String url, Response response);
+	void afterLoad(Response response);
 }

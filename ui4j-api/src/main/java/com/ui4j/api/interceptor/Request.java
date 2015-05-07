@@ -7,16 +7,20 @@ import java.util.Map;
 
 public class Request {
 
-	private String uri;
+	private String url;
 
 	private Map<String, String> headers = new HashMap<>();
+
+	public Request(String url) {
+		this.url = url;
+	}
 
 	public Map<String, String> getHeaders() {
 		return headers;
 	}
 
-	public String getUri() {
-		return uri;
+	public String getUrl() {
+		return url;
 	}
 
 	public Request setHeader(String name, String value) {
@@ -39,6 +43,6 @@ public class Request {
 
 	@Override
 	public String toString() {
-		return "Request [uri=" + uri + ", headers=" + headers + "]";
+		return "Request [url=" + url + ", headers=" + headers + "]";
 	}
 }

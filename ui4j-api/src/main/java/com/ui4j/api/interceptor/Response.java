@@ -8,9 +8,12 @@ import java.util.Map;
 
 public class Response {
 
+	private String url;
+
 	private Map<String, List<String>> headers;
 
-	public Response(Map<String, List<String>> headers) {
+	public Response(String url, Map<String, List<String>> headers) {
+		this.url = url;
 		this.headers = headers;
 	}
 
@@ -49,5 +52,14 @@ public class Response {
 			return values.get(0);
 		}
 		return null;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	@Override
+	public String toString() {
+		return "Response [url=" + url + ", headers=" + headers + "]";
 	}
 }
