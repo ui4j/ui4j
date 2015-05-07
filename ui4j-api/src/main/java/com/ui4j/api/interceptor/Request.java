@@ -1,6 +1,8 @@
 package com.ui4j.api.interceptor;
 
+import java.net.HttpCookie;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Request {
@@ -19,6 +21,19 @@ public class Request {
 
 	public Request setHeader(String name, String value) {
 		headers.put(name, value);
+		return this;
+	}
+
+	public Request setCookies(List<HttpCookie> cookies) {
+		StringBuilder builder = new StringBuilder();
+		for (HttpCookie cookie : cookies) {
+			builder
+				.append(cookie.getName())
+				.append("=")
+				.append(cookie.getValue())
+				.append(";");
+		}
+		setHeader("Cookie", builder.toString());
 		return this;
 	}
 

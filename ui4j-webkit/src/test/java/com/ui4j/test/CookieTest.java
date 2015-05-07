@@ -1,5 +1,9 @@
 package com.ui4j.test;
 
+import static java.util.Arrays.asList;
+
+import java.net.HttpCookie;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -11,6 +15,7 @@ import com.ui4j.api.browser.PageConfiguration;
 import com.ui4j.api.interceptor.Interceptor;
 import com.ui4j.api.interceptor.Request;
 import com.ui4j.api.interceptor.Response;
+
 
 public class CookieTest {
 
@@ -49,7 +54,7 @@ public class CookieTest {
 
 			@Override
 			public void beforeLoad(String url, Request request) {
-				request.setHeader("Cookie", "Cookie1=Value1; Cookie2=Value2;");
+				request.setCookies(asList(new HttpCookie("Cookie1", "Value1"), new HttpCookie("Cookie2", "Value2")));
 			}
 
 			@Override
