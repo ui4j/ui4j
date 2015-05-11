@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.ui4j</groupId>
 	<artifactId>ui4j-ide</artifactId>
-	<version>1.1.0</version>
+	<version>1.2.0</version>
 	<name>Ui4j - IDE</name>
 	<description>Web Automation for Java</description>
 	<url>https://github.com/ui4j/ui4j</url>
@@ -139,7 +139,7 @@
 		<dependency>
 			<groupId>com.ui4j</groupId>
 			<artifactId>ui4j-all</artifactId>
-			<version>1.1.0</version>
+			<version>1.2.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fifesoft</groupId>
