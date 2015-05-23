@@ -17,6 +17,7 @@ import com.ui4j.api.dialog.PromptHandler;
 import com.ui4j.api.dom.Document;
 import com.ui4j.api.dom.Window;
 import com.ui4j.api.event.DocumentListener;
+import com.ui4j.jxbrowser.js.JsDocument;
 
 public class JxPage implements Page {
 
@@ -24,12 +25,13 @@ public class JxPage implements Page {
 
 	private Browser browser;
 
-	private SelectorEngine selectorEngine;
+	private Document document;
 
-	public JxPage(BrowserView view, Browser browser, SelectorEngine selectorEngine) {
-		this.view = view;
+	private JFrame frame;
+
+	public JxPage(Browser browser, SelectorEngine selectorEngine, JsDocument jsDocument) {
 		this.browser = browser;
-		this.selectorEngine = selectorEngine;
+		this.document = new JxDocument(browser, selectorEngine, jsDocument);
 	}
 
 	@Override
@@ -74,7 +76,7 @@ public class JxPage implements Page {
 
 	@Override
 	public Document getDocument() {
-		return new JxDocument(browser, selectorEngine);
+		return document;
 	}
 
 	@Override
@@ -84,22 +86,29 @@ public class JxPage implements Page {
 
 	@Override
 	public void show(boolean maximized) {
-		throw new MethodNotSupportedException();
-	}
+		view = new BrowserView(browser);
 
-	@Override
-	public void show() {
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame = new JFrame();
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.add(view, BorderLayout.CENTER);
+        if (maximized) {
+        	frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        }
         frame.setSize(700, 500);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 	}
 
 	@Override
+	public void show() {
+		show(false);
+	}
+
+	@Override
 	public void hide() {
-		throw new MethodNotSupportedException();
+		if (frame != null) {
+			frame.setVisible(false);
+		}
 	}
 
 	@Override
@@ -124,6 +133,11 @@ public class JxPage implements Page {
 
 	@Override
 	public void close() {
+		if (frame != null) {
+			frame.setVisible(false);
+			frame.dispose();
+		}
 		browser.stop();
+		browser.dispose();
 	}
 }

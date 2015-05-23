@@ -1,17 +1,21 @@
 package com.ui4j.jxbrowser;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.logging.Level;
 
 import com.teamdev.jxbrowser.chromium.Browser;
+import com.teamdev.jxbrowser.chromium.JSObject;
+import com.teamdev.jxbrowser.chromium.LoggerProvider;
 import com.teamdev.jxbrowser.chromium.events.FinishLoadingEvent;
 import com.teamdev.jxbrowser.chromium.events.LoadAdapter;
-import com.teamdev.jxbrowser.chromium.swing.BrowserView;
 import com.ui4j.api.browser.BrowserEngine;
 import com.ui4j.api.browser.BrowserType;
 import com.ui4j.api.browser.Page;
 import com.ui4j.api.browser.PageConfiguration;
 import com.ui4j.api.browser.SelectorEngine;
 import com.ui4j.api.util.Ui4jException;
+import com.ui4j.jxbrowser.js.JsDocument;
+import com.ui4j.jxbrowser.proxy.JsProxy;
 
 public class JxEngine implements BrowserEngine {
 
@@ -31,6 +35,12 @@ public class JxEngine implements BrowserEngine {
 		}
 	};
 
+	public JxEngine() {
+        LoggerProvider.getBrowserLogger().setLevel(Level.OFF);
+        LoggerProvider.getIPCLogger().setLevel(Level.OFF);
+        LoggerProvider.getChromiumProcessLogger().setLevel(Level.OFF);
+	}
+
 	@Override
 	public void shutdown() {
 	}
@@ -43,10 +53,7 @@ public class JxEngine implements BrowserEngine {
 	@Override
 	public Page navigate(String url, PageConfiguration configuration) {
 		Browser browser = new Browser();
-		BrowserView view = new BrowserView(browser);
-
 		browser.loadURL(url);
-
 		CountDownLatch latch = new CountDownLatch(1);
 		JxLoader loader = new JxLoader(latch);
 		browser.addLoadListener(loader);
@@ -55,9 +62,10 @@ public class JxEngine implements BrowserEngine {
 		} catch (InterruptedException e) {
 			throw new Ui4jException(e);
 		}
-
-		SelectorEngine se = new JxW3CSelectorEngine(browser);
-		JxPage page = new JxPage(view, browser, se);
+		JSObject jsObjectDocument = (JSObject) browser.executeJavaScriptAndReturnValue("document");
+		JsDocument jsDocument = new JsProxy<JsDocument>(jsObjectDocument, JsDocument.class).get();
+		SelectorEngine se = new JxW3CSelectorEngine(jsDocument);
+		JxPage page = new JxPage(browser, se, jsDocument);
 		return page;
 	}
 

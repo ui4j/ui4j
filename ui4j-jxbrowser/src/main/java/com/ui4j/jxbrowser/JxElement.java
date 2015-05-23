@@ -1,16 +1,11 @@
 package com.ui4j.jxbrowser;
 
-import static java.util.Arrays.asList;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import com.teamdev.jxbrowser.chromium.JSFunction;
 import com.teamdev.jxbrowser.chromium.JSObject;
-import com.teamdev.jxbrowser.chromium.JSValue;
 import com.ui4j.api.dom.CheckBox;
 import com.ui4j.api.dom.Document;
 import com.ui4j.api.dom.Element;
@@ -22,19 +17,32 @@ import com.ui4j.api.dom.RadioButton;
 import com.ui4j.api.dom.Select;
 import com.ui4j.api.event.EventHandler;
 import com.ui4j.api.util.Point;
-import com.ui4j.api.util.Ui4jException;
+import com.ui4j.jxbrowser.js.JsDomTokenList;
+import com.ui4j.jxbrowser.js.JsElement;
+import com.ui4j.jxbrowser.js.JsNodeList;
+import com.ui4j.jxbrowser.proxy.JsProxy;
 
 public class JxElement implements Element {
 
-	private JSObject element;
+	private JsElement element;
 
-	public JxElement(JSObject obj) {
-		this.element = obj;
+	public JxElement(JSObject object) {
+		this.element = new JsProxy<JsElement>(object, JsElement.class).get();
+	}
+
+	public JxElement(JsElement element) {
+		this.element = element;
 	}
 
 	@Override
 	public List<Element> getChildren() {
-		throw new MethodNotSupportedException();
+		List<Element> elements = new ArrayList<>();
+		JsNodeList nodes = element.getChildNodes();
+		for (int i = 0; i < nodes.getLength(); i++) {
+			JsElement next = nodes.getItem(i);
+			elements.add(new JxElement(next));
+		}
+		return elements;
 	}
 
 	@Override
@@ -69,109 +77,93 @@ public class JxElement implements Element {
 
 	@Override
 	public String getAttribute(String name) {
-		return (String) invoke("getAttribute", name);
+		return element.getAttribute(name);
 	}
 
 	@Override
 	public Element setAttribute(String name, String value) {
-		invoke("setAttribute", name, value);
+		element.setAttribute(name, value);
 		return this;
 	}
 
 	@Override
 	public Element setAttribute(Map<String, String> attributes) {
-		throw new MethodNotSupportedException();
+		for (Map.Entry<String, String> entry : attributes.entrySet()) {
+			setAttribute(entry.getKey(), entry.getValue());
+		}
+		return this;
 	}
 
 	@Override
 	public Element removeAttribute(String name) {
-		throw new MethodNotSupportedException();
+		element.removeAttribute(name);
+		return this;
 	}
 
 	@Override
 	public boolean hasAttribute(String name) {
-		throw new MethodNotSupportedException();
+		return element.hasAttribute(name);
 	}
 
 	@Override
 	public Element addClass(String... names) {
-		String className = (String) getValue("className");
-		if (names != null) {
-			StringBuilder builder = new StringBuilder();
-			for (String name : names) {
-				builder.append(name);
-				builder.append(" ");
-			}
-			if (className.isEmpty()) {
-				className = builder.toString().trim();
-			} else {
-				className = className + " " + builder.toString().trim();
-			}
+		JsDomTokenList list = element.getClassList();
+		for (String name : names) {
+			list.add(name);
 		}
-		element.set("className", JSObject.create(className));
 		return this;
 	}
 
 	@Override
 	public Element removeClass(String... names) {
-		String className = (String) getValue("className");
-		List<String> classes = new ArrayList<String>(asList(className.split(" ")));
-		classes.removeAll(asList(names));
-		StringBuilder builder = new StringBuilder();
-		for (String name : classes) {
-			builder.append(name);
-			builder.append(" ");
-		}
-		element.set("className", JSObject.create(builder.toString().trim()));
-		return null;
-	}
-
-	@Override
-	public boolean hasClass(String name) {
-		String className = (String) getValue("className");
-		if (className != null) {
-			return asList(className.split(" ")).contains(name);
-		}
-		return false;
-	}
-
-	@Override
-	public Element toggleClass(String name) {
-		if (hasClass(name)) {
-			removeClass(name);
-		} else {
-			addClass(name);
+		JsDomTokenList list = element.getClassList();
+		for (String name : names) {
+			list.remove(name);
 		}
 		return this;
 	}
 
 	@Override
+	public boolean hasClass(String name) {
+		return element.getClassList().contains(name);
+	}
+
+	@Override
+	public Element toggleClass(String name) {
+		element.getClassList().toggle(name);
+		return this;
+	}
+
+	@Override
 	public List<String> getClasses() {
-		String className = (String) getValue("className");
-		if (className != null) {
-			return asList(className.split(" "));
+		JsDomTokenList list = element.getClassList();
+		int length = list.getLength();
+		List<String> classes = new ArrayList<>();
+		for (int i = 0; i < length; i++) {
+			String name = list.getItem(i);
+			classes.add(name);
 		}
-		return Collections.emptyList();
+		return classes;
 	}
 
 	@Override
 	public String getText() {
-		return (String) getValue("textContent");
+		return element.getTextContent();
 	}
 
 	@Override
 	public String getTagName() {
-		return ((String) getValue("tagName")).toLowerCase(Locale.ENGLISH);
+		return element.geTagName().toLowerCase(Locale.ENGLISH);
 	}
 
 	@Override
 	public String getValue() {
-		return (String) getValue("value");
+		return element.getValue();
 	}
 
 	@Override
 	public Element setValue(String value) {
-		element.set("value", JSObject.create(value));
+		element.setValue(value);
 		return this;
 	}
 
@@ -187,13 +179,13 @@ public class JxElement implements Element {
 
 	@Override
 	public Element setTitle(String title) {
-		setValue("title", title);
+		element.setTitle(title);
 		return this;
 	}
 
 	@Override
 	public String getTitle() {
-		return (String) getValue("title");
+		return element.getTitle();
 	}
 
 	@Override
@@ -208,7 +200,8 @@ public class JxElement implements Element {
 
 	@Override
 	public List<Element> find(String selector) {
-		throw new MethodNotSupportedException();
+        List<Element> elements = new ArrayList<>();
+        return elements;
 	}
 
 	@Override
@@ -223,58 +216,59 @@ public class JxElement implements Element {
 
 	@Override
 	public void remove() {
-		throw new MethodNotSupportedException();
+		JsElement parent = element.getParentNode();
+		parent.removeChild((JSObject) this.element.getJsObject());
 	}
 
 	@Override
 	public Element click() {
-		invoke("click");
+		element.click();
 		return this;
 	}
 
 	@Override
 	public Element getParent() {
-		throw new MethodNotSupportedException();
+		return new JxElement(element.getParentNode());
 	}
 
 	@Override
 	public Input getInput() {
-		throw new MethodNotSupportedException();
+		return new Input(this);
 	}
 
 	@Override
 	public CheckBox getCheckBox() {
-		throw new MethodNotSupportedException();
+		return new CheckBox(this);
 	}
 
 	@Override
 	public RadioButton getRadioButton() {
-		return null;
+		return new RadioButton(this);
 	}
 
 	@Override
 	public Option getOption() {
-		throw new MethodNotSupportedException();
+		return new Option(this);
 	}
 
 	@Override
 	public Form getForm() {
-		throw new MethodNotSupportedException();
+		return new Form(this);
 	}
 
 	@Override
 	public Select getSelect() {
-		throw new MethodNotSupportedException();
+		return new Select(this);
 	}
 
 	@Override
 	public String getId() {
-		return (String) getValue("id");
+		return element.getId();
 	}
 
 	@Override
 	public Element setId(String id) {
-		setValue("id", id);
+		element.setId(id);
 		return this;
 	}
 
@@ -285,7 +279,9 @@ public class JxElement implements Element {
 
 	@Override
 	public Element append(Element element) {
-		throw new MethodNotSupportedException();
+		JxElement jxElement = (JxElement) element;
+		this.element.appendChild((JSObject) jxElement.element.getJsObject());
+		return this;
 	}
 
 	@Override
@@ -320,17 +316,17 @@ public class JxElement implements Element {
 
 	@Override
 	public String getInnerHTML() {
-		return (String) getValue("innerHTML");
+		return element.getInnerHTML();
 	}
 
 	@Override
 	public String getOuterHTML() {
-		return (String) getValue("outerHTML");
+		return element.getOuterHTML();
 	}
 
 	@Override
 	public Element setInnerHTML(String html) {
-		element.set("innerHTML", JSObject.create(html));
+		element.setInnerHTML(html);
 		return this;
 	}
 
@@ -341,24 +337,24 @@ public class JxElement implements Element {
 
 	@Override
 	public Element setText(String text) {
-		element.set("textContent", JSObject.create(text));
+		element.setText(text);
 		return this;
 	}
 
 	@Override
 	public Element setTabIndex(int index) {
-		element.set("tabIndex", JSObject.create(index));
+		element.setTabIndex(index);
 		return this;
 	}
 
 	@Override
 	public int getTabIndex() {
-		return ((Double) getValue("tabIndex")).intValue();
+		return element.getTabIndex();
 	}
 
 	@Override
 	public Element focus() {
-		invoke("focus");
+		element.focus();
 		return this;
 	}
 
@@ -414,22 +410,28 @@ public class JxElement implements Element {
 
 	@Override
 	public Element scrollIntoView(boolean alignWithTop) {
-		throw new MethodNotSupportedException();
+		/*invoke("scrollIntoView", alignWithTop);*/
+		return this;
 	}
 
 	@Override
 	public Element setCss(String propertyName, String value) {
-		throw new MethodNotSupportedException();
+		element.setStyle(propertyName, value);
+		return this;
 	}
 
 	@Override
 	public Element setCss(Map<String, String> properties) {
-		throw new MethodNotSupportedException();
+		for (Map.Entry<String, String> entry : properties.entrySet()) {
+			setCss(entry.getKey(), entry.getValue());
+		}
+		return this;
 	}
 
 	@Override
 	public Element removeCss(String propertyName) {
-		throw new MethodNotSupportedException();
+		setCss(propertyName, "");
+		return this;
 	}
 
 	@Override
@@ -439,17 +441,17 @@ public class JxElement implements Element {
 
 	@Override
 	public String getCss(String propertyName) {
-		throw new MethodNotSupportedException();
+		return element.getStyle(propertyName);
 	}
 
 	@Override
 	public Element getPrev() {
-		throw new MethodNotSupportedException();
+		return new JxElement(element.getPreviousElementSibling());
 	}
 
 	@Override
 	public Element getNext() {
-		throw new MethodNotSupportedException();
+		return new JxElement(element.getNextElementSibling());
 	}
 
 	@Override
@@ -469,12 +471,12 @@ public class JxElement implements Element {
 
 	@Override
 	public float getClientHeight() {
-		return ((Double) getValue("clientHeight")).floatValue();
+		return element.getClientHeight();
 	}
 
 	@Override
 	public float getClientWidth() {
-		return ((Double) getValue("clientWidth")).floatValue();
+		return element.getClientWidth();
 	}
 
 	@Override
@@ -484,12 +486,14 @@ public class JxElement implements Element {
 
 	@Override
 	public Element hide() {
-		throw new MethodNotSupportedException();
+        setCss("display", "none");
+        return this;
 	}
 
 	@Override
 	public Element show() {
-		throw new MethodNotSupportedException();
+        setCss("display", "");
+        return this;
 	}
 
 	@Override
@@ -504,7 +508,8 @@ public class JxElement implements Element {
 
 	@Override
 	public boolean is(String selector) {
-		throw new MethodNotSupportedException();
+		/*return (boolean) invoke("matches", selector);*/
+		return false;
 	}
 
 	@Override
@@ -513,12 +518,12 @@ public class JxElement implements Element {
 	}
 
 	@Override
-	public Element replaceWidth(String html) {
+	public Element replaceWith(String html) {
 		throw new MethodNotSupportedException();
 	}
 
 	@Override
-	public Element replaceWidth(Element element) {
+	public Element replaceWith(Element element) {
 		throw new MethodNotSupportedException();
 	}
 
@@ -534,7 +539,7 @@ public class JxElement implements Element {
 
 	@Override
 	public boolean isEmpty() {
-		throw new MethodNotSupportedException();
+		return false;
 	}
 
 	@Override
@@ -547,89 +552,12 @@ public class JxElement implements Element {
 		throw new MethodNotSupportedException();
 	}
 
-	protected void setValue(String name, Object value) {
-		JSValue jsValue = null;
-		if (value instanceof Boolean) {
-			jsValue = JSObject.create((Boolean) value);
-		} if (value instanceof Number) {
-			jsValue = JSObject.create((long) value);
-		} else {
-			jsValue = JSObject.create(String.valueOf(value));
-		}
-		element.set(name, jsValue);
+	@Override
+	public Document getContentDocument() {
+		throw new MethodNotSupportedException();
 	}
 
-	protected Object getValue(String name) {
-		JSValue jsValue = element.get(name);
-
-		if (jsValue.isNull() || jsValue.isUndefined()) {
-			return null;
-		} else if (jsValue.isBoolean()) {
-			return jsValue.getBoolean();
-		} else if (jsValue.isNumber()) {
-			return jsValue.getNumber();
-		} else if (jsValue.isString()) {
-			return jsValue.getString();
-		} else if (jsValue.isTrue()) {
-			return true;
-		} else if (jsValue.isFalse()) {
-			return false;
-		} else if (jsValue.isObject()) {
-			return (JSObject) jsValue;
-		} else {
-			return null;
-		}
-	}
-
-	protected Object invoke(String functionName, Object... arguments) {
-		JSValue value = element.get(functionName);
-
-		if (value.isNull() || value.isUndefined()) {
-			throw new Ui4jException("Undefined function: " + functionName);
-		}
-
-		if (!value.isFunction()) {
-			throw new Ui4jException(functionName + " is not function");
-		}
-
-		JSFunction func = (JSFunction) value;
-		List<JSValue> args = new ArrayList<>();
-		for (Object next : arguments) {
-			if (next == null) {
-				args.add(JSObject.createNull());
-			}
-			if (next instanceof Boolean) {
-				args.add(JSObject.create((Boolean) next));
-			} if (next instanceof Number) {
-				args.add(JSObject.create((long) next));
-			} else {
-				args.add(JSObject.create(String.valueOf(next)));
-			}
-		}
-
-		JSValue ret = null;
-		if (args.isEmpty()) {
-			ret = func.invokeAndReturnValue(element);
-		} else {
-			ret = func.invokeAndReturnValue(element, args.toArray(new JSValue[args.size()]));
-		}
-
-		if (ret.isNull() || ret.isUndefined()) {
-			return null;
-		} else if (ret.isBoolean()) {
-			return ret.getBoolean();
-		} else if (ret.isNumber()) {
-			return ret.getNumber();
-		} else if (ret.isString()) {
-			return ret.getString();
-		} else if (ret.isTrue()) {
-			return true;
-		} else if (ret.isFalse()) {
-			return false;
-		} else if (ret.isObject()) {
-			return (JSObject) ret;
-		} else {
-			return null;
-		}
+	public JsElement getJsElement() {
+		return element;
 	}
 }
