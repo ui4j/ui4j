@@ -487,10 +487,10 @@ public class ElementTest {
     @Test public void t42_replaceWith() {
         Element div = document.parseHTML("<div id='barfoo'><span id='foobar'>my text</span></div>").get(0);
         document.getBody().append(div);
-        document.query("#foobar").replaceWidth("my text content");
+        document.query("#foobar").replaceWith("my text content");
         Assert.assertEquals("my text content", document.query("#barfoo").getInnerHTML());
         document.getBody().append(document.parseHTML("<div id='foofoo'>my div</div>").get(0));
-        document.query("#barfoo").replaceWidth(document.query("#foofoo"));
+        document.query("#barfoo").replaceWith(document.query("#foofoo"));
         Assert.assertTrue(document.getBody().query("#barfoo").isEmpty());
         Assert.assertEquals("my div", document.query("#foofoo").getInnerHTML());
     }

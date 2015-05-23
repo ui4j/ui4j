@@ -168,9 +168,9 @@ public interface Element extends Node {
 
     Element getOffsetParent();
 
-    Element replaceWidth(String html);
+    Element replaceWith(String html);
 
-    Element replaceWidth(Element element);
+    Element replaceWith(Element element);
 
     List<Element> getSiblings(String selector);
 

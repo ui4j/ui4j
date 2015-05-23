@@ -1,11 +1,14 @@
 package com.ui4j.jxbrowser;
 
+import static com.teamdev.jxbrowser.chromium.LoggerProvider.getBrowserLogger;
+import static com.teamdev.jxbrowser.chromium.LoggerProvider.getChromiumProcessLogger;
+import static com.teamdev.jxbrowser.chromium.LoggerProvider.getIPCLogger;
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static java.util.logging.Level.SEVERE;
+
 import java.util.concurrent.CountDownLatch;
-import java.util.logging.Level;
 
 import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.JSObject;
-import com.teamdev.jxbrowser.chromium.LoggerProvider;
 import com.teamdev.jxbrowser.chromium.events.FinishLoadingEvent;
 import com.teamdev.jxbrowser.chromium.events.LoadAdapter;
 import com.ui4j.api.browser.BrowserEngine;
@@ -14,16 +17,14 @@ import com.ui4j.api.browser.Page;
 import com.ui4j.api.browser.PageConfiguration;
 import com.ui4j.api.browser.SelectorEngine;
 import com.ui4j.api.util.Ui4jException;
-import com.ui4j.jxbrowser.js.JsDocument;
-import com.ui4j.jxbrowser.proxy.JsProxy;
 
 public class JxEngine implements BrowserEngine {
 
-	private static class JxLoader extends LoadAdapter {
+	private static class JxLoadAdapter extends LoadAdapter {
 
 		private CountDownLatch latch;
 
-		public JxLoader(CountDownLatch latch) {
+		public JxLoadAdapter(CountDownLatch latch) {
 			this.latch = latch;
 		}
 
@@ -36,9 +37,9 @@ public class JxEngine implements BrowserEngine {
 	};
 
 	public JxEngine() {
-        LoggerProvider.getBrowserLogger().setLevel(Level.OFF);
-        LoggerProvider.getIPCLogger().setLevel(Level.OFF);
-        LoggerProvider.getChromiumProcessLogger().setLevel(Level.OFF);
+        getBrowserLogger().setLevel(SEVERE);
+        getIPCLogger().setLevel(SEVERE);
+        getChromiumProcessLogger().setLevel(SEVERE);
 	}
 
 	@Override
@@ -55,17 +56,16 @@ public class JxEngine implements BrowserEngine {
 		Browser browser = new Browser();
 		browser.loadURL(url);
 		CountDownLatch latch = new CountDownLatch(1);
-		JxLoader loader = new JxLoader(latch);
-		browser.addLoadListener(loader);
+		JxLoadAdapter jxLoadAdapter = new JxLoadAdapter(latch);
+		browser.addLoadListener(jxLoadAdapter);
 		try {
-			latch.await();
+			latch.await(60, SECONDS);
 		} catch (InterruptedException e) {
 			throw new Ui4jException(e);
 		}
-		JSObject jsObjectDocument = (JSObject) browser.executeJavaScriptAndReturnValue("document");
-		JsDocument jsDocument = new JsProxy<JsDocument>(jsObjectDocument, JsDocument.class).get();
-		SelectorEngine se = new JxW3CSelectorEngine(jsDocument);
-		JxPage page = new JxPage(browser, se, jsDocument);
+		browser.removeLoadListener(jxLoadAdapter);
+		SelectorEngine selectorEngine = new JxW3CSelectorEngine(browser);
+		JxPage page = new JxPage(browser, selectorEngine);
 		return page;
 	}
 

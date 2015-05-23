@@ -8,10 +8,10 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.bytebuddy.implementation.bind.annotation.AllArguments;
-import net.bytebuddy.implementation.bind.annotation.Origin;
-import net.bytebuddy.implementation.bind.annotation.RuntimeType;
-import net.bytebuddy.implementation.bind.annotation.This;
+import net.bytebuddy.instrumentation.method.bytecode.bind.annotation.AllArguments;
+import net.bytebuddy.instrumentation.method.bytecode.bind.annotation.Origin;
+import net.bytebuddy.instrumentation.method.bytecode.bind.annotation.RuntimeType;
+import net.bytebuddy.instrumentation.method.bytecode.bind.annotation.This;
 
 import com.fasterxml.classmate.Filter;
 import com.fasterxml.classmate.MemberResolver;
@@ -44,19 +44,21 @@ public class JsInterceptor {
 	@RuntimeType
     public Object execute(@This Object that,
 							@Origin Method method,
-							@AllArguments Object[] arguments) throws Exception {
+							@AllArguments Object[] arguments) throws Throwable {
 
 		if (method.getDeclaringClass().equals(JsObject.class)) {
 			return object;
 		}
 
+		Object returnValue = null;
+
 		if (method.isAnnotationPresent(JsProperty.class)) {
-			return handleProperty(method, arguments);
+			returnValue = handleProperty(method, arguments);
 		} else if (method.isAnnotationPresent(JsFunction.class)) {
-			return handleFunction(method, arguments);
+			returnValue = handleFunction(method, arguments);
 		}
 
-		return null;
+		return returnValue;
 	}
 
 	protected Object handleFunction(Method method, Object[] arguments) {
@@ -189,7 +191,6 @@ public class JsInterceptor {
 		}
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected Object convert(JSValue value, Class<?> klass) {
 
 		if (value == null ||
@@ -219,7 +220,7 @@ public class JsInterceptor {
 		} else if (value.isObject()) {
 			JSObject object = (JSObject) value;
 				// Handle Object
-			Object proxy = new JsProxy(object, klass).get();
+			Object proxy = JsProxy.to(object, klass);
 			return proxy;
 		}
 

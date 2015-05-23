@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import com.teamdev.jxbrowser.chromium.JSObject;
 import com.ui4j.api.dom.CheckBox;
 import com.ui4j.api.dom.Document;
 import com.ui4j.api.dom.Element;
@@ -20,15 +19,10 @@ import com.ui4j.api.util.Point;
 import com.ui4j.jxbrowser.js.JsDomTokenList;
 import com.ui4j.jxbrowser.js.JsElement;
 import com.ui4j.jxbrowser.js.JsNodeList;
-import com.ui4j.jxbrowser.proxy.JsProxy;
 
 public class JxElement implements Element {
 
 	private JsElement element;
-
-	public JxElement(JSObject object) {
-		this.element = new JsProxy<JsElement>(object, JsElement.class).get();
-	}
 
 	public JxElement(JsElement element) {
 		this.element = element;
@@ -217,7 +211,7 @@ public class JxElement implements Element {
 	@Override
 	public void remove() {
 		JsElement parent = element.getParentNode();
-		parent.removeChild((JSObject) this.element.getJsObject());
+		parent.removeChild(this.element.getJSObject());
 	}
 
 	@Override
@@ -280,7 +274,7 @@ public class JxElement implements Element {
 	@Override
 	public Element append(Element element) {
 		JxElement jxElement = (JxElement) element;
-		this.element.appendChild((JSObject) jxElement.element.getJsObject());
+		this.element.appendChild(jxElement.element.getJSObject());
 		return this;
 	}
 

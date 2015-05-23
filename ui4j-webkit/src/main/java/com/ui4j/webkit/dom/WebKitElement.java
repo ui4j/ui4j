@@ -786,14 +786,14 @@ public class WebKitElement implements Element, EventTarget {
     }
 
     @Override
-    public Element replaceWidth(String html) {
+    public Element replaceWith(String html) {
         HTMLElementImpl htmlElementImpl = getHtmlElement();
         htmlElementImpl.setOuterHTML(html);
         return this;
     }
 
     @Override
-    public Element replaceWidth(Element element) {
+    public Element replaceWith(Element element) {
         if (element instanceof WebKitElement) {
             getNode()
                 .getParentNode()

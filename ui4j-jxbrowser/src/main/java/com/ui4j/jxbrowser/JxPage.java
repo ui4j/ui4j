@@ -17,7 +17,6 @@ import com.ui4j.api.dialog.PromptHandler;
 import com.ui4j.api.dom.Document;
 import com.ui4j.api.dom.Window;
 import com.ui4j.api.event.DocumentListener;
-import com.ui4j.jxbrowser.js.JsDocument;
 
 public class JxPage implements Page {
 
@@ -25,13 +24,13 @@ public class JxPage implements Page {
 
 	private Browser browser;
 
-	private Document document;
+	private Document jsDdocument;
 
 	private JFrame frame;
 
-	public JxPage(Browser browser, SelectorEngine selectorEngine, JsDocument jsDocument) {
+	public JxPage(Browser browser, SelectorEngine selectorEngine) {
 		this.browser = browser;
-		this.document = new JxDocument(browser, selectorEngine, jsDocument);
+		this.jsDdocument = new JxDocument(browser, selectorEngine);
 	}
 
 	@Override
@@ -76,7 +75,7 @@ public class JxPage implements Page {
 
 	@Override
 	public Document getDocument() {
-		return document;
+		return jsDdocument;
 	}
 
 	@Override
