@@ -6,10 +6,7 @@ import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -35,17 +32,12 @@ import com.ui4j.api.dom.Document;
 import com.ui4j.api.dom.Window;
 import com.ui4j.api.event.DocumentListener;
 import com.ui4j.api.event.DocumentLoadEvent;
-import com.ui4j.api.util.Logger;
-import com.ui4j.api.util.LoggerFactory;
 import com.ui4j.api.util.Ui4jException;
 import com.ui4j.spi.JavaScriptEngine;
 import com.ui4j.spi.PageView;
-import com.ui4j.spi.Ui4jExecutionTimeoutException;
 import com.ui4j.webkit.spi.WebKitJavaScriptEngine;
 
 public class WebKitPage implements Page, PageView, JavaScriptEngine {
-
-    private static final Logger LOG = LoggerFactory.getLogger(WebKitPage.class);
 
     private WebView webView;
 
@@ -62,34 +54,6 @@ public class WebKitPage implements Page, PageView, JavaScriptEngine {
     private WebKitJavaScriptEngine engine;
 
 	private int pageId;
-
-    public static class SyncDocumentListener implements DocumentListener {
-
-        private CountDownLatch latch;
-
-        private Window window;
-
-        private Document document;
-
-        public SyncDocumentListener(CountDownLatch latch) {
-            this.latch = latch;
-        }
-
-        @Override
-        public void onLoad(DocumentLoadEvent event) {
-            this.window = event.getWindow();
-            this.document = event.getDocument();
-            latch.countDown();
-        }
-
-        public Document getDocument() {
-            return document;
-        }
-
-        public Window getWindow() {
-            return window;
-        }
-    }
 
     public static class AlertDelegationHandler implements EventHandler<WebEvent<String>> {
 
@@ -232,42 +196,6 @@ public class WebKitPage implements Page, PageView, JavaScriptEngine {
     @Override
     public void setConfirmHandler(ConfirmHandler handler) {
         webView.getEngine().setConfirmHandler(new ConfirmDelegationHandler(handler));
-    }
-
-    @Override
-    public void waitUntilDocReady() {
-        waitUntilDocReady(60, TimeUnit.SECONDS);
-    }
-
-    @Override
-    public void waitUntilDocReady(int timeout, TimeUnit unit) {
-        String state = executeScript("document.readyState")
-                                .toString()
-                                .trim()
-                                .toLowerCase(Locale.ENGLISH);
-        if ("complete".equals(state)) {
-            return;
-        }
-        LOG.debug("Waiting document ready, timeout=" + timeout + " " + unit.toString());
-        CountDownLatch latch = new CountDownLatch(1);
-        DocumentListener listener = new SyncDocumentListener(latch);
-        addDocumentListener(listener);
-        try {
-            latch.await(timeout, unit);
-        } catch (InterruptedException e) {
-            throw new Ui4jExecutionTimeoutException(e, timeout, unit);
-        }
-        removeListener(listener);
-    }
-
-    @Override
-    public void wait(int milliseconds) {
-        LOG.debug("Waiting " + milliseconds + " milliseconds");
-        try {
-            Thread.sleep(milliseconds);
-        } catch (InterruptedException e) {
-            throw new Ui4jException(e);
-        }
     }
 
     public WebView getWebView() {

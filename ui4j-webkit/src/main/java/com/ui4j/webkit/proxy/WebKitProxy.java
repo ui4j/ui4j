@@ -9,6 +9,9 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.web.WebEngine;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.dynamic.ClassLoadingStrategy;
 import net.bytebuddy.instrumentation.MethodDelegation;
@@ -22,6 +25,7 @@ import net.bytebuddy.matcher.ElementMatchers;
 import com.ui4j.api.dom.Element;
 import com.ui4j.api.util.Ui4jException;
 import com.ui4j.spi.Ui4jExecutionTimeoutException;
+import com.ui4j.webkit.dom.WebKitDocument;
 
 public class WebKitProxy {
 
@@ -54,6 +58,46 @@ public class WebKitProxy {
         }
     }
 
+	private static class LoadListener implements ChangeListener<Boolean> {
+
+		private CountDownLatch latch;
+
+		public LoadListener(CountDownLatch latch) {
+			this.latch = latch;
+		}
+
+		@Override
+		public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+			if (newValue.equals(Boolean.FALSE)) { // finished loading
+				latch.countDown();
+			}
+		}
+	};
+
+    private static class LoadingRunner implements Runnable {
+
+    	private WebEngine engine;
+
+    	private CountDownLatch latch;
+
+    	private boolean loading;
+
+    	public LoadingRunner(WebEngine engine, CountDownLatch latch) {
+    		this.engine = engine;
+    		this.latch = latch;
+    	}
+
+		@Override
+		public void run() {
+			loading = engine.getLoadWorker().isRunning();
+			latch.countDown();
+		}
+
+		public boolean isLoading() {
+			return loading;
+		}
+    }
+
     public static class WebKitInterceptor {
 
     	private static Element emptyElement;
@@ -67,7 +111,9 @@ public class WebKitProxy {
         										@This Object that,
         										@Origin Method method,
 												@AllArguments Object[] arguments) {
+
             Parameter[] parameters = method.getParameters();
+
             if (parameters.length == 1 &&
             			arguments.length == 1 &&
             			Element.class.isAssignableFrom(method.getReturnType()) &&
@@ -75,6 +121,37 @@ public class WebKitProxy {
             			((Element) arguments[0]).isEmpty()) {
             	return that;
             }
+
+            if (that instanceof WebKitDocument) {
+            	WebKitDocument document = (WebKitDocument) that;
+            	boolean loading = false;
+            	if (Platform.isFxApplicationThread()) {
+            		loading = document.getEngine().getLoadWorker().isRunning();
+            	} else {
+            		CountDownLatch loadingLatch = new CountDownLatch(1);
+            		LoadingRunner loadingRunner = new LoadingRunner(document.getEngine(), loadingLatch);
+            		Platform.runLater(loadingRunner);
+            		try {
+						loadingLatch.await(60, TimeUnit.SECONDS);
+					} catch (InterruptedException e) {
+						throw new Ui4jExecutionTimeoutException(e, 60, TimeUnit.SECONDS);
+					}
+            		loading = loadingRunner.isLoading();
+            		if (loading) {
+            			CountDownLatch listenerLatch = new CountDownLatch(1);
+            			LoadListener listener = new LoadListener(listenerLatch);
+            			Platform.runLater(() -> document.getEngine().getLoadWorker().runningProperty().addListener(listener));
+                		try {
+    						listenerLatch.await(60, TimeUnit.SECONDS);
+    					} catch (InterruptedException e) {
+    						throw new Ui4jExecutionTimeoutException(e, 60, TimeUnit.SECONDS);
+    					}
+            			Platform.runLater(() -> document.getEngine().getLoadWorker().runningProperty().removeListener(listener));
+            			document.refreshDocument();
+            		}
+            	}
+            }
+
             Object ret = null;
             if (!Platform.isFxApplicationThread()) {
                 CountDownLatch latch = new CountDownLatch(1);
@@ -110,7 +187,7 @@ public class WebKitProxy {
 								.subclass(klass)
 								.method(ElementMatchers.any()
 												.and(ElementMatchers.not(ElementMatchers.isDeclaredBy(Object.class))
-												.and(ElementMatchers.not(ElementMatchers.nameStartsWith("wait")))))
+												.and(ElementMatchers.not(ElementMatchers.nameStartsWith("getEngine")))))
 						    	.intercept(MethodDelegation.to(WebKitInterceptor.class))
 						    	.make()
 						    	.load(WebKitProxy.class.getClassLoader(), ClassLoadingStrategy.Default.WRAPPER)

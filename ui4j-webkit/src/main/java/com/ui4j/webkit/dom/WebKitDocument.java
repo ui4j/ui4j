@@ -139,4 +139,8 @@ public class WebKitDocument implements Document, EventTarget {
 	public DocumentImpl getDocument() {
 		return document;
 	}
+
+	public void refreshDocument() {
+		this.document = (DocumentImpl) engine.getEngine().getDocument();
+	}
 }

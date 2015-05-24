@@ -1,7 +1,6 @@
 package com.ui4j.jxbrowser;
 
 import java.awt.BorderLayout;
-import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
@@ -55,21 +54,6 @@ public class JxPage implements Page {
 
 	@Override
 	public void removeListener(DocumentListener listener) {
-		throw new MethodNotSupportedException();
-	}
-
-	@Override
-	public void waitUntilDocReady() {
-		throw new MethodNotSupportedException();
-	}
-
-	@Override
-	public void waitUntilDocReady(int timeout, TimeUnit unit) {
-		throw new MethodNotSupportedException();
-	}
-
-	@Override
-	public void wait(int milliseconds) {
 		throw new MethodNotSupportedException();
 	}
 

@@ -1,8 +1,5 @@
 package com.ui4j.api.browser;
 
-import java.lang.AutoCloseable;
-import java.util.concurrent.TimeUnit;
-
 import com.ui4j.api.dialog.AlertHandler;
 import com.ui4j.api.dialog.ConfirmHandler;
 import com.ui4j.api.dialog.PromptHandler;
@@ -17,12 +14,6 @@ public interface Page extends JavaScriptEngine, PageView, AutoCloseable {
     void addDocumentListener(DocumentListener listener);
 
     void removeListener(DocumentListener listener);
-
-    void waitUntilDocReady();
-
-    void waitUntilDocReady(int timeout, TimeUnit unit);
-
-    void wait(int milliseconds);
 
     Document getDocument();
 
