@@ -41,7 +41,11 @@ public class BingSearch {
             // click to search button
             doc.query("#sb_form_go").click();
 
-            page.wait(1000);
+            // Normally Ui4j can detect page loads,
+            // but for the Ajax requests
+            // we cant detect if page is ready or not
+            // For such case we should wait manually until page is ready to use
+            Thread.sleep(10);
 
             // list all the results
             List<Element> result = doc.queryAll("h2 > a");

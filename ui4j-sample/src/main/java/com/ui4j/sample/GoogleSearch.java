@@ -15,26 +15,34 @@ public class GoogleSearch {
     public static void main(String[] args) throws Exception {
         BrowserEngine webkit = BrowserFactory.getWebKit();
 		Page page = webkit.navigate("http://www.google.com");
-        page.show();
+		page.show();
 
         Document document = page.getDocument();
 
-        document.query("input[name='q']").setAttribute("value", "java book").focus();
+        document
+			.query("input[name='q']")
+			.setValue("java book")
+			.focus();
 
-        // Send key press event using java.awt.Robot
+        Thread.sleep(1000);
+
         Robot robot = new Robot();
         robot.keyPress(KeyEvent.VK_ENTER);
+
+        Thread.sleep(1000);
 
         // list all search results
         List<Element> results = document.queryAll("h3.r a");
 
-        // visit the first result page
-        results.get(0).click();
+        if (!results.isEmpty()) {
+            // visit the first result page
+            results.get(0).click();
 
-        // extract title, location, content etc. from result page
-        System.out.println(String.format("Title: %s, Location: %s",
-                page.getDocument().getTitle(),
-                page.getWindow().getLocation()));
+            // extract title, location, content etc. from result page
+            System.out.println(String.format("Title: %s, Location: %s",
+                    page.getDocument().getTitle(),
+                    page.getWindow().getLocation()));
+        }
 
         page.close();
         webkit.shutdown();
