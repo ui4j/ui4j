@@ -8,7 +8,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({ ElementTest.class, EmptyElementTest.class,
                 SizzleTest.class, DialogTest.class,
                 JavaScriptEngineTest.class, UserAgentTest.class,
-                WaitTest.class })
+                WaitTest.class, ChildTest.class })
 public class AllTest {
 
 }

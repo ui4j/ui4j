@@ -224,8 +224,10 @@ public class WebKitElement implements Element, EventTarget {
         List<Element> elements = new ArrayList<>();
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
-            Element element = ((WebKitPageContext) context).createElement(node, document, engine);
-            elements.add(element);
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+            	Element element = ((WebKitPageContext) context).createElement(node, document, engine);
+            	elements.add(element);
+            }
         }
         return elements;
     }
