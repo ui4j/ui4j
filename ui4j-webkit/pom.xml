@@ -7,6 +7,7 @@
     <name>Ui4j - WebKit</name>
     <description>Web Automation for Java</description>
     <url>https://github.com/ui4j/ui4j</url>
+    <packaging>bundle</packaging>
     <scm>
         <url>https://github.com/ui4j/ui4j.git</url>
     </scm>
@@ -136,15 +137,39 @@
                 <artifactId>maven-bundle-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>bundle-manifest</id>
-                        <phase>process-classes</phase>
                         <goals>
-                            <goal>manifest</goal>
+                            <goal>bundle</goal>
                         </goals>
                     </execution>
                 </executions>
                 <extensions>true</extensions>
                 <configuration>
+                    <instructions>
+                        <Bundle-License>https://raw.githubusercontent.com/ui4j/ui4j/master/LICENSE</Bundle-License>
+                        <Import-Package>
+                                !com.sun.webkit.dom,
+                                !com.sun.webkit.network,
+                                !com.sun.webkit.network.about,
+                                !com.sun.webkit.network.data,
+                                !javafx.application,
+                                !javafx.beans,
+                                !javafx.beans.property,
+                                !javafx.beans.value,
+                                !javafx.concurrent,
+                                !javafx.event,
+                                !javafx.scene,
+                                !javafx.scene.web,
+                                !javafx.stage,
+                                !javafx.util,
+                                !netscape.javascript,
+                                !org.w3c.dom,
+                                !org.w3c.dom.events,
+                                !org.w3c.dom.css,
+                                !org.w3c.dom.html,
+                                *
+                        </Import-Package>
+                        <Require-Bundle>com.ui4j.api;bundle-version="2.0.0",net.bytebuddy.byte-buddy;bundle-version="0.6.8"</Require-Bundle>
+                    </instructions>
                 </configuration>
             </plugin>
         </plugins>
@@ -215,7 +240,7 @@
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
-            <version>0.6.6</version>
+            <version>0.6.8</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

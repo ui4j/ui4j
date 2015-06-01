@@ -5,3 +5,4 @@
 .project
 .classpath
 dependency-reduced-pom.xml
+/target/

@@ -8,6 +8,7 @@
     <name>Ui4j - API</name>
     <description>Web Automation for Java</description>
     <url>https://github.com/ui4j/ui4j</url>
+    <packaging>bundle</packaging>
     <scm>
         <url>https://github.com/ui4j/ui4j.git</url>
     </scm>
@@ -85,17 +86,15 @@
                 <artifactId>maven-bundle-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>bundle-manifest</id>
-                        <phase>process-classes</phase>
                         <goals>
-                            <goal>manifest</goal>
+                            <goal>bundle</goal>
                         </goals>
                     </execution>
                 </executions>
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Export-Package>com.ui4j.*</Export-Package>
+                        <Bundle-License>https://raw.githubusercontent.com/ui4j/ui4j/master/LICENSE</Bundle-License>
                     </instructions>
                 </configuration>
             </plugin>
