@@ -8,24 +8,24 @@ import com.teamdev.jxbrowser.chromium.events.LoadAdapter;
 
 public class JxDocumentLoadWaitAdapter extends LoadAdapter {
 
-	private CountDownLatch latch;
+    private CountDownLatch latch;
 
-	private Browser browser;
+    private Browser browser;
 
-	public JxDocumentLoadWaitAdapter(CountDownLatch latch) {
-		this.latch = latch;
-	}
+    public JxDocumentLoadWaitAdapter(CountDownLatch latch) {
+        this.latch = latch;
+    }
 
-	@Override
-	public void onFinishLoadingFrame(FinishLoadingEvent event) {
-		if (event.isMainFrame()) {
-			latch.countDown();
-			browser = event.getBrowser();
-			event.getBrowser().removeLoadListener(this);
-		}
-	}
+    @Override
+    public void onFinishLoadingFrame(FinishLoadingEvent event) {
+        if (event.isMainFrame()) {
+            latch.countDown();
+            browser = event.getBrowser();
+            event.getBrowser().removeLoadListener(this);
+        }
+    }
 
-	public Browser getBrowser() {
-		return browser;
-	}
+    public Browser getBrowser() {
+        return browser;
+    }
 }

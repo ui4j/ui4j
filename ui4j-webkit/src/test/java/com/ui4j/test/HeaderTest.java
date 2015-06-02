@@ -14,36 +14,36 @@ import com.ui4j.api.interceptor.Response;
 
 public class HeaderTest {
 
-	private static Response response;
+    private static Response response;
 
-	@Test
-	public void testRequestInterceptor() throws Exception {
-		BrowserEngine webKit = BrowserFactory.getWebKit();
+    @Test
+    public void testRequestInterceptor() throws Exception {
+        BrowserEngine webKit = BrowserFactory.getWebKit();
 
-		PageConfiguration config = new PageConfiguration(new Interceptor() {
+        PageConfiguration config = new PageConfiguration(new Interceptor() {
 
-			@Override
-			public void beforeLoad(Request request) {
-				request.setHeader("Foo", "bar");
-			}
+            @Override
+            public void beforeLoad(Request request) {
+                request.setHeader("Foo", "bar");
+            }
 
-			@Override
-			public void afterLoad(Response response) {
-				HeaderTest.response = response;
-			}
-		});
+            @Override
+            public void afterLoad(Response response) {
+                HeaderTest.response = response;
+            }
+        });
 
-		Page page = webKit.navigate("http://httpbin.org/get", config);
+        Page page = webKit.navigate("http://httpbin.org/get", config);
 
-		String content = page.getWindow().getDocument().getBody().getText();
-		JsonObject json = JsonObject.readFrom(content);
-		JsonObject headers = json.get("headers").asObject();
-		String bar = headers.get("Foo").asString();
+        String content = page.getWindow().getDocument().getBody().getText();
+        JsonObject json = JsonObject.readFrom(content);
+        JsonObject headers = json.get("headers").asObject();
+        String bar = headers.get("Foo").asString();
 
-		Assert.assertEquals("bar", bar);
+        Assert.assertEquals("bar", bar);
 
-		Assert.assertEquals("application/json", response.getHeader("Content-Type"));
+        Assert.assertEquals("application/json", response.getHeader("Content-Type"));
 
-		page.close();
-	}
+        page.close();
+    }
 }

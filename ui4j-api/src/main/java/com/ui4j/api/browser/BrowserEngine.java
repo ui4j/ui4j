@@ -19,19 +19,19 @@ package com.ui4j.api.browser;
  */
 public interface BrowserEngine {
 
-	/**
-	 * Terminates the use of this instance.
-	 *
-	 * <p>Invocation of this method indicates to Ui4j that it can terminate/release any resources,
-	 * services, threads etc that were needed for this instance but are not otherwise still
-	 * required.</p>
-	 *
-	 * <p>Once this method has been called, no further calls should be made to any of this
-	 * instance's methods (including this {@link #shutdown()} method), and the behaviour of any such
-	 * calls to an already-shutdown instance's methods is entirely undefined and
-	 * implementation-dependent (but can potentially include the throwing of arbitrary exceptions
-	 * and/or causing the invoking thread or other threads to "hang").</p>
-	 */
+    /**
+     * Terminates the use of this instance.
+     *
+     * <p>Invocation of this method indicates to Ui4j that it can terminate/release any resources,
+     * services, threads etc that were needed for this instance but are not otherwise still
+     * required.</p>
+     *
+     * <p>Once this method has been called, no further calls should be made to any of this
+     * instance's methods (including this {@link #shutdown()} method), and the behaviour of any such
+     * calls to an already-shutdown instance's methods is entirely undefined and
+     * implementation-dependent (but can potentially include the throwing of arbitrary exceptions
+     * and/or causing the invoking thread or other threads to "hang").</p>
+     */
     void shutdown();
 
     /**

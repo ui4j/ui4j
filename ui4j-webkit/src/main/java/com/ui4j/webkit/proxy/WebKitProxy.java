@@ -56,82 +56,82 @@ public class WebKitProxy {
         }
     }
 
-	private static class LoadListener implements ChangeListener<Boolean> {
+    private static class LoadListener implements ChangeListener<Boolean> {
 
-		private CountDownLatch latch;
+        private CountDownLatch latch;
 
-		public LoadListener(CountDownLatch latch) {
-			this.latch = latch;
-		}
+        public LoadListener(CountDownLatch latch) {
+            this.latch = latch;
+        }
 
-		@Override
-		public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-			if (newValue.equals(Boolean.FALSE)) { // finished loading
-				latch.countDown();
-			}
-		}
-	};
+        @Override
+        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+            if (newValue.equals(Boolean.FALSE)) { // finished loading
+                latch.countDown();
+            }
+        }
+    };
 
     private static class LoadingRunner implements Runnable {
 
-    	private WebEngine engine;
+        private WebEngine engine;
 
-    	private CountDownLatch latch;
+        private CountDownLatch latch;
 
-    	private boolean loading;
+        private boolean loading;
 
-    	public LoadingRunner(WebEngine engine, CountDownLatch latch) {
-    		this.engine = engine;
-    		this.latch = latch;
-    	}
+        public LoadingRunner(WebEngine engine, CountDownLatch latch) {
+            this.engine = engine;
+            this.latch = latch;
+        }
 
-		@Override
-		public void run() {
-			loading = engine.getLoadWorker().isRunning();
-			latch.countDown();
-		}
+        @Override
+        public void run() {
+            loading = engine.getLoadWorker().isRunning();
+            latch.countDown();
+        }
 
-		public boolean isLoading() {
-			return loading;
-		}
+        public boolean isLoading() {
+            return loading;
+        }
     }
 
     public static class WebKitInterceptor {
 
-    	@RuntimeType
+        @RuntimeType
         public static Object execute(@SuperCall Callable<Object> callable,
-        										@This Object that,
-        										@Origin Method method,
-												@AllArguments Object[] arguments) {
+                                                @This Object that,
+                                                @Origin Method method,
+                                                @AllArguments Object[] arguments) {
 
             if (that instanceof WebKitDocument) {
-            	WebKitDocument document = (WebKitDocument) that;
-            	boolean loading = false;
-            	if (Platform.isFxApplicationThread()) {
-            		loading = document.getEngine().getLoadWorker().isRunning();
-            	} else {
-            		CountDownLatch loadingLatch = new CountDownLatch(1);
-            		LoadingRunner loadingRunner = new LoadingRunner(document.getEngine(), loadingLatch);
-            		Platform.runLater(loadingRunner);
-            		try {
-						loadingLatch.await(60, TimeUnit.SECONDS);
-					} catch (InterruptedException e) {
-						throw new Ui4jExecutionTimeoutException(e, 60, TimeUnit.SECONDS);
-					}
-            		loading = loadingRunner.isLoading();
-            		if (loading) {
-            			CountDownLatch listenerLatch = new CountDownLatch(1);
-            			LoadListener listener = new LoadListener(listenerLatch);
-            			Platform.runLater(() -> document.getEngine().getLoadWorker().runningProperty().addListener(listener));
-                		try {
-    						listenerLatch.await(60, TimeUnit.SECONDS);
-    					} catch (InterruptedException e) {
-    						throw new Ui4jExecutionTimeoutException(e, 60, TimeUnit.SECONDS);
-    					}
-            			Platform.runLater(() -> document.getEngine().getLoadWorker().runningProperty().removeListener(listener));
-            			document.refreshDocument();
-            		}
-            	}
+                WebKitDocument document = (WebKitDocument) that;
+                boolean loading = false;
+                if (Platform.isFxApplicationThread()) {
+                    loading = document.getEngine().getLoadWorker().isRunning();
+                } else {
+                    CountDownLatch loadingLatch = new CountDownLatch(1);
+                    LoadingRunner loadingRunner = new LoadingRunner(document.getEngine(), loadingLatch);
+                    Platform.runLater(loadingRunner);
+                    try {
+                        loadingLatch.await(60, TimeUnit.SECONDS);
+                    } catch (InterruptedException e) {
+                        throw new Ui4jExecutionTimeoutException(e, 60, TimeUnit.SECONDS);
+                    }
+                    loading = loadingRunner.isLoading();
+                    if (loading) {
+                        CountDownLatch listenerLatch = new CountDownLatch(1);
+                        LoadListener listener = new LoadListener(listenerLatch);
+                        Platform.runLater(() -> document.getEngine().getLoadWorker().runningProperty().addListener(listener));
+                        try {
+                            listenerLatch.await(60, TimeUnit.SECONDS);
+                        } catch (InterruptedException e) {
+                            throw new Ui4jExecutionTimeoutException(e, 60, TimeUnit.SECONDS);
+                        }
+                        Platform.runLater(() -> document.getEngine().getLoadWorker().runningProperty().removeListener(listener));
+                        document.refreshDocument();
+                    }
+                }
             }
 
             Object ret = null;
@@ -156,40 +156,40 @@ public class WebKitProxy {
         }
     }
 
-	private Constructor<?> constructor;
+    private Constructor<?> constructor;
 
-	private Class<?> proxyClass;
+    private Class<?> proxyClass;
 
-	public WebKitProxy(Class<?> klass, Class<?>[] constructorArguments) {
-    	Class<?> loaded = new ByteBuddy()
-								.subclass(klass)
-								.method(ElementMatchers.any()
-												.and(ElementMatchers.not(ElementMatchers.isDeclaredBy(Object.class))
-												.and(ElementMatchers.not(ElementMatchers.nameStartsWith("getEngine")))))
-						    	.intercept(MethodDelegation.to(WebKitInterceptor.class))
-						    	.make()
-						    	.load(WebKitProxy.class.getClassLoader(), ClassLoadingStrategy.Default.WRAPPER)
-						    	.getLoaded();
-    	this.proxyClass = loaded;
-    	try {
-			constructor = loaded.getConstructor(constructorArguments);
-		} catch (NoSuchMethodException | SecurityException e) {
-			throw new Ui4jException(e);
-		}
-	}
+    public WebKitProxy(Class<?> klass, Class<?>[] constructorArguments) {
+        Class<?> loaded = new ByteBuddy()
+                                .subclass(klass)
+                                .method(ElementMatchers.any()
+                                                .and(ElementMatchers.not(ElementMatchers.isDeclaredBy(Object.class))
+                                                .and(ElementMatchers.not(ElementMatchers.nameStartsWith("getEngine")))))
+                                .intercept(MethodDelegation.to(WebKitInterceptor.class))
+                                .make()
+                                .load(WebKitProxy.class.getClassLoader(), ClassLoadingStrategy.Default.WRAPPER)
+                                .getLoaded();
+        this.proxyClass = loaded;
+        try {
+            constructor = loaded.getConstructor(constructorArguments);
+        } catch (NoSuchMethodException | SecurityException e) {
+            throw new Ui4jException(e);
+        }
+    }
 
     public Object newInstance(Object[] arguments) {
-    	Object instance = null;
-    	try {
-			instance = constructor.newInstance(arguments);
-		} catch (InstantiationException | IllegalAccessException
-				| IllegalArgumentException | InvocationTargetException e) {
-			throw new Ui4jException(e);
-		}
-    	return instance;
+        Object instance = null;
+        try {
+            instance = constructor.newInstance(arguments);
+        } catch (InstantiationException | IllegalAccessException
+                | IllegalArgumentException | InvocationTargetException e) {
+            throw new Ui4jException(e);
+        }
+        return instance;
     }
 
     public Class<?> getProxyClass() {
-    	return proxyClass;
+        return proxyClass;
     }
 }

@@ -19,108 +19,108 @@ import com.ui4j.api.event.DocumentListener;
 
 public class JxPage implements Page {
 
-	private BrowserView view;
+    private BrowserView view;
 
-	private Browser browser;
+    private Browser browser;
 
-	private Document jsDdocument;
+    private Document jsDdocument;
 
-	private JFrame frame;
+    private JFrame frame;
 
-	public JxPage(Browser browser, SelectorEngine selectorEngine) {
-		this.browser = browser;
-		this.jsDdocument = new JxDocument(browser, selectorEngine);
-	}
+    public JxPage(Browser browser, SelectorEngine selectorEngine) {
+        this.browser = browser;
+        this.jsDdocument = new JxDocument(browser, selectorEngine);
+    }
 
-	@Override
-	public Object getEngine() {
-		throw new MethodNotSupportedException();
-	}
+    @Override
+    public Object getEngine() {
+        throw new MethodNotSupportedException();
+    }
 
-	@Override
-	public Object executeScript(String script) {
-		throw new MethodNotSupportedException();
-	}
+    @Override
+    public Object executeScript(String script) {
+        throw new MethodNotSupportedException();
+    }
 
-	@Override
-	public Object getView() {
-		return view;
-	}
+    @Override
+    public Object getView() {
+        return view;
+    }
 
-	@Override
-	public void addDocumentListener(DocumentListener listener) {
-		throw new MethodNotSupportedException();
-	}
+    @Override
+    public void addDocumentListener(DocumentListener listener) {
+        throw new MethodNotSupportedException();
+    }
 
-	@Override
-	public void removeListener(DocumentListener listener) {
-		throw new MethodNotSupportedException();
-	}
+    @Override
+    public void removeListener(DocumentListener listener) {
+        throw new MethodNotSupportedException();
+    }
 
-	@Override
-	public Document getDocument() {
-		return jsDdocument;
-	}
+    @Override
+    public Document getDocument() {
+        return jsDdocument;
+    }
 
-	@Override
-	public Window getWindow() {
-		return null;
-	}
+    @Override
+    public Window getWindow() {
+        return null;
+    }
 
-	@Override
-	public void show(boolean maximized) {
-		view = new BrowserView(browser);
+    @Override
+    public void show(boolean maximized) {
+        view = new BrowserView(browser);
 
         frame = new JFrame();
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.add(view, BorderLayout.CENTER);
         if (maximized) {
-        	frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         }
         frame.setSize(700, 500);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-	}
+    }
 
-	@Override
-	public void show() {
-		show(false);
-	}
+    @Override
+    public void show() {
+        show(false);
+    }
 
-	@Override
-	public void hide() {
-		if (frame != null) {
-			frame.setVisible(false);
-		}
-	}
+    @Override
+    public void hide() {
+        if (frame != null) {
+            frame.setVisible(false);
+        }
+    }
 
-	@Override
-	public void setAlertHandler(AlertHandler handler) {
-		throw new MethodNotSupportedException();
-	}
+    @Override
+    public void setAlertHandler(AlertHandler handler) {
+        throw new MethodNotSupportedException();
+    }
 
-	@Override
-	public void setPromptHandler(PromptHandler handler) {
-		throw new MethodNotSupportedException();
-	}
+    @Override
+    public void setPromptHandler(PromptHandler handler) {
+        throw new MethodNotSupportedException();
+    }
 
-	@Override
-	public void setConfirmHandler(ConfirmHandler handler) {
-		throw new MethodNotSupportedException();
-	}
+    @Override
+    public void setConfirmHandler(ConfirmHandler handler) {
+        throw new MethodNotSupportedException();
+    }
 
-	@Override
-	public BrowserType getBrowserType() {
-		return BrowserType.JxBrowser;
-	}
+    @Override
+    public BrowserType getBrowserType() {
+        return BrowserType.JxBrowser;
+    }
 
-	@Override
-	public void close() {
-		if (frame != null) {
-			frame.setVisible(false);
-			frame.dispose();
-		}
-		browser.stop();
-		browser.dispose();
-	}
+    @Override
+    public void close() {
+        if (frame != null) {
+            frame.setVisible(false);
+            frame.dispose();
+        }
+        browser.stop();
+        browser.dispose();
+    }
 }

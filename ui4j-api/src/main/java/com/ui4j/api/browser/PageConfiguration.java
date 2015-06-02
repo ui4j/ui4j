@@ -18,12 +18,12 @@ public class PageConfiguration {
     private Interceptor interceptor;
 
     public PageConfiguration() {
-    	this(null);
+        this(null);
     }
 
     public PageConfiguration(Interceptor interceptor) {
-    	this.interceptor = interceptor;
-	}
+        this.interceptor = interceptor;
+    }
 
     /**
      * Returns the type of CSS selector engine to be used when processing a web page.
@@ -87,14 +87,14 @@ public class PageConfiguration {
         return this;
     }
 
-	public Interceptor getInterceptor() {
-		return interceptor;
-	}
+    public Interceptor getInterceptor() {
+        return interceptor;
+    }
 
-	public PageConfiguration setInterceptor(Interceptor interceptor) {
-		this.interceptor = interceptor;
-		return this;
-	}
+    public PageConfiguration setInterceptor(Interceptor interceptor) {
+        this.interceptor = interceptor;
+        return this;
+    }
 
     /**
      * Returns a string representation of this instance and its current properties.
@@ -104,9 +104,9 @@ public class PageConfiguration {
      *     change in future releases.
      */
     @Override
-	public String toString() {
-		return "PageConfiguration [selectorEngine=" + selectorEngine
-				+ ", userAgent=" + userAgent + ", interceptor=" + interceptor
-				+ "]";
-	}	
+    public String toString() {
+        return "PageConfiguration [selectorEngine=" + selectorEngine
+                + ", userAgent=" + userAgent + ", interceptor=" + interceptor
+                + "]";
+    }    
 }

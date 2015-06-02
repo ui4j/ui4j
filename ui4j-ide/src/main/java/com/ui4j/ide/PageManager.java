@@ -4,5 +4,5 @@ import com.ui4j.api.browser.Page;
 
 public interface PageManager {
 
-	Page getActivePage();
+    Page getActivePage();
 }

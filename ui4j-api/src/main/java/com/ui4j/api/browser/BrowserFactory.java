@@ -152,6 +152,6 @@ public final class BrowserFactory {
     }
 
     public static synchronized BrowserEngine getJxBrowser() {
-    	return getBrowser(BrowserType.JxBrowser);
+        return getBrowser(BrowserType.JxBrowser);
     }
 }

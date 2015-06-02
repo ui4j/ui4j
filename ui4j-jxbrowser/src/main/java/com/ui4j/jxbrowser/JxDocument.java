@@ -20,115 +20,115 @@ import com.ui4j.jxbrowser.proxy.JsProxy;
 
 public class JxDocument implements Document {
 
-	private SelectorEngine selectorEngine;
+    private SelectorEngine selectorEngine;
 
-	private ThreadLocalRandom random = ThreadLocalRandom.current();
+    private ThreadLocalRandom random = ThreadLocalRandom.current();
 
-	private DOMDocument document;
+    private DOMDocument document;
 
-	private DOMElement body;
+    private DOMElement body;
 
-	private Browser browser;
+    private Browser browser;
 
-	private JsDocument jsDocument;
+    private JsDocument jsDocument;
 
-	public JxDocument(Browser browser, SelectorEngine selectorEngine) {
-		this.browser = browser;
-		document = browser.getDocument();
-		body = document.getDocumentElement().findElement(By.tagName("body"));
-		this.selectorEngine = selectorEngine;
-		JSObject jsObjectDocument = (JSObject) browser.executeJavaScriptAndReturnValue("document");
-		jsDocument = JsProxy.to(jsObjectDocument, JsDocument.class);
-	}
+    public JxDocument(Browser browser, SelectorEngine selectorEngine) {
+        this.browser = browser;
+        document = browser.getDocument();
+        body = document.getDocumentElement().findElement(By.tagName("body"));
+        this.selectorEngine = selectorEngine;
+        JSObject jsObjectDocument = (JSObject) browser.executeJavaScriptAndReturnValue("document");
+        jsDocument = JsProxy.to(jsObjectDocument, JsDocument.class);
+    }
 
-	@Override
-	public Element query(String selector) {
-		waitIfLoading();
-		return selectorEngine.query(selector);
-	}
+    @Override
+    public Element query(String selector) {
+        waitIfLoading();
+        return selectorEngine.query(selector);
+    }
 
-	@Override
-	public List<Element> queryAll(String selector) {
-		waitIfLoading();
-		return selectorEngine.queryAll(selector);
-	}
+    @Override
+    public List<Element> queryAll(String selector) {
+        waitIfLoading();
+        return selectorEngine.queryAll(selector);
+    }
 
-	@Override
-	public Element createElement(String tagName) {
-		waitIfLoading();
-		DOMElement element = document.createElement(tagName);
-		String id = String.valueOf(Math.abs(random.nextInt()));
-		element.setAttribute("ui4j-id", id);
-		body.appendChild(element);
-		Element jxElement = selectorEngine.query("[ui4j-id='" + id + "']");
-		element.removeAttribute("ui4j-id");
-		body.removeChild(element);
-		return jxElement;
-	}
+    @Override
+    public Element createElement(String tagName) {
+        waitIfLoading();
+        DOMElement element = document.createElement(tagName);
+        String id = String.valueOf(Math.abs(random.nextInt()));
+        element.setAttribute("ui4j-id", id);
+        body.appendChild(element);
+        Element jxElement = selectorEngine.query("[ui4j-id='" + id + "']");
+        element.removeAttribute("ui4j-id");
+        body.removeChild(element);
+        return jxElement;
+    }
 
-	@Override
-	public void bind(String event, EventHandler handler) {
-		waitIfLoading();
-	}
+    @Override
+    public void bind(String event, EventHandler handler) {
+        waitIfLoading();
+    }
 
-	@Override
-	public void unbind(String event) {
-		waitIfLoading();
-	}
+    @Override
+    public void unbind(String event) {
+        waitIfLoading();
+    }
 
-	@Override
-	public void unbind() {
-		waitIfLoading();
-	}
+    @Override
+    public void unbind() {
+        waitIfLoading();
+    }
 
-	@Override
-	public Element getBody() {
-		waitIfLoading();
-		return selectorEngine.query("body");
-	}
+    @Override
+    public Element getBody() {
+        waitIfLoading();
+        return selectorEngine.query("body");
+    }
 
-	@Override
-	public void setTitle(String title) {
-		waitIfLoading();
-		jsDocument.setTitle(title);
-	}
+    @Override
+    public void setTitle(String title) {
+        waitIfLoading();
+        jsDocument.setTitle(title);
+    }
 
-	@Override
-	public String getTitle() {
-		waitIfLoading();
-		return jsDocument.getTitle();
-	}
+    @Override
+    public String getTitle() {
+        waitIfLoading();
+        return jsDocument.getTitle();
+    }
 
-	@Override
-	public List<Element> parseHTML(String html) {
-		waitIfLoading();
-		return null;
-	}
+    @Override
+    public List<Element> parseHTML(String html) {
+        waitIfLoading();
+        return null;
+    }
 
-	@Override
-	public void trigger(String eventType, Element element) {		
-		waitIfLoading();
-	}
+    @Override
+    public void trigger(String eventType, Element element) {        
+        waitIfLoading();
+    }
 
-	@Override
-	public Element getElementFromPoint(int x, int y) {
-		waitIfLoading();
-		return null;
-	}
+    @Override
+    public Element getElementFromPoint(int x, int y) {
+        waitIfLoading();
+        return null;
+    }
 
-	protected void waitIfLoading() {
-		if (browser.isLoading()) {
-			CountDownLatch latch = new CountDownLatch(1);
-			JxDocumentLoadWaitAdapter adapter = new JxDocumentLoadWaitAdapter(latch);
-			browser.addLoadListener(adapter);
-			try {
-				latch.await(60, TimeUnit.SECONDS);
-				browser = adapter.getBrowser();
-			} catch (InterruptedException e) {
-				throw new Ui4jException(e);
-			}
-			JSObject jsObjectDocument = (JSObject) browser.executeJavaScriptAndReturnValue("document");
-			jsDocument = JsProxy.to(jsObjectDocument, JsDocument.class);
-		}
-	}
+    protected void waitIfLoading() {
+        if (browser.isLoading()) {
+            CountDownLatch latch = new CountDownLatch(1);
+            JxDocumentLoadWaitAdapter adapter = new JxDocumentLoadWaitAdapter(latch);
+            browser.addLoadListener(adapter);
+            try {
+                latch.await(60, TimeUnit.SECONDS);
+                browser = adapter.getBrowser();
+            } catch (InterruptedException e) {
+                throw new Ui4jException(e);
+            }
+            JSObject jsObjectDocument = (JSObject) browser.executeJavaScriptAndReturnValue("document");
+            jsDocument = JsProxy.to(jsObjectDocument, JsDocument.class);
+        }
+    }
 }

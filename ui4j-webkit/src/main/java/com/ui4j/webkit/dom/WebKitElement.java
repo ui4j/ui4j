@@ -100,23 +100,23 @@ public class WebKitElement implements Element, EventTarget {
 
     @Override
     public Element addClass(String... names) {
-    	if (names != null && names.length > 0) {
-    		for (String name : names) {
-    			JSObject classList = (JSObject) getProperty("classList");
-    			classList.call("add", name);
-    		}
-    	}
+        if (names != null && names.length > 0) {
+            for (String name : names) {
+                JSObject classList = (JSObject) getProperty("classList");
+                classList.call("add", name);
+            }
+        }
         return this;
     }
 
     @Override
     public Element removeClass(String... names) {
-    	if (names != null && names.length > 0) {
-    		for (String name : names) {
-    			JSObject classList = (JSObject) getProperty("classList");
-    			classList.call("remove", name);
-    		}
-    	}
+        if (names != null && names.length > 0) {
+            for (String name : names) {
+                JSObject classList = (JSObject) getProperty("classList");
+                classList.call("remove", name);
+            }
+        }
         return this;
     }
 
@@ -226,8 +226,8 @@ public class WebKitElement implements Element, EventTarget {
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
-            	Element element = ((WebKitPageContext) context).createElement(node, document, engine);
-            	elements.add(element);
+                Element element = ((WebKitPageContext) context).createElement(node, document, engine);
+                elements.add(element);
             }
         }
         return elements;
@@ -867,18 +867,18 @@ public class WebKitElement implements Element, EventTarget {
     }
 
     public Document getContentDocument() {
-    	if (element instanceof HTMLFrameElement) {
-    		DocumentImpl documentImpl = (DocumentImpl) ((HTMLFrameElementImpl) element).getContentDocument();
-    		WebKitPageContext webkitPageContext = (WebKitPageContext) context;
-    		Document document = webkitPageContext.getContentDocument(documentImpl, engine);
+        if (element instanceof HTMLFrameElement) {
+            DocumentImpl documentImpl = (DocumentImpl) ((HTMLFrameElementImpl) element).getContentDocument();
+            WebKitPageContext webkitPageContext = (WebKitPageContext) context;
+            Document document = webkitPageContext.getContentDocument(documentImpl, engine);
             return document;
-    	} else if (element instanceof HTMLIFrameElement) {
-    		DocumentImpl documentImpl = (DocumentImpl) ((HTMLIFrameElement) element).getContentDocument();
-    		WebKitPageContext webkitPageContext = (WebKitPageContext) context;
-    		Document document = webkitPageContext.getContentDocument(documentImpl, engine);
+        } else if (element instanceof HTMLIFrameElement) {
+            DocumentImpl documentImpl = (DocumentImpl) ((HTMLIFrameElement) element).getContentDocument();
+            WebKitPageContext webkitPageContext = (WebKitPageContext) context;
+            Document document = webkitPageContext.getContentDocument(documentImpl, engine);
             return document;
-    	}
-    	return null;
+        }
+        return null;
     }
 
     @Override

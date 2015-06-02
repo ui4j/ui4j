@@ -4,5 +4,5 @@ import com.teamdev.jxbrowser.chromium.JSObject;
 
 public interface JsObject {
 
-	JSObject getJSObject();
+    JSObject getJSObject();
 }

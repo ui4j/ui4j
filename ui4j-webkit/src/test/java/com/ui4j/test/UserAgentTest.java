@@ -10,16 +10,16 @@ import com.ui4j.api.browser.PageConfiguration;
 
 public class UserAgentTest {
 
-	@Test
-	public void test() {
-		BrowserEngine webKit = BrowserFactory.getWebKit();
+    @Test
+    public void test() {
+        BrowserEngine webKit = BrowserFactory.getWebKit();
 
-		PageConfiguration config = new PageConfiguration();
-		config.setUserAgent("Custom User Agent String");
+        PageConfiguration config = new PageConfiguration();
+        config.setUserAgent("Custom User Agent String");
 
-		Page page = webKit.navigate("http://httpbin.org/user-agent", config);
-		page.show();
+        Page page = webKit.navigate("http://httpbin.org/user-agent", config);
+        page.show();
 
-		Assert.assertTrue(page.getDocument().getBody().getInnerHTML().contains(config.getUserAgent()));
-	}
+        Assert.assertTrue(page.getDocument().getBody().getInnerHTML().contains(config.getUserAgent()));
+    }
 }

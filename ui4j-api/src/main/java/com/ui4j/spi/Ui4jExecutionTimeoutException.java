@@ -6,24 +6,24 @@ import com.ui4j.api.util.Ui4jException;
 
 public class Ui4jExecutionTimeoutException extends Ui4jException {
 
-	private int elapsedTime;
+    private int elapsedTime;
 
-	private TimeUnit timeUnit;
+    private TimeUnit timeUnit;
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public Ui4jExecutionTimeoutException(InterruptedException e,
-						int elapsedTime, TimeUnit timeUnit) {
-		super(e);
-		this.elapsedTime = elapsedTime;
-		this.timeUnit = timeUnit;
-	}
+    public Ui4jExecutionTimeoutException(InterruptedException e,
+                        int elapsedTime, TimeUnit timeUnit) {
+        super(e);
+        this.elapsedTime = elapsedTime;
+        this.timeUnit = timeUnit;
+    }
 
-	public int getElapsedTime() {
-		return elapsedTime;
-	}
+    public int getElapsedTime() {
+        return elapsedTime;
+    }
 
-	public TimeUnit getTimeUnit() {
-		return timeUnit;
-	}
+    public TimeUnit getTimeUnit() {
+        return timeUnit;
+    }
 }

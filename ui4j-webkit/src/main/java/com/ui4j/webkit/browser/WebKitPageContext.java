@@ -125,11 +125,11 @@ public class WebKitPageContext implements PageContext {
     }
 
     public Document createDocument(JavaScriptEngine engine) {
-    	DocumentImpl documentImpl = (DocumentImpl) ((WebKitJavaScriptEngine) engine).getEngine().getDocument();
+        DocumentImpl documentImpl = (DocumentImpl) ((WebKitJavaScriptEngine) engine).getEngine().getDocument();
 
         WebEngine webEngine = (WebEngine) engine.getEngine();
         if (configuration.getUserAgent() != null) {
-        	webEngine.setUserAgent(configuration.getUserAgent());
+            webEngine.setUserAgent(configuration.getUserAgent());
         }
         webEngine.getLoadWorker().exceptionProperty().addListener(new ExceptionListener(log));
         webEngine.setOnError(new DefaultErrorEventHandler());
@@ -139,20 +139,20 @@ public class WebKitPageContext implements PageContext {
     }
 
     public Document getContentDocument(DocumentImpl documentImpl, JavaScriptEngine engine) {
-    	synchronized (this) {
-    		Document existingDocument = contentDocuments.get(documentImpl);
-    		if (existingDocument != null) {
-    			return existingDocument;
-    		} else {
-    			Document document = (Document) documentFactory.newInstance(new Object[] { this, documentImpl, engine });
-    			contentDocuments.put(documentImpl, document);
+        synchronized (this) {
+            Document existingDocument = contentDocuments.get(documentImpl);
+            if (existingDocument != null) {
+                return existingDocument;
+            } else {
+                Document document = (Document) documentFactory.newInstance(new Object[] { this, documentImpl, engine });
+                contentDocuments.put(documentImpl, document);
 
-    			SelectorEngine selector = initializeSelectorEngine(document, (WebKitJavaScriptEngine) engine);
-    			selectorEngines.put(documentImpl, selector);
+                SelectorEngine selector = initializeSelectorEngine(document, (WebKitJavaScriptEngine) engine);
+                selectorEngines.put(documentImpl, selector);
 
-    			return document;
-    		}
-		}
+                return document;
+            }
+        }
     }
 
     public void onLoad(Document document) {
@@ -176,15 +176,15 @@ public class WebKitPageContext implements PageContext {
     }
 
     public SelectorEngine getSelectorEngine(org.w3c.dom.Document documentImpl) {
-    	SelectorEngine contentDocumentSelectorEngine = selectorEngines.get(documentImpl);
-    	if (contentDocumentSelectorEngine == null) {
-    		return selector;
-    	}
-    	return contentDocumentSelectorEngine;
+        SelectorEngine contentDocumentSelectorEngine = selectorEngines.get(documentImpl);
+        if (contentDocumentSelectorEngine == null) {
+            return selector;
+        }
+        return contentDocumentSelectorEngine;
     }
 
     protected SelectorEngine initializeSelectorEngine(Document document, WebKitJavaScriptEngine engine) {
-    	SelectorEngine selector = null;
+        SelectorEngine selector = null;
         if (configuration.getSelectorEngine().equals(SelectorType.SIZZLE)) {
             String sizzle = readSizzle();
             boolean foundSizzle = Boolean.parseBoolean(engine.getEngine().executeScript("typeof window.Sizzle === 'function'").toString());

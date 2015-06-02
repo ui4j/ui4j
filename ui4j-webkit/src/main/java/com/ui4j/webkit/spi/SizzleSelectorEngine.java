@@ -44,9 +44,9 @@ public class SizzleSelectorEngine implements SelectorEngine {
             Node found = (Node) result.getSlot(0);
             Element element = ((WebKitPageContext) context).createElement(found, document, engine);
             if (element == null) {
-            	return Optional.empty();
+                return Optional.empty();
             } else {
-            	return Optional.of(element);
+                return Optional.of(element);
             }
         }
     }
@@ -85,9 +85,9 @@ public class SizzleSelectorEngine implements SelectorEngine {
             Node found = (Node) result.getSlot(0);
             Element ret = ((WebKitPageContext) context).createElement(found, document, engine);
             if (ret == null) {
-            	return Optional.empty();
+                return Optional.empty();
             } else {
-            	return Optional.of(ret);
+                return Optional.of(ret);
             }
         }
     }

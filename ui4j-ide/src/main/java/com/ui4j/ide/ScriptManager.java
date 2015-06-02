@@ -4,5 +4,5 @@ import javax.script.Bindings;
 
 public interface ScriptManager {
 
-	Object execute(String script, Bindings bindings);
+    Object execute(String script, Bindings bindings);
 }

@@ -2,11 +2,11 @@ package com.ui4j.ide;
 
 public interface EditorManager {
 
-	String getText();
+    String getText();
 
-	String getSelection();
+    String getSelection();
 
-	void setText(String text);
+    void setText(String text);
 
-	void focus();
+    void focus();
 }

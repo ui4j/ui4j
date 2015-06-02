@@ -7,19 +7,19 @@ import com.ui4j.spi.ShutdownListener;
 
 public class JxBrowserProvider implements BrowserProvider, JxBrowserEngine {
 
-	private BrowserEngine engine = new JxEngine();
+    private BrowserEngine engine = new JxEngine();
 
-	@Override
-	public BrowserType getBrowserType() {
-		return engine.getBrowserType();
-	}
+    @Override
+    public BrowserType getBrowserType() {
+        return engine.getBrowserType();
+    }
 
-	@Override
-	public BrowserEngine create() {
-		return engine;
-	}
+    @Override
+    public BrowserEngine create() {
+        return engine;
+    }
 
-	@Override
-	public void setShutdownListener(ShutdownListener listener) {
-	}
+    @Override
+    public void setShutdownListener(ShutdownListener listener) {
+    }
 }

@@ -4,7 +4,7 @@ import java.io.File;
 
 public interface FileManager {
 
-	File getCurrentFile();
+    File getCurrentFile();
 
-	void setCurrentFile(File file);
+    void setCurrentFile(File file);
 }

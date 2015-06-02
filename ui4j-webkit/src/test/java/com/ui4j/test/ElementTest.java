@@ -507,9 +507,9 @@ public class ElementTest {
     }
 
     @Test public void t44_emptyElement() {
-    	Optional<Element> div = document.getBody().query("#invalid-id");
-    	Assert.assertNotNull(div);
-    	Assert.assertFalse(div.isPresent());
+        Optional<Element> div = document.getBody().query("#invalid-id");
+        Assert.assertNotNull(div);
+        Assert.assertFalse(div.isPresent());
     }
 
     @Test public void t45_closest() {
@@ -525,8 +525,8 @@ public class ElementTest {
     }
 
     @Test public void t47_removeBody() {
-    	document.getBody().setAttribute("foo", "bar");
-    	document.getBody().remove();
-    	Assert.assertEquals("bar", document.getBody().getAttribute("foo"));
+        document.getBody().setAttribute("foo", "bar");
+        document.getBody().remove();
+        Assert.assertEquals("bar", document.getBody().getAttribute("foo"));
     }
 }

@@ -25,7 +25,7 @@ public class InterceptorSample {
 
         private Handler httpHandler = new Handler();
 
-		private sun.net.www.protocol.https.Handler httpsHandler = new sun.net.www.protocol.https.Handler();
+        private sun.net.www.protocol.https.Handler httpsHandler = new sun.net.www.protocol.https.Handler();
 
         private Method httpOpenConnection;
 

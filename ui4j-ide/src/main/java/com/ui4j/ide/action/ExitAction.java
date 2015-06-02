@@ -6,15 +6,15 @@ import javax.swing.AbstractAction;
 
 public class ExitAction extends AbstractAction {
 
-	private static final long serialVersionUID = -8063122795520833829L;
+    private static final long serialVersionUID = -8063122795520833829L;
 
-	public ExitAction() {
-		putValue(NAME, "Exit");
-		putValue(MNEMONIC_KEY, "x".codePointAt(0));
-	}
+    public ExitAction() {
+        putValue(NAME, "Exit");
+        putValue(MNEMONIC_KEY, "x".codePointAt(0));
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		System.exit(0);
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        System.exit(0);
+    }
 }

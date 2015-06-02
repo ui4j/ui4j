@@ -81,27 +81,27 @@ public class WebKitDocument implements Document, EventTarget {
 
     @Override
     public String getTitle() {
-    	return document.getTitle();
+        return document.getTitle();
     }
 
     @Override
     public void setTitle(String title) {
-    	document.setTitle(title);
+        document.setTitle(title);
     }
 
     @Override
     public void removeProperty(String key) {
-    	document.removeMember(key);
+        document.removeMember(key);
     }
 
     @Override
     public Object getProperty(String key) {
-    	return document.getMember(key);
+        return document.getMember(key);
     }
 
     @Override
     public void setProperty(String key, Object value) {
-    	document.setMember(key, value);
+        document.setMember(key, value);
     }
 
     @Override
@@ -137,11 +137,11 @@ public class WebKitDocument implements Document, EventTarget {
         return element;
     }
 
-	public DocumentImpl getDocument() {
-		return document;
-	}
+    public DocumentImpl getDocument() {
+        return document;
+    }
 
-	public void refreshDocument() {
-		this.document = (DocumentImpl) engine.getEngine().getDocument();
-	}
+    public void refreshDocument() {
+        this.document = (DocumentImpl) engine.getEngine().getDocument();
+    }
 }

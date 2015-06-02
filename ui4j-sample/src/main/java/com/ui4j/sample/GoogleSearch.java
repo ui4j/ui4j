@@ -14,16 +14,16 @@ public class GoogleSearch {
 
     public static void main(String[] args) throws Exception {
         BrowserEngine webkit = BrowserFactory.getWebKit();
-		Page page = webkit.navigate("http://www.google.com");
-		page.show();
+        Page page = webkit.navigate("http://www.google.com");
+        page.show();
 
         Document document = page.getDocument();
 
         document
-			.query("input[name='q']")
-			.get()
-			.setValue("java book")
-			.focus();
+            .query("input[name='q']")
+            .get()
+            .setValue("java book")
+            .focus();
 
         Thread.sleep(1000);
 

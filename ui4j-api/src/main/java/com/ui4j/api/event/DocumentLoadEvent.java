@@ -19,8 +19,8 @@ public class DocumentLoadEvent {
         return window.getDocument();
     }
 
-	@Override
-	public String toString() {
-		return "DocumentLoadEvent [window=" + window + "]";
-	}
+    @Override
+    public String toString() {
+        return "DocumentLoadEvent [window=" + window + "]";
+    }
 }

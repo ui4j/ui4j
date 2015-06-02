@@ -39,9 +39,9 @@ class WebKitHtmlParser {
     }
 
     NodeList parse(String html, HTMLDocument document) {
-    	JSObject wrapperDiv = (JSObject) engine.executeScript("document.createElement('div')");
-    	wrapperDiv.setMember("innerHTML", html);
-    	JSObject childNodes = (JSObject) wrapperDiv.getMember("childNodes");
+        JSObject wrapperDiv = (JSObject) engine.executeScript("document.createElement('div')");
+        wrapperDiv.setMember("innerHTML", html);
+        JSObject childNodes = (JSObject) wrapperDiv.getMember("childNodes");
         NodeList list = new DefaultNodeList(childNodes);
         return list;
     }

@@ -53,7 +53,7 @@ public class WebKitPage implements Page, PageView, JavaScriptEngine {
 
     private WebKitJavaScriptEngine engine;
 
-	private int pageId;
+    private int pageId;
 
     public static class AlertDelegationHandler implements EventHandler<WebEvent<String>> {
 
@@ -164,20 +164,20 @@ public class WebKitPage implements Page, PageView, JavaScriptEngine {
         }
     }
 
-	@Override
-	@SuppressWarnings("unchecked")
+    @Override
+    @SuppressWarnings("unchecked")
     public void close() {
-		// HACK #26
-		Field handlerMap;
-		try {
-			handlerMap = URLs.class.getDeclaredField("handlerMap");
-			handlerMap.setAccessible(true);
-			Map<String, URLStreamHandler> handlers = (Map<String, URLStreamHandler>) handlerMap.get(null);
-			handlers.remove("ui4j-" + String.valueOf(pageId));
-		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-			throw new Ui4jException(e);
-		}
-		// HACK #26
+        // HACK #26
+        Field handlerMap;
+        try {
+            handlerMap = URLs.class.getDeclaredField("handlerMap");
+            handlerMap.setAccessible(true);
+            Map<String, URLStreamHandler> handlers = (Map<String, URLStreamHandler>) handlerMap.get(null);
+            handlers.remove("ui4j-" + String.valueOf(pageId));
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+            throw new Ui4jException(e);
+        }
+        // HACK #26
         if (getStage() != null) {
             getStage().close();
         }
@@ -262,7 +262,7 @@ public class WebKitPage implements Page, PageView, JavaScriptEngine {
         return String.valueOf(webView.getEngine().executeScript("document.readyState"));
     }
 
-	public int getPageId() {
-		return pageId;
-	}
+    public int getPageId() {
+        return pageId;
+    }
 }

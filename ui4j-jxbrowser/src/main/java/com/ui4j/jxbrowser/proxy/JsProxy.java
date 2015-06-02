@@ -20,28 +20,28 @@ public class JsProxy {
     private static final Map<Class<?>, Class<?>> PROXIES = synchronizedMap(new WeakHashMap<>());
 
     @SuppressWarnings("unchecked")
-	public static <T> T to(JSObject object, Class<T> klass) {
-    	if (!klass.isInterface()) {
-    		throw new Ui4jException("Class must be interface");
-    	}
-    	Class<?> proxyKlass = PROXIES.get(klass);
-    	if (proxyKlass == null) {
-    		proxyKlass = new ByteBuddy()
-					            .subclass(Object.class)
-					            .implement(klass)
-					            .method(any()
-					            .and(not(isDeclaredBy(Object.class))))
-					            .intercept(MethodDelegation.to(new JsInterceptor(object, klass)))
-					            .make()
-					            .load(JsProxy.class.getClassLoader(), Default.WRAPPER)
-					            .getLoaded();
-    	}
-    	Object instance = null;
-    	try {
-			instance = proxyKlass.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
-			throw new Ui4jException(e);
-		}
-    	return (T) instance;
+    public static <T> T to(JSObject object, Class<T> klass) {
+        if (!klass.isInterface()) {
+            throw new Ui4jException("Class must be interface");
+        }
+        Class<?> proxyKlass = PROXIES.get(klass);
+        if (proxyKlass == null) {
+            proxyKlass = new ByteBuddy()
+                                .subclass(Object.class)
+                                .implement(klass)
+                                .method(any()
+                                .and(not(isDeclaredBy(Object.class))))
+                                .intercept(MethodDelegation.to(new JsInterceptor(object, klass)))
+                                .make()
+                                .load(JsProxy.class.getClassLoader(), Default.WRAPPER)
+                                .getLoaded();
+        }
+        Object instance = null;
+        try {
+            instance = proxyKlass.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new Ui4jException(e);
+        }
+        return (T) instance;
     }
 }

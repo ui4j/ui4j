@@ -2,9 +2,9 @@ package com.ui4j.jxbrowser.js;
 
 public interface JsNodeList {
 
-	@JsProperty("length")
-	int getLength();
+    @JsProperty("length")
+    int getLength();
 
-	@JsFunction("item")
-	JsElement getItem(int index);
+    @JsFunction("item")
+    JsElement getItem(int index);
 }
