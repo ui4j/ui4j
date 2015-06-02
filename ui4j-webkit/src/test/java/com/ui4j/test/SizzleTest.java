@@ -29,11 +29,11 @@ public class SizzleTest {
     @Test public void test() {
     	Element body = document.getBody();
     	body.append("<div>foo<input>bar</input></div>");
-    	Element div = document.query("body:first");
+    	Element div = document.query("body:first").get();
     	Assert.assertEquals("<div>foo<input>bar</div>", div.getInnerHTML());
     	List<Element> inputs = document.queryAll(":input");
     	Assert.assertEquals(1, inputs.size());
-    	Element input = div.query(":input");
+    	Element input = div.query(":input").get();
     	Assert.assertTrue(input.isSameNode(inputs.get(0)));
     	Assert.assertTrue(input.is(":input"));
     	List<Element> elements = div.queryAll(":last");

@@ -36,10 +36,10 @@ public class BingSearch {
             Document doc = page.getDocument();
 
             // set the searh criteria
-            doc.query("#sb_form_q").setValue(criteria);
+            doc.query("#sb_form_q").get().setValue(criteria);
 
             // click to search button
-            doc.query("#sb_form_go").click();
+            doc.query("#sb_form_go").get().click();
 
             // Normally Ui4j can detect page loads,
             // but for the Ajax requests

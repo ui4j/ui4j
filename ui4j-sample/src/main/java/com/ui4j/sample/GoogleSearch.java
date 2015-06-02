@@ -21,6 +21,7 @@ public class GoogleSearch {
 
         document
 			.query("input[name='q']")
+			.get()
 			.setValue("java book")
 			.focus();
 

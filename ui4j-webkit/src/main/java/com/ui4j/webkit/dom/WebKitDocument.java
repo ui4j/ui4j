@@ -3,6 +3,7 @@ package com.ui4j.webkit.dom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import javafx.scene.web.WebEngine;
 
@@ -38,7 +39,7 @@ public class WebKitDocument implements Document, EventTarget {
     }
 
     @Override
-    public Element query(String selector) {
+    public Optional<Element> query(String selector) {
         return ((WebKitPageContext) context).getSelectorEngine(document).query(selector);
     }
 

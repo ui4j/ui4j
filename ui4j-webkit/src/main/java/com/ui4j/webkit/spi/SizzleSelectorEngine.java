@@ -5,6 +5,7 @@ import static java.lang.String.format;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import netscape.javascript.JSObject;
 
@@ -33,7 +34,7 @@ public class SizzleSelectorEngine implements SelectorEngine {
     }
 
     @Override
-    public Element query(String selector) {
+    public Optional<Element> query(String selector) {
         String escapedSelector = selector.replace('\'', '"');
         JSObject result = (JSObject) engine.getEngine().executeScript(format("Sizzle('%s')", escapedSelector));
         int length = (int) result.getMember("length");
@@ -42,7 +43,11 @@ public class SizzleSelectorEngine implements SelectorEngine {
         } else {
             Node found = (Node) result.getSlot(0);
             Element element = ((WebKitPageContext) context).createElement(found, document, engine);
-            return element;
+            if (element == null) {
+            	return Optional.empty();
+            } else {
+            	return Optional.of(element);
+            }
         }
     }
 
@@ -65,7 +70,7 @@ public class SizzleSelectorEngine implements SelectorEngine {
     }
 
     @Override
-    public Element query(Element element, String selector) {
+    public Optional<Element> query(Element element, String selector) {
         if (!(element instanceof WebKitElement)) {
             return null;
         }
@@ -79,7 +84,11 @@ public class SizzleSelectorEngine implements SelectorEngine {
         } else {
             Node found = (Node) result.getSlot(0);
             Element ret = ((WebKitPageContext) context).createElement(found, document, engine);
-            return ret;
+            if (ret == null) {
+            	return Optional.empty();
+            } else {
+            	return Optional.of(ret);
+            }
         }
     }
 

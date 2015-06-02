@@ -20,7 +20,7 @@ public class CnnTechNews {
         Document doc = page.getDocument();
 
         // navigate to tech news
-        doc.query("[href=\"/tech\"]").click();
+        doc.query("[href=\"/tech\"]").get().click();
 
         // iterate the titles
         List<Element> techNews = doc.queryAll(".cd__headline-text");

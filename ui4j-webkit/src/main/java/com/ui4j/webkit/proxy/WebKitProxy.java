@@ -3,7 +3,6 @@ package com.ui4j.webkit.proxy;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -22,7 +21,6 @@ import net.bytebuddy.implementation.bind.annotation.SuperCall;
 import net.bytebuddy.implementation.bind.annotation.This;
 import net.bytebuddy.matcher.ElementMatchers;
 
-import com.ui4j.api.dom.Element;
 import com.ui4j.api.util.Ui4jException;
 import com.ui4j.spi.Ui4jExecutionTimeoutException;
 import com.ui4j.webkit.dom.WebKitDocument;
@@ -100,27 +98,11 @@ public class WebKitProxy {
 
     public static class WebKitInterceptor {
 
-    	private static Element emptyElement;
-
-    	static {
-    		emptyElement = new WebKitEmptyElementProxy().getEmptyElement();
-    	}
-
     	@RuntimeType
         public static Object execute(@SuperCall Callable<Object> callable,
         										@This Object that,
         										@Origin Method method,
 												@AllArguments Object[] arguments) {
-
-            Parameter[] parameters = method.getParameters();
-
-            if (parameters.length == 1 &&
-            			arguments.length == 1 &&
-            			Element.class.isAssignableFrom(method.getReturnType()) &&
-            			Element.class.isAssignableFrom(parameters[0].getType()) &&
-            			((Element) arguments[0]).isEmpty()) {
-            	return that;
-            }
 
             if (that instanceof WebKitDocument) {
             	WebKitDocument document = (WebKitDocument) that;
@@ -169,10 +151,6 @@ public class WebKitProxy {
                 } catch (Exception e) {
                     throw new Ui4jException(e);
                 }
-            }
-            Class<?> retType = method.getReturnType();
-            if (ret == null && Element.class.isAssignableFrom(retType)) {
-            	return emptyElement;
             }
             return ret;
         }

@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -49,11 +50,11 @@ public class ElementTest {
     }
 
     @Test public void t02_query() {
-        Assert.assertEquals("<div>sample div</div>", document.getBody().query("div").getOuterHTML());
+        Assert.assertEquals("<div>sample div</div>", document.getBody().query("div").get().getOuterHTML());
     }
 
     @Test public void t03_removeDiv() {
-        document.getBody().query("div").remove();
+        document.getBody().query("div").get().remove();
     }
 
     @Test public void t04_attr() {
@@ -163,12 +164,12 @@ public class ElementTest {
         Element div = document.createElement("div");
         document.getBody().append(div);
         div.after("<label>foo</label>");
-        Assert.assertEquals("<div></div>", document.query("label").getPrev().getOuterHTML());
+        Assert.assertEquals("<div></div>", document.query("label").get().getPrev().get().getOuterHTML());
         document.getBody().empty();
         div = document.createElement("div");
         document.getBody().append(div);
         div.after(document.createElement("input"));
-        Assert.assertEquals("<input>", document.query("div").getNext().getOuterHTML());
+        Assert.assertEquals("<input>", document.query("div").get().getNext().get().getOuterHTML());
         document.getBody().empty();
     }
 
@@ -176,12 +177,12 @@ public class ElementTest {
         Element div = document.createElement("div");
         document.getBody().append(div);
         div.before("<label>foo</label>");
-        Assert.assertEquals("<div></div>", document.query("label").getNext().getOuterHTML());
+        Assert.assertEquals("<div></div>", document.query("label").get().getNext().get().getOuterHTML());
         document.getBody().empty();
         div = document.createElement("div");
         document.getBody().append(div);
         div.before(document.createElement("input"));
-        Assert.assertEquals("<div></div>", document.query("input").getNext().getOuterHTML());
+        Assert.assertEquals("<div></div>", document.query("input").get().getNext().get().getOuterHTML());
         document.getBody().empty();
     }
 
@@ -226,8 +227,8 @@ public class ElementTest {
     @Test public void t15_query() {
         Element div = document.parseHTML("<div><label>foo-1</label><label>foo-2</label></div>").get(0);
         document.getBody().append(div);
-        div = document.getBody().query("div");
-        Assert.assertEquals("<label>foo-1</label>", div.query("label").getOuterHTML());
+        div = document.getBody().query("div").get();
+        Assert.assertEquals("<label>foo-1</label>", div.query("label").get().getOuterHTML());
         Assert.assertEquals("<label>foo-2</label>", div.queryAll("label").get(1).getOuterHTML());
         div.remove();
     }
@@ -235,15 +236,15 @@ public class ElementTest {
     @Test public void t16_contains() {
         Element div = document.parseHTML("<div><label>foo-1</label><label>foo-2</label></div>").get(0);
         document.getBody().append(div);
-        div = document.query("div");
-        Assert.assertTrue(div.contains(document.query("label")));
+        div = document.query("div").get();
+        Assert.assertTrue(div.contains(document.query("label").get()));
     }
 
     @Test public void t17_detach() {
         List<Element> elements = document.parseHTML("<div><div>foo</div></div>");
         Element div = elements.get(0);
         Assert.assertFalse(div.isAttached());
-        Assert.assertEquals("<div>foo</div>", div.query("div").getOuterHTML());
+        Assert.assertEquals("<div>foo</div>", div.query("div").get().getOuterHTML());
         document.getBody().append(div);
         Assert.assertTrue(div.isAttached());
         div.remove();
@@ -286,12 +287,12 @@ public class ElementTest {
 
     @Test public void t20_parent() {
         Element div = document.parseHTML("<div><span>foo</span></div>").get(0);
-        Assert.assertEquals("div", div.query("span").getParent().getTagName());
+        Assert.assertEquals("div", div.query("span").get().getParent().get().getTagName());
     }
 
     @Test public void t21_input() {
         Element element = document.parseHTML("<input type='text' value='foo' />").get(0);
-        Input input = element.getInput();
+        Input input = element.getInput().get();
         Assert.assertNotNull(input);
         Assert.assertFalse(input.isDisabled());
         input.setDisabled(true);
@@ -305,7 +306,7 @@ public class ElementTest {
 
     @Test public void t22_checkbox() {
         Element element = document.parseHTML("<input type='checkbox' />").get(0);
-        CheckBox checkBox = element.getCheckBox();
+        CheckBox checkBox = element.getCheckBox().get();
         Assert.assertNotNull(checkBox);
         Assert.assertFalse(checkBox.isChecked());
         checkBox.setChecked(true);
@@ -315,7 +316,7 @@ public class ElementTest {
 
     @Test public void t23_select() {
         Element element = document.parseHTML("<select><option value='foo1'>foo</option><option value='bar1'>bar</option></select>").get(0);
-        Select select = element.getSelect();
+        Select select = element.getSelect().get();
         Assert.assertNotNull(select);
         List<Option> options = select.getOptions();
         Assert.assertEquals(2, options.size());
@@ -335,7 +336,7 @@ public class ElementTest {
 
     @Test public void t24_option() {
         Element element = document.parseHTML("<select><option value='foo1'>foo</option><option value='bar1'>bar</option></select>").get(0);
-        Option option = element.query("option").getOption();
+        Option option = element.query("option").get().getOption().get();
         Assert.assertNotNull(option);
         Assert.assertEquals("foo", option.getText());
         Assert.assertEquals("foo1", option.getValue());
@@ -350,16 +351,16 @@ public class ElementTest {
 
     @Test public void t25_form() {
         Element element = document.parseHTML("<form><input value='foo' /><input type='radio' checked /><input type='checkbox' checked /><select><option>foo</option></select></form>").get(0);
-        Form form = element.getForm();
+        Form form = element.getForm().get();
         Assert.assertNotNull(form);
         form.clear();
-        Element input = form.getElement().query("input");
+        Element input = form.getElement().query("input").get();
         Assert.assertEquals("", input.getValue());
-        RadioButton radio = form.getElement().query("[type='radio']").getRadioButton();
+        RadioButton radio = form.getElement().query("[type='radio']").get().getRadioButton().get();
         Assert.assertFalse(radio.isChecked());
-        CheckBox checkBox = form.getElement().query("[type='checkbox']").getCheckBox();
+        CheckBox checkBox = form.getElement().query("[type='checkbox']").get().getCheckBox().get();
         Assert.assertFalse(checkBox.isChecked());
-        Assert.assertEquals(-1, form.getElement().query("select").getSelect().getSelectedIndex());
+        Assert.assertEquals(-1, form.getElement().query("select").get().getSelect().get().getSelectedIndex());
     }
 
     @Test public void t26_prepend() {
@@ -487,12 +488,12 @@ public class ElementTest {
     @Test public void t42_replaceWith() {
         Element div = document.parseHTML("<div id='barfoo'><span id='foobar'>my text</span></div>").get(0);
         document.getBody().append(div);
-        document.query("#foobar").replaceWith("my text content");
-        Assert.assertEquals("my text content", document.query("#barfoo").getInnerHTML());
+        document.query("#foobar").get().replaceWith("my text content");
+        Assert.assertEquals("my text content", document.query("#barfoo").get().getInnerHTML());
         document.getBody().append(document.parseHTML("<div id='foofoo'>my div</div>").get(0));
-        document.query("#barfoo").replaceWith(document.query("#foofoo"));
-        Assert.assertTrue(document.getBody().query("#barfoo").isEmpty());
-        Assert.assertEquals("my div", document.query("#foofoo").getInnerHTML());
+        document.query("#barfoo").get().replaceWith(document.query("#foofoo").get());
+        Assert.assertFalse(document.getBody().query("#barfoo").isPresent());
+        Assert.assertEquals("my div", document.query("#foofoo").get().getInnerHTML());
     }
 
     @Test public void t43_siblings() {
@@ -506,36 +507,24 @@ public class ElementTest {
     }
 
     @Test public void t44_emptyElement() {
-    	Assert.assertFalse(document.getBody().isEmpty());
-    	Element div = document.getBody().query("#invalid-id");
+    	Optional<Element> div = document.getBody().query("#invalid-id");
     	Assert.assertNotNull(div);
-    	Assert.assertTrue(div.isEmpty());
-    	Assert.assertEquals(Collections.emptyList(), div.queryAll("div"));
-    	Element input = div.query("input");
-    	Assert.assertNotNull(input);
-    	Assert.assertTrue(input.isEmpty());
+    	Assert.assertFalse(div.isPresent());
     }
 
-    @Test public void t45_appendEmptyElement() {
-    	Element div = document.parseHTML("<div>foo</div>").get(0);
-    	Element emptyElement = document.query("#invalid-id");
-    	Element div2 = div.append(emptyElement);
-    	Assert.assertTrue(div == div2);
-    }
-
-    @Test public void t46_closest() {
+    @Test public void t45_closest() {
         Element div = document.parseHTML("<div><label>Name</label><div><input id='txtName' /><span><input id='txtSurname' /></span></div></div>").get(0);
-        Assert.assertEquals("txtName", div.closest("input").getId());
+        Assert.assertEquals("txtName", div.closest("input").get().getId());
     }
 
-    @Test public void t47_nextSibling() {
+    @Test public void t46_nextSibling() {
         Element span = document.parseHTML("<span><div>foo bar</div> my text</span>").get(0);
-        Element div = span.query("div");
+        Element div = span.query("div").get();
         Assert.assertEquals("div", div.getTagName());
         Assert.assertEquals(" my text", div.getNextSibling().getText());
     }
 
-    @Test public void t48_removeBody() {
+    @Test public void t47_removeBody() {
     	document.getBody().setAttribute("foo", "bar");
     	document.getBody().remove();
     	Assert.assertEquals("bar", document.getBody().getAttribute("foo"));

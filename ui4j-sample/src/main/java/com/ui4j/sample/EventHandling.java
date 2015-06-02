@@ -23,16 +23,16 @@ public class EventHandling {
         body.append("<label>First Name</label><input id='txt' /><input type='button' value='click'></input>");
 
         // find the input element with an id #txt and bind the listener to the input event
-        document.query("#txt").bind("input", (h) -> {
+        document.query("#txt").get().bind("input", (h) -> {
             System.out.println(h.getTarget().getValue());
         });
 
         // find the button and bind the click listener
-        document.query("input[type='button']").bindClick((h) -> {
+        document.query("input[type='button']").get().bindClick((h) -> {
             System.out.println("clicked!");
         });
 
         // focus to text input
-        document.query("#txt").focus();
+        document.query("#txt").get().focus();
     }
 }

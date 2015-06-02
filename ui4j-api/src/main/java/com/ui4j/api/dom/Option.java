@@ -23,7 +23,7 @@ public class Option {
     }
 
     public Input getInput() {
-        return getElement().getInput();
+        return getElement().getInput().get();
     }
 
     public boolean isSelected() {

@@ -2,6 +2,7 @@ package com.ui4j.api.dom;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.ui4j.api.event.EventHandler;
 import com.ui4j.api.util.Point;
@@ -58,19 +59,19 @@ public interface Element extends Node {
 
     Element click();
 
-    Element getParent();
+    Optional<Element> getParent();
 
-    Input getInput();
+    Optional<Input> getInput();
 
-    CheckBox getCheckBox();
+    Optional<CheckBox> getCheckBox();
 
-    RadioButton getRadioButton();
+    Optional<RadioButton> getRadioButton();
 
-    Option getOption();
+    Optional<Option> getOption();
 
-    Form getForm();
+    Optional<Form> getForm();
 
-    Select getSelect();
+    Optional<Select> getSelect();
 
     String getId();
 
@@ -108,7 +109,7 @@ public interface Element extends Node {
 
     Element focus();
 
-    Element query(String selector);
+    Optional<Element> query(String selector);
 
     List<Element> queryAll(String selector);
 
@@ -140,9 +141,9 @@ public interface Element extends Node {
 
     String getCss(String propertyName);
 
-    Element getPrev();
+    Optional<Element> getPrev();
 
-    Element getNext();
+    Optional<Element> getNext();
 
     boolean hasChildNodes();
 
@@ -176,11 +177,9 @@ public interface Element extends Node {
 
     List<Element> getSiblings();
 
-    boolean isEmpty();
-
     Element getNextSibling();
 
-    Element closest(String selector);
+    Optional<Element> closest(String selector);
 
     Document getContentDocument();
 }

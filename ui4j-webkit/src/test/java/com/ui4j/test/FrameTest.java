@@ -34,7 +34,7 @@ public class FrameTest {
         Document documentFrame1 = frames.get(0).getContentDocument();
         Document documentFrame2 = frames.get(1).getContentDocument();
 
-        Assert.assertEquals("Frame1", documentFrame1.query("div").getInnerHTML());
-        Assert.assertEquals("Frame2", documentFrame2.query("div").getInnerHTML());
+        Assert.assertEquals("Frame1", documentFrame1.query("div").get().getInnerHTML());
+        Assert.assertEquals("Frame2", documentFrame2.query("div").get().getInnerHTML());
     }
 }

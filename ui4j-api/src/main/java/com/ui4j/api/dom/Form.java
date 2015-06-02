@@ -18,12 +18,12 @@ public class Form {
                 if (type.trim().isEmpty() || type.equalsIgnoreCase("text")) {
                     next.setValue("");
                 } else if (type.equalsIgnoreCase("radio")) {
-                    next.getRadioButton().setChecked(false);
+                    next.getRadioButton().get().setChecked(false);
                 } else if (type.equalsIgnoreCase("checkbox")) {
-                    next.getCheckBox().setChecked(false);
+                    next.getCheckBox().get().setChecked(false);
                 }
             } else if (next.getTagName().equalsIgnoreCase("select")) {
-                next.getSelect().clearSelection();
+                next.getSelect().get().clearSelection();
             }
         }
     }

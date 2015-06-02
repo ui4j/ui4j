@@ -16,7 +16,7 @@ public class Select {
         List<Element> list = element.getChildren();
         for (Element next : list) {
             if (next.getTagName().equals("option")) {
-                options.add(next.getOption());
+                options.add(next.getOption().get());
             }
         }
         return options;
@@ -73,12 +73,12 @@ public class Select {
     }
 
     public Select setDisabled(boolean state) {
-        getElement().getInput().setDisabled(state);
+        getElement().getInput().get().setDisabled(state);
         return this;
     }
 
     public boolean isDisabled() {
-        return getElement().getInput().isDisabled();
+        return getElement().getInput().get().isDisabled();
     }
 
     public void change() {

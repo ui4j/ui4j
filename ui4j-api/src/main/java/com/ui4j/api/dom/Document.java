@@ -1,12 +1,13 @@
 package com.ui4j.api.dom;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.ui4j.api.event.EventHandler;
 
 public interface Document {
 
-    Element query(String selector);
+    Optional<Element> query(String selector);
 
     List<Element> queryAll(String selector);
 
