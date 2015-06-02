@@ -284,7 +284,6 @@ public class WebKitPage implements Page, PageView, JavaScriptEngine {
 
             @Override
             public void handle(long now) {
-                System.out.println("foo");
                 pulseCounter += 1;
                 if (pulseCounter > 2) {
                     stop();
