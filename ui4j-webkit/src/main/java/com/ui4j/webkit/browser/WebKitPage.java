@@ -1,5 +1,10 @@
 package com.ui4j.webkit.browser;
 
+import static javafx.embed.swing.SwingFXUtils.fromFXImage;
+
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.net.URLStreamHandler;
 import java.text.NumberFormat;
@@ -8,17 +13,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javafx.animation.AnimationTimer;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.image.WritableImage;
 import javafx.scene.web.PromptData;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebEvent;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+
+import javax.imageio.ImageIO;
 
 import com.sun.webkit.network.URLs;
 import com.ui4j.api.browser.BrowserType;
@@ -264,5 +274,32 @@ public class WebKitPage implements Page, PageView, JavaScriptEngine {
 
     public int getPageId() {
         return pageId;
+    }
+
+    @Override
+    public void captureScreen(OutputStream os) {
+        final AnimationTimer timer = new AnimationTimer() {
+
+            private int pulseCounter;
+
+            @Override
+            public void handle(long now) {
+                System.out.println("foo");
+                pulseCounter += 1;
+                if (pulseCounter > 2) {
+                    stop();
+                    WebView view = (WebView) getView();
+                    WritableImage snapshot = view.snapshot(new SnapshotParameters(), null);
+                    BufferedImage image = fromFXImage(snapshot, null);
+                    try (OutputStream stream = os) {
+                        ImageIO.write(image, "png", stream);
+                    } catch (IOException e) {
+                        throw new Ui4jException(e);
+                    }
+                }
+            }
+        };
+
+        timer.start();
     }
 }

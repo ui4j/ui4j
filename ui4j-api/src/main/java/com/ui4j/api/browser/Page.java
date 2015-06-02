@@ -1,5 +1,7 @@
 package com.ui4j.api.browser;
 
+import java.io.OutputStream;
+
 import com.ui4j.api.dialog.AlertHandler;
 import com.ui4j.api.dialog.ConfirmHandler;
 import com.ui4j.api.dialog.PromptHandler;
@@ -34,4 +36,6 @@ public interface Page extends JavaScriptEngine, PageView, AutoCloseable {
     BrowserType getBrowserType();
 
     void close();
+
+    void captureScreen(OutputStream os);
 }
