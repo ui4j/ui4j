@@ -31,8 +31,8 @@ public class FrameTest {
     @Test public void test() {
         List<Element> frames = document.queryAll("frame");
 
-        Document documentFrame1 = frames.get(0).getContentDocument();
-        Document documentFrame2 = frames.get(1).getContentDocument();
+        Document documentFrame1 = frames.get(0).getContentDocument().get();
+        Document documentFrame2 = frames.get(1).getContentDocument().get();
 
         Assert.assertEquals("Frame1", documentFrame1.query("div").get().getInnerHTML());
         Assert.assertEquals("Frame2", documentFrame2.query("div").get().getInnerHTML());

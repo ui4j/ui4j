@@ -22,8 +22,8 @@ public class WaitTest {
     }
 
     @Test public void test() {
-        Assert.assertEquals("Hacker News", document.getTitle());
+        Assert.assertEquals("Hacker News", document.getTitle().get());
         document.query("a[href='https://github.com/HackerNews/API']").get().click();
-        Assert.assertEquals(document.getTitle(), "HackerNews/API · GitHub");
+        Assert.assertEquals(document.getTitle().get(), "HackerNews/API · GitHub");
     }
 }

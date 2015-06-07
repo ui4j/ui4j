@@ -9,7 +9,7 @@ import com.ui4j.api.util.Point;
 
 public interface Element extends Node {
 
-    String getAttribute(String name);
+    Optional<String> getAttribute(String name);
 
     Element setAttribute(String name, String value);
 
@@ -29,11 +29,11 @@ public interface Element extends Node {
 
     List<String> getClasses();
 
-    String getText();
+    Optional<String> getText();
 
     String getTagName();
 
-    String getValue();
+    Optional<String> getValue();
 
     Element setValue(String value);
 
@@ -43,7 +43,7 @@ public interface Element extends Node {
 
     Element setTitle(String title);
 
-    String getTitle();
+    Optional<String> getTitle();
 
     Element unbind(EventHandler handler);
 
@@ -73,7 +73,7 @@ public interface Element extends Node {
 
     Optional<Select> getSelect();
 
-    String getId();
+    Optional<String> getId();
 
     Element setId(String id);
 
@@ -139,7 +139,7 @@ public interface Element extends Node {
 
     Element setCss(String propertyName, String value, String important);
 
-    String getCss(String propertyName);
+    Optional<String> getCss(String propertyName);
 
     Optional<Element> getPrev();
 
@@ -167,7 +167,7 @@ public interface Element extends Node {
 
     boolean is(String selector);
 
-    Element getOffsetParent();
+    Optional<Element> getOffsetParent();
 
     Element replaceWith(String html);
 
@@ -177,9 +177,9 @@ public interface Element extends Node {
 
     List<Element> getSiblings();
 
-    Element getNextSibling();
+    Optional<Element> getNextSibling();
 
     Optional<Element> closest(String selector);
 
-    Document getContentDocument();
+    Optional<Document> getContentDocument();
 }

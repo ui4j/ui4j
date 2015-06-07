@@ -23,11 +23,11 @@ public interface Document {
 
     void setTitle(String title);
 
-    String getTitle();
+    Optional<String> getTitle();
 
     List<Element> parseHTML(String html);
 
     void trigger(String eventType, Element element);
 
-    Element getElementFromPoint(int x, int y);
+    Optional<Element> getElementFromPoint(int x, int y);
 }

@@ -35,7 +35,7 @@ public class HeaderTest {
 
         Page page = webKit.navigate("http://httpbin.org/get", config);
 
-        String content = page.getWindow().getDocument().getBody().getText();
+        String content = page.getWindow().getDocument().getBody().getText().get();
         JsonObject json = JsonObject.readFrom(content);
         JsonObject headers = json.get("headers").asObject();
         String bar = headers.get("Foo").asString();

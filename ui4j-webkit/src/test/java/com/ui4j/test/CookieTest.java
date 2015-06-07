@@ -64,7 +64,7 @@ public class CookieTest {
         });
 
         Page page = webKit.navigate("http://httpbin.org/cookies", config);
-        String content = page.getWindow().getDocument().getBody().getText();
+        String content = page.getWindow().getDocument().getBody().getText().get();
 
         JsonObject json = JsonObject.readFrom(content);
         JsonObject cookies = json.get("cookies").asObject();

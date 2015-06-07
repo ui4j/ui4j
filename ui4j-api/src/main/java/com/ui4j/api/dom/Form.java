@@ -1,6 +1,7 @@
 package com.ui4j.api.dom;
 
 import java.util.List;
+import java.util.Optional;
 
 public class Form {
 
@@ -14,14 +15,17 @@ public class Form {
         List<Element> inputs = element.find("input, select");
         for (Element next : inputs) {
             if (next.getTagName().equals("input")) {
-                String type = next.getAttribute("type");
-                if (type.trim().isEmpty() || type.equalsIgnoreCase("text")) {
-                    next.setValue("");
-                } else if (type.equalsIgnoreCase("radio")) {
-                    next.getRadioButton().get().setChecked(false);
-                } else if (type.equalsIgnoreCase("checkbox")) {
-                    next.getCheckBox().get().setChecked(false);
-                }
+            	Optional<String> attribute = next.getAttribute("type");
+            	if (attribute.isPresent()) {
+                    String type = attribute.get();
+                    if (type.trim().isEmpty() || type.equalsIgnoreCase("text")) {
+                        next.setValue("");
+                    } else if (type.equalsIgnoreCase("radio")) {
+                        next.getRadioButton().get().setChecked(false);
+                    } else if (type.equalsIgnoreCase("checkbox")) {
+                        next.getCheckBox().get().setChecked(false);
+                    }
+            	}
             } else if (next.getTagName().equalsIgnoreCase("select")) {
                 next.getSelect().get().clearSelection();
             }

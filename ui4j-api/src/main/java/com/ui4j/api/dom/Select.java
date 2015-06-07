@@ -2,6 +2,7 @@ package com.ui4j.api.dom;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Select {
 
@@ -60,12 +61,12 @@ public class Select {
         return getOptions().size();
     }
 
-    public Option getSelection() {
+    public Optional<Option> getSelection() {
         int index = getSelectedIndex();
         if (index < 0) {
-            return null;
+            return Optional.empty();
         }
-        return getOptions().get(index);
+        return Optional.of(getOptions().get(index));
     }
 
     public void clear() {

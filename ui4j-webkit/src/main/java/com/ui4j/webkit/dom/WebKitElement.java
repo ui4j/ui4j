@@ -61,12 +61,12 @@ public class WebKitElement implements Element, EventTarget {
     }
 
     @Override
-    public String getAttribute(String name) {
+    public Optional<String> getAttribute(String name) {
         String val = getHtmlElement().getAttribute(name);
         if (val == null) {
-            return "";
+            return Optional.empty();
         } else {
-            return val;
+            return Optional.of(val);
         }
     }
 
@@ -148,12 +148,12 @@ public class WebKitElement implements Element, EventTarget {
     }
 
     @Override
-    public String getText() {
+    public Optional<String> getText() {
         String textContent = element.getTextContent();
         if (textContent == null) {
-            return "";
+            return Optional.empty();
         }
-        return textContent;
+        return Optional.of(textContent);
     }
 
     @Override
@@ -172,17 +172,14 @@ public class WebKitElement implements Element, EventTarget {
     }
 
     @Override
-    public String getValue() {
+    public Optional<String> getValue() {
+        String value = null;
         if (element instanceof HTMLInputElement) {
-            String value = ((HTMLInputElement) element).getValue();
-            if (value == null) {
-                return "";
-            } else {
-                return value;
-            }
-        } else {
-            return "";
+            value = ((HTMLInputElement) element).getValue();
+        } else if (element instanceof HTMLOptionElement) {
+            value = ((HTMLOptionElement) element).getValue();
         }
+        return value == null ? Optional.empty() : Optional.of(value);
     }
 
     @Override
@@ -352,12 +349,12 @@ public class WebKitElement implements Element, EventTarget {
     }
 
     @Override
-    public String getId() {
+    public Optional<String> getId() {
         String id = getHtmlElement().getId();
         if (id == null) {
-            return "";
+            return Optional.empty();
         }
-        return id;
+        return Optional.of(id);
     }
 
     @Override
@@ -585,12 +582,12 @@ public class WebKitElement implements Element, EventTarget {
     }
 
     @Override
-    public String getCss(String propertyName) {
+    public Optional<String> getCss(String propertyName) {
         String value = getHtmlElement().getStyle().getPropertyValue(propertyName);
         if (value == null) {
-            return "";
+            return Optional.empty();
         }
-        return value;
+        return Optional.of(value);
     }
 
     @Override
@@ -633,12 +630,12 @@ public class WebKitElement implements Element, EventTarget {
     }
 
     @Override
-    public String getTitle() {
+    public Optional<String> getTitle() {
         String title = getHtmlElement().getTitle();
         if (title == null) {
-            return "";
+            return Optional.empty();
         }
-        return title;
+        return Optional.of(title);
     }
 
     @Override
@@ -775,10 +772,10 @@ public class WebKitElement implements Element, EventTarget {
     }
 
     @Override
-    public Element getOffsetParent() {
+    public Optional<Element> getOffsetParent() {
         HTMLElementImpl htmlElementImpl = getHtmlElement();
         org.w3c.dom.Element offsetParent = htmlElementImpl.getOffsetParent();
-        return ((WebKitPageContext) context).createElement(offsetParent, document, engine);
+        return Optional.of(((WebKitPageContext) context).createElement(offsetParent, document, engine));
     }
 
     @Override
@@ -867,26 +864,26 @@ public class WebKitElement implements Element, EventTarget {
     }
 
     @Override
-    public Element getNextSibling() {
+    public Optional<Element> getNextSibling() {
         HTMLElementImpl el = getHtmlElement();
         Node sibling = el.getNextSibling();
         Element element = ((WebKitPageContext) context).createElement(sibling, document, engine);
-        return element;
+        return Optional.of(element);
     }
 
-    public Document getContentDocument() {
+    public Optional<Document> getContentDocument() {
         if (element instanceof HTMLFrameElement) {
             DocumentImpl documentImpl = (DocumentImpl) ((HTMLFrameElementImpl) element).getContentDocument();
             WebKitPageContext webkitPageContext = (WebKitPageContext) context;
             Document document = webkitPageContext.getContentDocument(documentImpl, engine);
-            return document;
+            return Optional.of(document);
         } else if (element instanceof HTMLIFrameElement) {
             DocumentImpl documentImpl = (DocumentImpl) ((HTMLIFrameElement) element).getContentDocument();
             WebKitPageContext webkitPageContext = (WebKitPageContext) context;
             Document document = webkitPageContext.getContentDocument(documentImpl, engine);
-            return document;
+            return Optional.of(document);
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override

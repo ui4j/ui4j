@@ -21,8 +21,8 @@ public class ChildTest {
             Document document = page.getDocument();
             List<Element> children = document.query("ul").get().getChildren();
             assertEquals(2, children.size());
-            assertEquals("a", children.get(0).getText());
-            assertEquals("b", children.get(1).getText());
+            assertEquals("a", children.get(0).getText().get());
+            assertEquals("b", children.get(1).getText().get());
         }
     }
 }

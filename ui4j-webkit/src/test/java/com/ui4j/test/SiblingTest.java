@@ -22,8 +22,8 @@ public class SiblingTest {
             Document document = page.getDocument();
             List<Element> siblings = document.query(".b").get().getSiblings();
             assertEquals(2, siblings.size());
-            assertEquals("a", siblings.get(0).getText());
-            Assert.assertEquals("c", siblings.get(1).getText());
+            assertEquals("a", siblings.get(0).getText().get());
+            Assert.assertEquals("c", siblings.get(1).getText().get());
         }
     }
 
@@ -34,8 +34,8 @@ public class SiblingTest {
             Document document = page.getDocument();
             List<Element> siblings = document.query(".b").get().getSiblings("li");
             assertEquals(2, siblings.size());
-            assertEquals("a", siblings.get(0).getText());
-            Assert.assertEquals("c", siblings.get(1).getText());
+            assertEquals("a", siblings.get(0).getText().get());
+            Assert.assertEquals("c", siblings.get(1).getText().get());
         }
     }
 }

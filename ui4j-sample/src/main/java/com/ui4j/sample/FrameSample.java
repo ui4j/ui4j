@@ -23,8 +23,8 @@ public class FrameSample {
 
         List<Element> frames = page.getDocument().queryAll("frame");
 
-        Document documentFrame1 = frames.get(0).getContentDocument();
-        Document documentFrame2 = frames.get(1).getContentDocument();
+        Document documentFrame1 = frames.get(0).getContentDocument().get();
+        Document documentFrame2 = frames.get(1).getContentDocument().get();
 
         System.out.println(documentFrame1.query("div"));
         System.out.println(documentFrame2.query("div"));

@@ -50,7 +50,7 @@ public class BingSearch {
             // list all the results
             List<Element> result = doc.queryAll("h2 > a");
             result.forEach(e -> {
-                String title = e.getText();
+                String title = e.getText().get();
                 list.add(title);
                 System.out.println(title);
             });

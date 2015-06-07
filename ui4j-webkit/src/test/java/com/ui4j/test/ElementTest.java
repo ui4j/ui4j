@@ -59,9 +59,9 @@ public class ElementTest {
 
     @Test public void t04_attr() {
         document.getBody().setAttribute("foo", "bar");
-        Assert.assertEquals("bar", document.getBody().getAttribute("foo"));
+        Assert.assertEquals("bar", document.getBody().getAttribute("foo").get());
         document.getBody().removeAttribute("foo");
-        Assert.assertEquals("", document.getBody().getAttribute("foo"));
+        Assert.assertFalse(document.getBody().getAttribute("foo").isPresent());
         Assert.assertFalse(document.getBody().hasAttribute("foo"));
         Map<String, String> attributes = new HashMap<>();
         attributes.put("foo", "bar");
@@ -93,9 +93,9 @@ public class ElementTest {
 
     @Test public void t06_text() {
         Element div = document.createElement("div");
-        Assert.assertEquals("", div.getText());
+        Assert.assertEquals("", div.getText().get());
         div.setText("foo bar");
-        Assert.assertEquals("foo bar", div.getText());
+        Assert.assertEquals("foo bar", div.getText().get());
         div.remove();
     }
 
@@ -107,7 +107,7 @@ public class ElementTest {
     @Test public void t07_value() {
         Element input = document.createElement("input");
         document.getBody().append(input);
-        Assert.assertEquals("", input.getValue());
+        Assert.assertFalse(input.getValue().isPresent());
         input.setValue("foo bar");
         input.remove();
     }
@@ -143,9 +143,9 @@ public class ElementTest {
 
     @Test public void t09_id() {
         Element div = document.createElement("div");
-        Assert.assertEquals("", div.getId());
+        Assert.assertFalse(div.getId().isPresent());
         div.setId("foo");
-        Assert.assertEquals("foo", div.getId());
+        Assert.assertEquals("foo", div.getId().get());
         div.remove();
     }
 
@@ -338,15 +338,15 @@ public class ElementTest {
         Element element = document.parseHTML("<select><option value='foo1'>foo</option><option value='bar1'>bar</option></select>").get(0);
         Option option = element.query("option").get().getOption().get();
         Assert.assertNotNull(option);
-        Assert.assertEquals("foo", option.getText());
-        Assert.assertEquals("foo1", option.getValue());
+        Assert.assertEquals("foo", option.getElement().getText().get());
+        Assert.assertEquals("foo1", option.getElement().getValue().get());
         Assert.assertNotNull(option.getElement());
         Assert.assertNotNull(option.getElement());
         Assert.assertTrue(option.isSelected());
-        option.setText("foofoo");
-        Assert.assertEquals("foofoo", option.getText());
-        option.setValue("foo2");
-        Assert.assertEquals("foo2", option.getValue());
+        option.getElement().setText("foofoo");
+        Assert.assertEquals("foofoo", option.getElement().getText().get());
+        option.getElement().setValue("foo2");
+        Assert.assertEquals("foo2", option.getElement().getValue().get());
     }
 
     @Test public void t25_form() {
@@ -355,7 +355,7 @@ public class ElementTest {
         Assert.assertNotNull(form);
         form.clear();
         Element input = form.getElement().query("input").get();
-        Assert.assertEquals("", input.getValue());
+        Assert.assertTrue(input.getValue().isPresent());
         RadioButton radio = form.getElement().query("[type='radio']").get().getRadioButton().get();
         Assert.assertFalse(radio.isChecked());
         CheckBox checkBox = form.getElement().query("[type='checkbox']").get().getCheckBox().get();
@@ -388,27 +388,27 @@ public class ElementTest {
     @Test public void t30_css() {
         Element element = document.parseHTML("<div>foo</div>").get(0);
         element.setCss("color", "red");
-        String color = element.getCss("color");
+        String color = element.getCss("color").get();
         Assert.assertEquals("red", color);
         Map<String, String> map = new HashMap<>();
         map.put("font-family", "Verdana");
         map.put("font-size", "22px");
         element.setCss(map);
-        Assert.assertEquals("Verdana", element.getCss("font-family"));
-        Assert.assertEquals("22px", element.getCss("font-size"));
+        Assert.assertEquals("Verdana", element.getCss("font-family").get());
+        Assert.assertEquals("22px", element.getCss("font-size").get());
         element.setCss("background-color", "white", "!important");
-        Assert.assertEquals("color: red; font-size: 22px; font-family: Verdana; background-color: white !important;", element.getAttribute("style"));
+        Assert.assertEquals("color: red; font-size: 22px; font-family: Verdana; background-color: white !important;", element.getAttribute("style").get());
         element.removeCss("font-family");
-        Assert.assertEquals("", element.getCss("font-family"));
+        Assert.assertFalse(element.getCss("font-family").isPresent());
         element.remove();
     }
 
     @Test public void t31_title() {
         Element element = document.parseHTML("<div>foo</div>").get(0);
         document.getBody().append(element);
-        Assert.assertEquals("", element.getTitle());
+        Assert.assertFalse(element.getTitle().isPresent());
         element.setTitle("my title");
-        Assert.assertEquals("my title", element.getTitle());
+        Assert.assertEquals("my title", element.getTitle().get());
     }
 
     @Test public void t32_tabIndex() {
@@ -457,9 +457,9 @@ public class ElementTest {
     @Test public void t38_hide() {
         Element div = document.parseHTML("<div>foo</div>").get(0);
         div.hide();
-        Assert.assertEquals("none", div.getCss("display"));
+        Assert.assertEquals("none", div.getCss("display").get());
         div.show();
-        Assert.assertEquals("", div.getCss("display"));
+        Assert.assertFalse(div.getCss("display").isPresent());
     }
 
     @Test public void t39_clone() {
@@ -496,37 +496,27 @@ public class ElementTest {
         Assert.assertEquals("my div", document.query("#foofoo").get().getInnerHTML());
     }
 
-    @Test public void t43_siblings() {
-        Element div = document.parseHTML("<div><span class='f1'>foo1</span><span class='f1'>foo2</span><span>foo3</span><span>foo4</span></div>").get(0);
-        document.getBody().append(div);
-        Assert.assertEquals(4, div.getSiblings().size());
-        List<Element> siblings = div.getSiblings(".f1");
-        Assert.assertEquals(2, siblings.size());
-        Assert.assertEquals("foo1", siblings.get(0).getInnerHTML());
-        Assert.assertEquals("foo2", siblings.get(1).getInnerHTML());
-    }
-
-    @Test public void t44_emptyElement() {
+    @Test public void t43_emptyElement() {
         Optional<Element> div = document.getBody().query("#invalid-id");
         Assert.assertNotNull(div);
         Assert.assertFalse(div.isPresent());
     }
 
-    @Test public void t45_closest() {
+    @Test public void t44_closest() {
         Element div = document.parseHTML("<div><label>Name</label><div><input id='txtName' /><span><input id='txtSurname' /></span></div></div>").get(0);
-        Assert.assertEquals("txtName", div.closest("input").get().getId());
+        Assert.assertEquals("txtName", div.closest("input").get().getId().get());
     }
 
-    @Test public void t46_nextSibling() {
+    @Test public void t45_nextSibling() {
         Element span = document.parseHTML("<span><div>foo bar</div> my text</span>").get(0);
         Element div = span.query("div").get();
         Assert.assertEquals("div", div.getTagName());
-        Assert.assertEquals(" my text", div.getNextSibling().getText());
+        Assert.assertEquals(" my text", div.getNextSibling().get().getText().get());
     }
 
-    @Test public void t47_removeBody() {
+    @Test public void t46_removeBody() {
         document.getBody().setAttribute("foo", "bar");
         document.getBody().remove();
-        Assert.assertEquals("bar", document.getBody().getAttribute("foo"));
+        Assert.assertEquals("bar", document.getBody().getAttribute("foo").get());
     }
 }
