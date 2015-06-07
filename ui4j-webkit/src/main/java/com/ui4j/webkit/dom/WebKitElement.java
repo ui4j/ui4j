@@ -807,11 +807,15 @@ public class WebKitElement implements Element, EventTarget {
 
     @Override
     public List<Element> getSiblings(String selector) {
-        List<Element> children = getChildren();
+        Optional<Element> parent = getParent();
+        if (!parent.isPresent()) {
+            Collections.emptyList();
+        }
+        List<Element> children = parent.get().getChildren();
         List<Element> siblings = new ArrayList<>();
         for (int i = 0; i < children.size(); i++) {
             Element next = children.get(i);
-            if (next.is(selector)) {
+            if (next.is(selector) && !next.isSameNode(this)) {
                 siblings.add(next);
             }
         }
@@ -823,7 +827,11 @@ public class WebKitElement implements Element, EventTarget {
 
     @Override
     public List<Element> getSiblings() {
-        List<Element> children = getChildren();
+        Optional<Element> parent = getParent();
+        if (!parent.isPresent()) {
+            Collections.emptyList();
+        }
+        List<Element> children = parent.get().getChildren();
         List<Element> siblings = new ArrayList<>();
         for (int i = 0; i < children.size(); i++) {
             Element next = children.get(i);
