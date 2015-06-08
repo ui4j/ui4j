@@ -1,6 +1,7 @@
 package com.ui4j.test;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -36,6 +37,17 @@ public class SiblingTest {
             assertEquals(2, siblings.size());
             assertEquals("a", siblings.get(0).getText().get());
             Assert.assertEquals("c", siblings.get(1).getText().get());
+        }
+    }
+
+    @Test
+    public void testGetNextSibling() {
+        BrowserEngine webkit = BrowserFactory.getWebKit();
+        try (Page page = webkit.navigate(SiblingTest.class.getResource("/SiblingTest.html").toExternalForm())) {
+            Document document = page.getDocument();
+            Optional<Element> sibling = document.query(".b").get().getNextSibling();
+            Element element = sibling.get();
+            Assert.assertEquals("c", element.getText().get());
         }
     }
 }

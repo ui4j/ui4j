@@ -866,7 +866,7 @@ public class WebKitElement implements Element, EventTarget {
     @Override
     public Optional<Element> getNextSibling() {
         HTMLElementImpl el = getHtmlElement();
-        Node sibling = el.getNextSibling();
+        Node sibling = el.getNextElementSibling();
         Element element = ((WebKitPageContext) context).createElement(sibling, document, engine);
         return Optional.of(element);
     }
