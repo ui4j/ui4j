@@ -21,6 +21,7 @@ public class IsolatedSessionTest {
     public static void setup() {
         WebKitBrowserProvider provider = new WebKitBrowserProvider();
         engine = provider.create();
+        engine.clearCookies();
     }
 
     @Test
