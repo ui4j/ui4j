@@ -65,6 +65,15 @@ Headless Mode
 
 Ui4j can be run in "headless" mode using [Xfvb](http://en.wikipedia.org/wiki/Xvfb) or with using [Monocle](https://wiki.openjdk.java.net/display/OpenJFX/Monocle).
 
+```xml
+<dependency>
+    <groupId>org.jfxtras</groupId>
+    <artifactId>openjfx-monocle</artifactId>
+    <version>1.8.0_20</version>
+    <scope>test</scope>
+</dependency>
+```
+
 **Headless Mode with Xfvb**
 
 Sample configuration for ubuntu running with *headless* mode:
@@ -130,19 +139,22 @@ Here is another sampe code that list all front page news from Hacker News.
 ```java
 package com.ui4j.sample;
 
-import com.ui4j.api.browser.BrowserFactory;
+import static com.ui4j.api.browser.BrowserFactory.getWebKit;
+
+import com.ui4j.api.browser.Page;
 
 public class HackerNews {
 
     public static void main(String[] args) {
-        BrowserFactory
-            .getWebKit()
-            .navigate("https://news.ycombinator.com")
-            .getDocument()
-            .queryAll(".title a")
-            .forEach(e -> {
-                System.out.println(e.getText());
-            });
+
+        try (Page page = getWebKit().navigate("https://news.ycombinator.com")) {
+            page
+                .getDocument()
+                .queryAll(".title a")
+                .forEach(e -> {
+                    System.out.println(e.getText().get());
+                });
+        }
     }
 }
 ```
