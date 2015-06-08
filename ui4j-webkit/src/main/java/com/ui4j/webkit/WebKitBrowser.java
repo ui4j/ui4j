@@ -155,6 +155,7 @@ class WebKitBrowser implements BrowserEngine {
         @Override
         public void run() {
             if (Platform.isFxApplicationThread()) {
+            	launchedJFX.set(false);
                 Platform.exit();
             }
             latch.countDown();
