@@ -57,20 +57,12 @@ public class Select {
         return options.get(index);
     }
 
-    public int getLength() {
-        return getOptions().size();
-    }
-
     public Optional<Option> getSelection() {
         int index = getSelectedIndex();
         if (index < 0) {
             return Optional.empty();
         }
         return Optional.of(getOptions().get(index));
-    }
-
-    public void clear() {
-        element.empty();
     }
 
     public Select setDisabled(boolean state) {
