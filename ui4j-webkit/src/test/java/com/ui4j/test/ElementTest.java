@@ -328,7 +328,7 @@ public class ElementTest {
         select.change();
         Option option = select.getOption(0);
         Assert.assertNotNull(option);
-        Assert.assertEquals(2, select.getLength());
+        Assert.assertEquals(2, select.getOptions().size());
         Assert.assertFalse(select.isDisabled());
         select.setDisabled(true);
         Assert.assertTrue(select.isDisabled());
