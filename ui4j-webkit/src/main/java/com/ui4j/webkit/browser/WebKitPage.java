@@ -131,24 +131,22 @@ public class WebKitPage implements Page, PageView, JavaScriptEngine {
         }
     }
 
-    public WebKitPage(WebView webView, WebKitJavaScriptEngine engine, Window window, Document document, int pageId) {
+    public WebKitPage(WebView webView, WebKitJavaScriptEngine engine, Window window, Stage stage, Scene scene, Document document, int pageId) {
         this.webView = webView;
         this.window = window;
         this.document = document;
         this.engine = engine;
         this.pageId = pageId;
+        this.stage = stage;
+        this.scene = scene;
     }
 
     @Override
     public void show(boolean maximized) {
-        if (stage == null && scene == null) {
-            stage = new Stage();
-            scene = new Scene(webView, 600, 600);
-            stage.setMaximized(maximized);
-            stage.setScene(scene);
-            stage.toFront();
-            stage.show();
-        }
+        stage.setMaximized(maximized);
+        stage.centerOnScreen();
+        stage.toFront();
+        stage.show();
     }
 
     @Override

@@ -26,7 +26,7 @@ public class CnnTechNews {
         List<Element> techNews = doc.queryAll(".cd__headline-text");
 
         techNews.forEach(n -> {
-            System.out.println(n.getText());
+            System.out.println(n.getText().get());
         });
 
         browser.shutdown();

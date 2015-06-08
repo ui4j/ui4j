@@ -20,6 +20,7 @@ import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
+import javafx.scene.Scene;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
@@ -82,7 +83,8 @@ class WebKitBrowser implements BrowserEngine {
     
     private WebKitProxy pageFactory = new WebKitProxy(WebKitPage.class, new Class[] {
                                                 WebView.class, WebKitJavaScriptEngine.class,
-                                                Window.class, Document.class, int.class
+                                                Window.class, Stage.class, Scene.class,
+                                                Document.class, int.class
     });
 
     WebKitBrowser(ShutdownListener shutdownListener) {
@@ -248,6 +250,10 @@ class WebKitBrowser implements BrowserEngine {
 
         private Ui4jHandler handler;
 
+        private Stage stage;
+
+        private Scene scene;
+
         public WebViewCreator(String url,
                                 PageContext context, DocumentListener listener, PageConfiguration configuration, Ui4jHandler handler) {
             this(url, context, listener, null, configuration, handler);
@@ -267,6 +273,11 @@ class WebKitBrowser implements BrowserEngine {
         @Override
         public void run() {
             webView = new WebView();
+
+            stage = new Stage();
+            scene = new Scene(webView, 600, 600);
+            stage.setScene(scene);
+
             engine = new WebKitJavaScriptEngine(webView.getEngine());
             if (configuration.getUserAgent() != null) {
                 engine.getEngine().setUserAgent(configuration.getUserAgent());
@@ -281,9 +292,8 @@ class WebKitBrowser implements BrowserEngine {
                 engine.getEngine().getLoadWorker().stateProperty().addListener(loadListener);
             }
             installErrorHandler();
-            if (latch != null) {
-                latch.countDown();
-            }
+
+            latch.countDown();
         }
 
         protected void installErrorHandler() {
@@ -298,6 +308,14 @@ class WebKitBrowser implements BrowserEngine {
 
         public WebKitJavaScriptEngine getEngine() {
             return engine;
+        }
+
+        public Stage getStage() {
+            return stage;
+        }
+
+        public Scene getScene() {
+            return scene;
         }
     }
 
@@ -358,7 +376,11 @@ class WebKitBrowser implements BrowserEngine {
         }
 
         WebView webView = creator.getWebView();
-        WebKitPage page = ((WebKitPageContext) context).newPage(webView, creator.getEngine(), adapter.getWindow(), adapter.getDocument(), pageId);
+        Stage stage = creator.getStage();
+        Scene scene = creator.getScene();
+        WebKitPage page = ((WebKitPageContext) context).newPage(webView, creator.getEngine(), adapter.getWindow(),
+                stage, scene,
+                adapter.getDocument(), pageId);
 
         return page;
     }

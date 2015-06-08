@@ -6,9 +6,11 @@ import java.util.WeakHashMap;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebErrorEvent;
 import javafx.scene.web.WebView;
+import javafx.stage.Stage;
 
 import com.sun.webkit.dom.DocumentImpl;
 import com.ui4j.api.browser.PageConfiguration;
@@ -163,9 +165,9 @@ public class WebKitPageContext implements PageContext {
         return (Window) windowFactory.newInstance(new Object[] { document });
     }
 
-    public WebKitPage newPage(Object view, JavaScriptEngine engine, Window window, Document document, int pageId) {
+    public WebKitPage newPage(Object view, JavaScriptEngine engine, Window window, Stage stage, Scene scene, Document document, int pageId) {
         WebView webView = (WebView) view;
-        WebKitPage page = (WebKitPage) pageFactory.newInstance(new Object[] { webView, engine, window, document, pageId });
+        WebKitPage page = (WebKitPage) pageFactory.newInstance(new Object[] { webView, engine, window, stage, scene, document, pageId });
         page.addDocumentListener(new GlobalEventCleaner());
         return page;
     }

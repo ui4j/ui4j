@@ -14,9 +14,11 @@ public class WaitTest {
 
     private static Document document;
 
+    private static Page page;
+
     @BeforeClass public static void beforeTest() {
         BrowserEngine browser = BrowserFactory.getBrowser(BrowserType.WebKit);
-        Page page = browser.navigate("https://news.ycombinator.com");
+        page = browser.navigate("https://news.ycombinator.com");
         page.show();
         document = page.getDocument();
     }
@@ -25,5 +27,6 @@ public class WaitTest {
         Assert.assertEquals("Hacker News", document.getTitle().get());
         document.query("a[href='https://github.com/HackerNews/API']").get().click();
         Assert.assertEquals(document.getTitle().get(), "HackerNews/API · GitHub");
+        page.close();
     }
 }
