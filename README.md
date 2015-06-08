@@ -65,15 +65,6 @@ Headless Mode
 
 Ui4j can be run in "headless" mode using [Xfvb](http://en.wikipedia.org/wiki/Xvfb) or with using [Monocle](https://wiki.openjdk.java.net/display/OpenJFX/Monocle).
 
-```xml
-<dependency>
-    <groupId>org.jfxtras</groupId>
-    <artifactId>openjfx-monocle</artifactId>
-    <version>1.8.0_20</version>
-    <scope>test</scope>
-</dependency>
-```
-
 **Headless Mode with Xfvb**
 
 Sample configuration for ubuntu running with *headless* mode:
@@ -91,6 +82,17 @@ Sample configuration for ubuntu running with *headless* mode:
 
 1. Download or add the maven dependency of latest [openjfx-monocle](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22openjfx-monocle%22)
 2. Add **-Dui4j.headless** Java system parameter from command line or with using api ```System.setProperty("ui4j.headless", "true");```
+
+monocle dependency:
+
+```xml
+<dependency>
+    <groupId>org.jfxtras</groupId>
+    <artifactId>openjfx-monocle</artifactId>
+    <version>1.8.0_20</version>
+    <scope>test</scope>
+</dependency>
+```
 
 Logging
 -------
