@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ ElementTest.class,
+@SuiteClasses({ ElementTest.class, FormClearTest.class,
                 SizzleTest.class, DialogTest.class,
                 JavaScriptEngineTest.class, UserAgentTest.class,
                 CookieTest.class, SiblingTest.class, ChildTest.class })

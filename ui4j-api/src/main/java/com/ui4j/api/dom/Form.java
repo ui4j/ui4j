@@ -12,22 +12,25 @@ public class Form {
     }
 
     public void clear() {
-        List<Element> inputs = element.find("input, select");
+        List<Element> inputs = element.find("input, select, textarea");
         for (Element next : inputs) {
-            if (next.getTagName().equals("input")) {
-            	Optional<String> attribute = next.getAttribute("type");
-            	if (attribute.isPresent()) {
+            String tag = next.getTagName();
+            if (tag.equals("input")) {
+                Optional<String> attribute = next.getAttribute("type");
+                if (attribute.isPresent()) {
                     String type = attribute.get();
-                    if (type.trim().isEmpty() || type.equalsIgnoreCase("text")) {
-                        next.setValue("");
-                    } else if (type.equalsIgnoreCase("radio")) {
+                    if (type.equalsIgnoreCase("radio")) {
                         next.getRadioButton().get().setChecked(false);
                     } else if (type.equalsIgnoreCase("checkbox")) {
                         next.getCheckBox().get().setChecked(false);
                     }
-            	}
-            } else if (next.getTagName().equalsIgnoreCase("select")) {
+                } else {
+                    next.setValue("");
+                }
+            } else if (tag.equals("select")) {
                 next.getSelect().get().clearSelection();
+            } else if (tag.equals("textarea")) {
+                next.setText("");
             }
         }
     }

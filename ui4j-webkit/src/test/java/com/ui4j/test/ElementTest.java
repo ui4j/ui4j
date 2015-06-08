@@ -21,10 +21,8 @@ import com.ui4j.api.browser.Page;
 import com.ui4j.api.dom.CheckBox;
 import com.ui4j.api.dom.Document;
 import com.ui4j.api.dom.Element;
-import com.ui4j.api.dom.Form;
 import com.ui4j.api.dom.Input;
 import com.ui4j.api.dom.Option;
-import com.ui4j.api.dom.RadioButton;
 import com.ui4j.api.dom.Select;
 import com.ui4j.api.event.DomEvent;
 import com.ui4j.api.event.EventHandler;
@@ -349,21 +347,8 @@ public class ElementTest {
         Assert.assertEquals("foo2", option.getElement().getValue().get());
     }
 
-    @Test public void t25_form() {
-        Element element = document.parseHTML("<form><input value='foo' /><input type='radio' checked /><input type='checkbox' checked /><select><option>foo</option></select></form>").get(0);
-        Form form = element.getForm().get();
-        Assert.assertNotNull(form);
-        form.clear();
-        Element input = form.getElement().query("input").get();
-        Assert.assertTrue(input.getValue().isPresent());
-        RadioButton radio = form.getElement().query("[type='radio']").get().getRadioButton().get();
-        Assert.assertFalse(radio.isChecked());
-        CheckBox checkBox = form.getElement().query("[type='checkbox']").get().getCheckBox().get();
-        Assert.assertFalse(checkBox.isChecked());
-        Assert.assertEquals(-1, form.getElement().query("select").get().getSelect().get().getSelectedIndex());
-    }
 
-    @Test public void t26_prepend() {
+    @Test public void t25_prepend() {
         Element element = document.parseHTML("<div>foo</div>").get(0);
         element.prepend("<span>bar</span>");
         Assert.assertEquals("<div><span>bar</span>foo</div>", element.getOuterHTML());
@@ -372,20 +357,20 @@ public class ElementTest {
         Assert.assertEquals("<div><span>bar</span><span>bar</span>foo</div>", element.getOuterHTML());
     }
 
-    @Test public void t28_offset() {
+    @Test public void t26_offset() {
         Element element = document.parseHTML("<div style='position: absolute; left: 20px; top: 20px'>foo</div>").get(0);
         document.getBody().append(element);
         Point p = new Point(20, 20);
         Assert.assertEquals(p, element.getOffset());
     }
 
-    @Test public void t29_scrollIntoView() {
+    @Test public void t27_scrollIntoView() {
         Element element = document.parseHTML("<div style='position: absolute; left: 20px; top: 20px'>foo</div>").get(0);
         document.getBody().append(element);
         element.scrollIntoView(true);
     }
 
-    @Test public void t30_css() {
+    @Test public void t28_css() {
         Element element = document.parseHTML("<div>foo</div>").get(0);
         element.setCss("color", "red");
         String color = element.getCss("color").get();
@@ -403,7 +388,7 @@ public class ElementTest {
         element.remove();
     }
 
-    @Test public void t31_title() {
+    @Test public void t29_title() {
         Element element = document.parseHTML("<div>foo</div>").get(0);
         document.getBody().append(element);
         Assert.assertFalse(element.getTitle().isPresent());
@@ -411,14 +396,14 @@ public class ElementTest {
         Assert.assertEquals("my title", element.getTitle().get());
     }
 
-    @Test public void t32_tabIndex() {
+    @Test public void t30_tabIndex() {
         Element element = document.parseHTML("<input />").get(0);
         Assert.assertEquals(0, element.getTabIndex());
         element.setTabIndex(1);
         Assert.assertEquals(1, element.getTabIndex());
     }
 
-    @Test public void t33_equalNode() {
+    @Test public void t31_equalNode() {
         Element input1 = document.parseHTML("<input />").get(0);
         Element input2 = document.parseHTML("<input />").get(0);
         Assert.assertTrue(input1.isEqualNode(input2));
@@ -427,7 +412,7 @@ public class ElementTest {
         Assert.assertTrue(input2.isEqualNode(input1));
     }
 
-    @Test public void t34_sameNode() {
+    @Test public void t32_sameNode() {
         Element input1 = document.parseHTML("<input />").get(0);
         Element input2 = document.parseHTML("<input />").get(0);
         Assert.assertFalse(input1.isSameNode(input2));
@@ -436,7 +421,7 @@ public class ElementTest {
         Assert.assertFalse(input2.isSameNode(input1));
     }
 
-    @Test public void t35_height() {
+    @Test public void t33_height() {
         Element div = document.parseHTML("<div style='height: 20px; width: 20px'>foo</div>").get(0);
         document.getBody().append(div);
         Assert.assertEquals(20, div.getOuterHeight(), 0);
@@ -445,7 +430,7 @@ public class ElementTest {
         Assert.assertEquals(20, div.getClientWidth(), 0);
     }
 
-    @Test public void t37_appendTo() {
+    @Test public void t34_appendTo() {
         Element div = document.parseHTML("<div>foo</div>").get(0);
         document.getBody().append(div);
         Element span = document.parseHTML("<span>bar</span>").get(0);
@@ -454,7 +439,7 @@ public class ElementTest {
         Assert.assertEquals("<span>bar<div>foo</div></span>", span.getOuterHTML());
     }
 
-    @Test public void t38_hide() {
+    @Test public void t35_hide() {
         Element div = document.parseHTML("<div>foo</div>").get(0);
         div.hide();
         Assert.assertEquals("none", div.getCss("display").get());
@@ -462,7 +447,7 @@ public class ElementTest {
         Assert.assertFalse(div.getCss("display").isPresent());
     }
 
-    @Test public void t39_clone() {
+    @Test public void t36_clone() {
         Element div = document.parseHTML("<div>foo</div>").get(0);
         document.getBody().append(div);
         Element clone = div.cloneElement();
@@ -471,21 +456,21 @@ public class ElementTest {
         div.remove();
     }
 
-    @Test public void t40_offsetParent() {
+    @Test public void t37_offsetParent() {
         Element div = document.parseHTML("<div>foo<span id='bar'>bar</span></div>").get(0);
         document.getBody().append(div);
         div.getOffsetParent();
         div.remove();
     }
 
-    @Test public void t41_possition() {
+    @Test public void t38_possition() {
         Element div = document.parseHTML("<div style=\"position: absolute; top: 20px; left: 20px\">foo</div>").get(0);
         document.getBody().append(div);
         Assert.assertEquals(new Point(20, 20), div.getPosition());
         div.remove();
     }
 
-    @Test public void t42_replaceWith() {
+    @Test public void t39_replaceWith() {
         Element div = document.parseHTML("<div id='barfoo'><span id='foobar'>my text</span></div>").get(0);
         document.getBody().append(div);
         document.query("#foobar").get().replaceWith("my text content");
@@ -496,18 +481,18 @@ public class ElementTest {
         Assert.assertEquals("my div", document.query("#foofoo").get().getInnerHTML());
     }
 
-    @Test public void t43_emptyElement() {
+    @Test public void t40_emptyElement() {
         Optional<Element> div = document.getBody().query("#invalid-id");
         Assert.assertNotNull(div);
         Assert.assertFalse(div.isPresent());
     }
 
-    @Test public void t44_closest() {
+    @Test public void t41_closest() {
         Element div = document.parseHTML("<div><label>Name</label><div><input id='txtName' /><span><input id='txtSurname' /></span></div></div>").get(0);
         Assert.assertEquals("txtName", div.closest("input").get().getId().get());
     }
 
-    @Test public void t45_removeBody() {
+    @Test public void t42_removeBody() {
         document.getBody().setAttribute("foo", "bar");
         document.getBody().remove();
         Assert.assertEquals("bar", document.getBody().getAttribute("foo").get());

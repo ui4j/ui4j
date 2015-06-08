@@ -15,6 +15,11 @@ public class CheckBox {
 
     public CheckBox setChecked(boolean state) {
         element.setProperty("checked", state);
+        if (!state) {
+            element.removeAttribute("checked");
+        } else {
+            element.setAttribute("checked", "checked");
+        }
         return this;
     }
 
