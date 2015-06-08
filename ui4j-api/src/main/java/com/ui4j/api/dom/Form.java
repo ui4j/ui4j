@@ -18,11 +18,13 @@ public class Form {
             if (tag.equals("input")) {
                 Optional<String> attribute = next.getAttribute("type");
                 if (attribute.isPresent()) {
-                    String type = attribute.get();
+                    String type = attribute.get().trim();
                     if (type.equalsIgnoreCase("radio")) {
                         next.getRadioButton().get().setChecked(false);
                     } else if (type.equalsIgnoreCase("checkbox")) {
                         next.getCheckBox().get().setChecked(false);
+                    } else if (type.equalsIgnoreCase("text")) {
+                        next.setValue("");
                     }
                 } else {
                     next.setValue("");
