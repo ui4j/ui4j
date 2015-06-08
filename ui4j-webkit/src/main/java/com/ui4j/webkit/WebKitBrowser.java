@@ -2,6 +2,7 @@ package com.ui4j.webkit;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.net.CookieHandler;
 import java.net.URLConnection;
 import java.net.URLStreamHandler;
 import java.util.Collections;
@@ -29,6 +30,7 @@ import netscape.javascript.JSObject;
 import org.w3c.dom.Node;
 
 import com.sun.webkit.dom.DocumentImpl;
+import com.sun.webkit.network.CookieManager;
 import com.sun.webkit.network.URLs;
 import com.ui4j.api.browser.BrowserEngine;
 import com.ui4j.api.browser.BrowserType;
@@ -155,7 +157,7 @@ class WebKitBrowser implements BrowserEngine {
         @Override
         public void run() {
             if (Platform.isFxApplicationThread()) {
-            	launchedJFX.set(false);
+                launchedJFX.set(false);
                 Platform.exit();
             }
             latch.countDown();
@@ -455,4 +457,23 @@ class WebKitBrowser implements BrowserEngine {
             throw new Ui4jException(e);
         }
      }
+
+    @Override
+    @SuppressWarnings("rawtypes")
+    public synchronized void clearCookies() {
+        CookieHandler cookieHandler = CookieHandler.getDefault();
+        CookieManager manager = (CookieManager) cookieHandler;
+        Field fieldStore;
+        try {
+            fieldStore = manager.getClass().getDeclaredField("store");
+            fieldStore.setAccessible(true);
+            Object store = fieldStore.get(manager);
+            Field fieldBuckets = store.getClass().getDeclaredField("buckets");
+            fieldBuckets.setAccessible(true);
+            Map buckets = (Map) fieldBuckets.get(store);
+            buckets.clear();
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+            throw new Ui4jException(e);
+        }
+    }
 }

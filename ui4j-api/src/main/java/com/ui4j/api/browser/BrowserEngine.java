@@ -125,4 +125,6 @@ public interface BrowserEngine {
      *     that is implemented by this instance.
      */
     BrowserType getBrowserType();
+
+    void clearCookies();
 }
