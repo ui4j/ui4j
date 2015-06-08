@@ -93,7 +93,7 @@ public class ElementTest {
 
     @Test public void t06_text() {
         Element div = document.createElement("div");
-        Assert.assertEquals("", div.getText().get());
+        Assert.assertFalse(div.getText().isPresent());
         div.setText("foo bar");
         Assert.assertEquals("foo bar", div.getText().get());
         div.remove();
@@ -507,14 +507,7 @@ public class ElementTest {
         Assert.assertEquals("txtName", div.closest("input").get().getId().get());
     }
 
-    @Test public void t45_nextSibling() {
-        Element span = document.parseHTML("<span><div>foo bar</div> my text</span>").get(0);
-        Element div = span.query("div").get();
-        Assert.assertEquals("div", div.getTagName());
-        Assert.assertEquals(" my text", div.getNextSibling().get().getText().get());
-    }
-
-    @Test public void t46_removeBody() {
+    @Test public void t45_removeBody() {
         document.getBody().setAttribute("foo", "bar");
         document.getBody().remove();
         Assert.assertEquals("bar", document.getBody().getAttribute("foo").get());

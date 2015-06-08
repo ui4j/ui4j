@@ -150,7 +150,7 @@ public class WebKitElement implements Element, EventTarget {
     @Override
     public Optional<String> getText() {
         String textContent = element.getTextContent();
-        if (textContent == null) {
+        if (textContent == null || textContent.isEmpty()) {
             return Optional.empty();
         }
         return Optional.of(textContent);
@@ -867,8 +867,12 @@ public class WebKitElement implements Element, EventTarget {
     public Optional<Element> getNextSibling() {
         HTMLElementImpl el = getHtmlElement();
         Node sibling = el.getNextElementSibling();
-        Element element = ((WebKitPageContext) context).createElement(sibling, document, engine);
-        return Optional.of(element);
+        if (sibling == null) {
+            return Optional.empty();
+        } else {
+            Element element = ((WebKitPageContext) context).createElement(sibling, document, engine);
+            return Optional.of(element);
+        }
     }
 
     public Optional<Document> getContentDocument() {
