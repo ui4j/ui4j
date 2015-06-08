@@ -81,9 +81,9 @@ public class WebKitDocument implements Document, EventTarget {
 
     @Override
     public Optional<String> getTitle() {
-    	String title = document.getTitle();
-        if (title == null) {
-        	return Optional.empty();
+        String title = document.getTitle();
+        if (title == null || title.isEmpty()) {
+            return Optional.empty();
         }
         return Optional.of(title);
     }
@@ -137,10 +137,10 @@ public class WebKitDocument implements Document, EventTarget {
 
     @Override
     public Optional<Element> getElementFromPoint(int x, int y) {
-    	org.w3c.dom.Element w3cElement = document.elementFromPoint(x, y);
-    	if (w3cElement == null) {
-    		return Optional.empty();
-    	}
+        org.w3c.dom.Element w3cElement = document.elementFromPoint(x, y);
+        if (w3cElement == null) {
+            return Optional.empty();
+        }
         Element element = ((WebKitPageContext) context).createElement(w3cElement, this, engine);
         return Optional.of(element);
     }

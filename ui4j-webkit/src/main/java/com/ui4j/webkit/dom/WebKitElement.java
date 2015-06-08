@@ -63,7 +63,7 @@ public class WebKitElement implements Element, EventTarget {
     @Override
     public Optional<String> getAttribute(String name) {
         String val = getHtmlElement().getAttribute(name);
-        if (val == null) {
+        if (val == null || val.isEmpty()) {
             return Optional.empty();
         } else {
             return Optional.of(val);
@@ -179,7 +179,7 @@ public class WebKitElement implements Element, EventTarget {
         } else if (element instanceof HTMLOptionElement) {
             value = ((HTMLOptionElement) element).getValue();
         }
-        return value == null ? Optional.empty() : Optional.of(value);
+        return value == null || value.isEmpty() ? Optional.empty() : Optional.of(value);
     }
 
     @Override
@@ -351,7 +351,7 @@ public class WebKitElement implements Element, EventTarget {
     @Override
     public Optional<String> getId() {
         String id = getHtmlElement().getId();
-        if (id == null) {
+        if (id == null || id.isEmpty()) {
             return Optional.empty();
         }
         return Optional.of(id);
@@ -584,7 +584,7 @@ public class WebKitElement implements Element, EventTarget {
     @Override
     public Optional<String> getCss(String propertyName) {
         String value = getHtmlElement().getStyle().getPropertyValue(propertyName);
-        if (value == null) {
+        if (value == null || value.isEmpty()) {
             return Optional.empty();
         }
         return Optional.of(value);
@@ -632,7 +632,7 @@ public class WebKitElement implements Element, EventTarget {
     @Override
     public Optional<String> getTitle() {
         String title = getHtmlElement().getTitle();
-        if (title == null) {
+        if (title == null || title.isEmpty()) {
             return Optional.empty();
         }
         return Optional.of(title);
