@@ -48,7 +48,7 @@ import com.ui4j.api.util.Ui4jException;
 import com.ui4j.spi.PageContext;
 import com.ui4j.spi.ShutdownListener;
 import com.ui4j.spi.Ui4jExecutionTimeoutException;
-import com.ui4j.webkit.browser.Ui4jHandler;
+import com.ui4j.webkit.browser.WebKitURLHandler;
 import com.ui4j.webkit.browser.WebKitPage;
 import com.ui4j.webkit.browser.WebKitPageContext;
 import com.ui4j.webkit.browser.WebKitWindow;
@@ -190,9 +190,9 @@ class WebKitBrowser implements BrowserEngine {
 
         private WebKitJavaScriptEngine engine;
 
-        private Ui4jHandler handler;
+        private WebKitURLHandler handler;
 
-        public WorkerLoadListener(WebKitJavaScriptEngine engine, PageContext context, DocumentListener documentListener, Ui4jHandler handler) {
+        public WorkerLoadListener(WebKitJavaScriptEngine engine, PageContext context, DocumentListener documentListener, WebKitURLHandler handler) {
             this.engine = engine;
             this.configuration = (WebKitPageContext) context;
             this.documentListener = documentListener;
@@ -210,9 +210,11 @@ class WebKitBrowser implements BrowserEngine {
 
                 if (configuration.getConfiguration().getInterceptor() != null && handler != null) {
                     URLConnection connection = handler.getConnection();
-                    Map<String, List<String>> headers = connection.getHeaderFields();
-                    Response response = new Response(window.getLocation(), Collections.unmodifiableMap(new HashMap<>(headers)));
-                    configuration.getConfiguration().getInterceptor().afterLoad(response);
+                    if (handler.getConnection() != null) {
+                        Map<String, List<String>> headers = connection.getHeaderFields();
+                        Response response = new Response(window.getLocation(), Collections.unmodifiableMap(new HashMap<>(headers)));
+                        configuration.getConfiguration().getInterceptor().afterLoad(response);
+                    }
                 }
             }
         }
@@ -251,19 +253,19 @@ class WebKitBrowser implements BrowserEngine {
 
         private PageConfiguration configuration;
 
-        private Ui4jHandler handler;
+        private WebKitURLHandler handler;
 
         private Stage stage;
 
         private Scene scene;
 
         public WebViewCreator(String url,
-                                PageContext context, DocumentListener listener, PageConfiguration configuration, Ui4jHandler handler) {
+                                PageContext context, DocumentListener listener, PageConfiguration configuration, WebKitURLHandler handler) {
             this(url, context, listener, null, configuration, handler);
         }
 
         public WebViewCreator(String url,
-                PageContext context, DocumentListener listener, CountDownLatch latch, PageConfiguration configuration, Ui4jHandler handler) {
+                PageContext context, DocumentListener listener, CountDownLatch latch, PageConfiguration configuration, WebKitURLHandler handler) {
             this.url = url;
             this.latch = latch;
             this.context = context;
@@ -338,11 +340,11 @@ class WebKitBrowser implements BrowserEngine {
 
         Interceptor interceptor = configuration.getInterceptor();
         String ui4jUrl = url;
-        Ui4jHandler handler = null;
+        WebKitURLHandler handler = null;
         if (interceptor != null) {
             String ui4jProtocol = "ui4j-" + pageId;
             ui4jUrl = ui4jProtocol + ":" + url;
-            handler = new Ui4jHandler(interceptor);
+            handler = new WebKitURLHandler(interceptor);
             try {
                 // HACK #26
                 Field handlerMap = URLs.class.getDeclaredField("handlerMap");

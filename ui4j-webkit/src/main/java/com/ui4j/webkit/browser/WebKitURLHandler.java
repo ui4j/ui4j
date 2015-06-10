@@ -10,7 +10,7 @@ import java.util.Map;
 import com.ui4j.api.interceptor.Interceptor;
 import com.ui4j.api.interceptor.Request;
 
-public class Ui4jHandler extends URLStreamHandler {
+public class WebKitURLHandler extends URLStreamHandler {
 
     private String context;
 
@@ -22,7 +22,7 @@ public class Ui4jHandler extends URLStreamHandler {
 
     private CookieHandler cookieHandler;
 
-    public Ui4jHandler(Interceptor interceptor) {
+    public WebKitURLHandler(Interceptor interceptor) {
         this.interceptor = interceptor;
     }
 
