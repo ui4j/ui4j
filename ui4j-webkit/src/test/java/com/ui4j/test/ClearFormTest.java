@@ -13,7 +13,7 @@ import com.ui4j.webkit.WebKitBrowserProvider;
 import static org.junit.Assert.assertEquals;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class IsolatedSessionTest {
+public class ClearFormTest {
 
     private static BrowserEngine engine;
 
