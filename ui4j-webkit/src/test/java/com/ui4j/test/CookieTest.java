@@ -40,8 +40,8 @@ public class CookieTest {
 
         Page page = webKit.navigate("http://httpbin.org/cookies/set?k1=v1&k2=v2", config);
 
-        Assert.assertEquals("v1", response.getCookie("k1").getValue());
-        Assert.assertEquals("v2", response.getCookie("k2").getValue());        
+        Assert.assertEquals("v1", response.getCookie("k1").get().getValue());
+        Assert.assertEquals("v2", response.getCookie("k2").get().getValue());        
 
         page.close();
     }

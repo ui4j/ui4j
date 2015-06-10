@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class Response {
 
@@ -21,13 +22,13 @@ public class Response {
         return headers;
     }
 
-    public HttpCookie getCookie(String name) {
+    public Optional<HttpCookie> getCookie(String name) {
         for (HttpCookie cookie : getCookies()) {
             if (cookie.getName().equals(name)) {
-                return cookie;
+                return Optional.of(cookie);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     public List<HttpCookie> getCookies() {
@@ -46,12 +47,12 @@ public class Response {
         return Collections.unmodifiableList(cookies);
     }
 
-    public String getHeader(String name) {
+    public Optional<String> getHeader(String name) {
         List<String> values = headers.get(name);
         if (values != null && !values.isEmpty()) {
-            return values.get(0);
+            return Optional.of(values.get(0));
         }
-        return null;
+        return Optional.empty();
     }
 
     public String getUrl() {
