@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 
-import static java.util.Collections.unmodifiableMap;
+import java.util.Optional;
 
+import static java.util.Collections.unmodifiableMap;
 import static java.util.Arrays.asList;
 
 public class Request {
@@ -22,6 +23,14 @@ public class Request {
 
     public Map<String, List<String>> getHeaders() {
         return unmodifiableMap(headers);
+    }
+
+    public Optional<String> getHeader(String name) {
+        List<String> values = headers.get(name);
+        if (values != null && !values.isEmpty()) {
+            return Optional.of(values.get(0));
+        }
+        return Optional.empty();
     }
 
     public String getUrl() {
