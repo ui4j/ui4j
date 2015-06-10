@@ -5,26 +5,31 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+import static java.util.Collections.unmodifiableMap;
+
+import static java.util.Arrays.asList;
+
 public class Request {
 
     private String url;
 
-    private Map<String, String> headers = new HashMap<>();
+    private Map<String, List<String>> headers = new HashMap<>();
 
     public Request(String url) {
         this.url = url;
     }
 
-    public Map<String, String> getHeaders() {
-        return headers;
+    public Map<String, List<String>> getHeaders() {
+        return unmodifiableMap(headers);
     }
 
     public String getUrl() {
         return url;
     }
 
-    public Request setHeader(String name, String value) {
-        headers.put(name, value);
+    public Request setHeader(String name, String... values) {
+        headers.put(name, asList(values));
         return this;
     }
 

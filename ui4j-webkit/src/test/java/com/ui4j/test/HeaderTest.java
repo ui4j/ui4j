@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.eclipsesource.json.JsonObject;
+import com.eclipsesource.json.JsonValue;
 import com.ui4j.api.browser.BrowserEngine;
 import com.ui4j.api.browser.BrowserFactory;
 import com.ui4j.api.browser.Page;
@@ -25,10 +26,12 @@ public class HeaderTest {
             @Override
             public void beforeLoad(Request request) {
                 request.setHeader("Foo", "bar");
+                request.setHeader("Multi-Value-Header", "value1", "value2");
             }
 
             @Override
             public void afterLoad(Response response) {
+                System.out.println(response.getHeaders());
                 HeaderTest.response = response;
             }
         });
@@ -39,10 +42,15 @@ public class HeaderTest {
         JsonObject json = JsonObject.readFrom(content);
         JsonObject headers = json.get("headers").asObject();
         String bar = headers.get("Foo").asString();
+        String multiValue = headers.get("Multi-Value-Header").asString();
+
+        System.out.println(content);
 
         Assert.assertEquals("bar", bar);
 
-        Assert.assertEquals("application/json", response.getHeader("Content-Type"));
+        Assert.assertEquals("value1,value2", multiValue);
+
+        Assert.assertEquals("application/json", response.getHeader("Content-Type").get());
 
         page.close();
     }

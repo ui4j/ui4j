@@ -1,10 +1,13 @@
 package com.ui4j.webkit.browser;
 
+import static java.lang.String.join;
+
 import java.io.IOException;
 import java.net.CookieHandler;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLStreamHandler;
+import java.util.List;
 import java.util.Map;
 
 import com.ui4j.api.interceptor.Interceptor;
@@ -58,8 +61,10 @@ public class WebKitURLHandler extends URLStreamHandler {
         Request request = new Request(url);
         interceptor.beforeLoad(request);
         if (request != null) {
-            for (Map.Entry<String, String> entry : request.getHeaders().entrySet()) {
-                connection.setRequestProperty(entry.getKey(), entry.getValue());
+            for (Map.Entry<String, List<String>> entry : request.getHeaders().entrySet()) {
+                String key = entry.getKey();
+                String value = join(",", entry.getValue());
+                connection.setRequestProperty(key, value);
             }
         }
         
