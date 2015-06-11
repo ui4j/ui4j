@@ -123,7 +123,7 @@ public interface Element extends Node {
 
     Point getOffset();
 
-    Point getPosition();
+    Optional<Point> getPosition();
 
     Element detach();
 

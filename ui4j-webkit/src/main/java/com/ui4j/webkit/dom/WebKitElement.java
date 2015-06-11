@@ -655,7 +655,11 @@ public class WebKitElement implements Element, EventTarget {
     }
 
     public HTMLElementImpl getHtmlElement() {
-        return (HTMLElementImpl) element;
+        if (element instanceof HTMLElementImpl) {
+            return (HTMLElementImpl) element;
+        } else {
+            return null;
+        }
     }
 
     public NodeImpl getNode() {
@@ -779,10 +783,14 @@ public class WebKitElement implements Element, EventTarget {
     }
 
     @Override
-    public Point getPosition() {
+    public Optional<Point> getPosition() {
         HTMLElementImpl htmlElementImpl = getHtmlElement();
-        Point point = new Point(htmlElementImpl.getOffsetLeft(), htmlElementImpl.getOffsetTop());
-        return point;
+        if (htmlElementImpl != null) {
+            Point point = new Point(htmlElementImpl.getOffsetLeft(), htmlElementImpl.getOffsetTop());
+            return Optional.of(point);
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Override
