@@ -27,15 +27,35 @@ public class DialogTest {
 
     private static CountDownLatch alertLatch = new CountDownLatch(1);
 
+    private static CountDownLatch promptLatch = new CountDownLatch(1);
+
+    private static CountDownLatch confirmLatch = new CountDownLatch(1);
+
     @BeforeClass public static void beforeTest() {
         String url = ElementTest.class.getResource("/TestPage.html").toExternalForm();
         BrowserEngine browser = BrowserFactory.getBrowser(BrowserType.WebKit);
-        page = browser.navigate(url, new PageConfiguration().setAlertHandler(new AlertHandler() {
+        page = browser.navigate(url, new PageConfiguration()
+            .setAlertHandler(new AlertHandler() {
 
             @Override
             public void handle(DialogEvent event) {
                 alertMessage = event.getMessage();
                 alertLatch.countDown();
+            }
+        }).setPromptHandler(new PromptHandler() {
+
+            @Override
+            public String handle(PromptDialogEvent event) {
+                promptMessage = event.getMessage();
+                promptLatch.countDown();
+                return null;
+            }
+        }).setConfirmHandler(new ConfirmHandler() {
+
+            @Override
+            public boolean handle(DialogEvent event) {
+                confirmLatch.countDown();
+                return true;
             }
         }));
     }
@@ -47,33 +67,14 @@ public class DialogTest {
     }
 
     @Test public void testPromptDialog() throws InterruptedException {
-        CountDownLatch latch = new CountDownLatch(1);
-        page.setPromptHandler(new PromptHandler() {
-
-            @Override
-            public String handle(PromptDialogEvent event) {
-                promptMessage = event.getMessage();
-                latch.countDown();
-                return null;
-            }
-        });
         page.executeScript("prompt('bar')");
-        latch.await();
+        promptLatch.await();
         Assert.assertEquals("bar", promptMessage);
     }
 
     @Test public void testConfirmDialog() throws InterruptedException {
-        CountDownLatch latch = new CountDownLatch(1);
-        page.setConfirmHandler(new ConfirmHandler() {
-
-            @Override
-            public boolean handle(DialogEvent event) {
-                latch.countDown();
-                return true;
-            }
-        });
         Object executeScript = page.executeScript("confirm('bar')");
-        latch.await();
+        confirmLatch.await();
         boolean ret = Boolean.parseBoolean(executeScript.toString());
         Assert.assertTrue(ret);
     }

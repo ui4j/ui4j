@@ -48,11 +48,13 @@ import com.ui4j.api.util.Ui4jException;
 import com.ui4j.spi.PageContext;
 import com.ui4j.spi.ShutdownListener;
 import com.ui4j.spi.Ui4jExecutionTimeoutException;
-import com.ui4j.webkit.browser.WebKitURLHandler;
 import com.ui4j.webkit.browser.WebKitPage;
-import com.ui4j.webkit.browser.WebKitPageContext;
-import com.ui4j.webkit.browser.WebKitWindow;
 import com.ui4j.webkit.browser.WebKitPage.AlertDelegationHandler;
+import com.ui4j.webkit.browser.WebKitPage.ConfirmDelegationHandler;
+import com.ui4j.webkit.browser.WebKitPage.PromptDelegationHandler;
+import com.ui4j.webkit.browser.WebKitPageContext;
+import com.ui4j.webkit.browser.WebKitURLHandler;
+import com.ui4j.webkit.browser.WebKitWindow;
 import com.ui4j.webkit.dom.WebKitDocument;
 import com.ui4j.webkit.dom.WebKitElement;
 import com.ui4j.webkit.proxy.WebKitProxy;
@@ -288,7 +290,15 @@ class WebKitBrowser implements BrowserEngine {
             if (configuration.getUserAgent() != null) {
                 engine.getEngine().setUserAgent(configuration.getUserAgent());
             }
-            engine.getEngine().setOnAlert(new AlertDelegationHandler(configuration.getAlertHandler()));
+            if (configuration.getAlertHandler() != null) {
+                engine.getEngine().setOnAlert(new AlertDelegationHandler(configuration.getAlertHandler()));
+            }
+            if (configuration.getPromptHandler() != null) {
+                engine.getEngine().setPromptHandler(new PromptDelegationHandler(configuration.getPromptHandler()));
+            }
+            if (configuration.getConfirmHandler() != null) {
+                engine.getEngine().setConfirmHandler(new ConfirmDelegationHandler(configuration.getConfirmHandler()));
+            }
             engine.getEngine().load(url);
             WorkerLoadListener loadListener = new WorkerLoadListener(engine, context, listener, handler);
             webView.getEngine().getLoadWorker(). progressProperty().addListener(new ProgressListener(webView.getEngine()));

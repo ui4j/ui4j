@@ -191,16 +191,6 @@ public class WebKitPage implements Page, PageView, JavaScriptEngine {
         }
     }
 
-    @Override
-    public void setPromptHandler(PromptHandler handler) {
-        webView.getEngine().setPromptHandler(new PromptDelegationHandler(handler));
-    }
-
-    @Override
-    public void setConfirmHandler(ConfirmHandler handler) {
-        webView.getEngine().setConfirmHandler(new ConfirmDelegationHandler(handler));
-    }
-
     public WebView getWebView() {
         return webView;
     }

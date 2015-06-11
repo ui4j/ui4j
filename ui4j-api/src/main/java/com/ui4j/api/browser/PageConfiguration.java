@@ -1,6 +1,8 @@
 package com.ui4j.api.browser;
 
 import com.ui4j.api.dialog.AlertHandler;
+import com.ui4j.api.dialog.ConfirmHandler;
+import com.ui4j.api.dialog.PromptHandler;
 import com.ui4j.api.interceptor.Interceptor;
 
 /**
@@ -19,6 +21,10 @@ public class PageConfiguration {
     private Interceptor interceptor;
 
     private AlertHandler alertHandler;
+
+    private ConfirmHandler confirmHandler;
+
+    private PromptHandler promptHandler;
 
     public PageConfiguration() {
         this(null);
@@ -107,6 +113,24 @@ public class PageConfiguration {
     public AlertHandler getAlertHandler() {
         return alertHandler;
     }    
+
+    public ConfirmHandler getConfirmHandler() {
+        return confirmHandler;
+    }
+
+    public PageConfiguration setConfirmHandler(ConfirmHandler confirmHandler) {
+        this.confirmHandler = confirmHandler;
+        return this;
+    }
+
+    public PromptHandler getPromptHandler() {
+        return promptHandler;
+    }
+
+    public PageConfiguration setPromptHandler(PromptHandler promptHandler) {
+        this.promptHandler = promptHandler;
+        return this;
+    }
 
     /**
      * Returns a string representation of this instance and its current properties.
