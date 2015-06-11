@@ -43,12 +43,14 @@ public class IsolatedSessionTest {
         
     }
 
+    private static String defaulMaxConnections;
+
     @BeforeClass
     public static void before() {
         // Without this paramater we are unable isolate the cookies per page
         // @see com.sun.webkit.network.NetworkContext.fwkGetMaximumHTTPConnectionCountPerHost()
-        System.getProperty("http.maxConnections");
-        // default is 5
+        defaulMaxConnections = System.getProperty("http.maxConnections");
+        // default is 5 @see https://docs.oracle.com/javase/7/docs/technotes/guides/net/http-keepalive.html
         // @see NetworkContext.DEFAULT_HTTP_MAX_CONNECTIONS
         System.setProperty("http.maxConnections", "1");
         CookieHandler.setDefault(new ThreadLocalCookieManager());
@@ -56,7 +58,11 @@ public class IsolatedSessionTest {
     
     @AfterClass
     public static void after() {
-        System.setProperty("http.maxConnections", "-1");
+        if (defaulMaxConnections != null) {
+            System.setProperty("http.maxConnections", defaulMaxConnections);
+        } else {
+            System.setProperty("http.maxConnections", "5");
+        }
         CookieHandler.setDefault(null);
     }
 
