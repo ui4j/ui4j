@@ -10,6 +10,7 @@ import com.ui4j.api.browser.BrowserEngine;
 import com.ui4j.api.browser.BrowserFactory;
 import com.ui4j.api.browser.BrowserType;
 import com.ui4j.api.browser.Page;
+import com.ui4j.api.browser.PageConfiguration;
 import com.ui4j.api.dialog.AlertHandler;
 import com.ui4j.api.dialog.ConfirmHandler;
 import com.ui4j.api.dialog.DialogEvent;
@@ -24,24 +25,24 @@ public class DialogTest {
     
     private static String promptMessage;
 
+    private static CountDownLatch alertLatch = new CountDownLatch(1);
+
     @BeforeClass public static void beforeTest() {
         String url = ElementTest.class.getResource("/TestPage.html").toExternalForm();
         BrowserEngine browser = BrowserFactory.getBrowser(BrowserType.WebKit);
-        page = browser.navigate(url);
-    }
-
-    @Test public void testAlertDialog() throws InterruptedException {
-        CountDownLatch latch = new CountDownLatch(1);
-        page.setAlertHandler(new AlertHandler() {
+        page = browser.navigate(url, new PageConfiguration().setAlertHandler(new AlertHandler() {
 
             @Override
             public void handle(DialogEvent event) {
                 alertMessage = event.getMessage();
-                latch.countDown();
+                alertLatch.countDown();
             }
-        });
+        }));
+    }
+
+    @Test public void testAlertDialog() throws InterruptedException {
         page.executeScript("alert('foo')");
-        latch.await();
+        alertLatch.await();
         Assert.assertEquals("foo", alertMessage);
     }
 

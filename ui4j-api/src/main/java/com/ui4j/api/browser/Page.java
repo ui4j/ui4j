@@ -2,7 +2,6 @@ package com.ui4j.api.browser;
 
 import java.io.OutputStream;
 
-import com.ui4j.api.dialog.AlertHandler;
 import com.ui4j.api.dialog.ConfirmHandler;
 import com.ui4j.api.dialog.PromptHandler;
 import com.ui4j.api.dom.Document;
@@ -26,8 +25,6 @@ public interface Page extends JavaScriptEngine, PageView, AutoCloseable {
     void show();
 
     void hide();
-
-    void setAlertHandler(AlertHandler handler);
 
     void setPromptHandler(PromptHandler handler);
 

@@ -192,11 +192,6 @@ public class WebKitPage implements Page, PageView, JavaScriptEngine {
     }
 
     @Override
-    public void setAlertHandler(AlertHandler handler) {
-        webView.getEngine().setOnAlert(new AlertDelegationHandler(handler));
-    }
-
-    @Override
     public void setPromptHandler(PromptHandler handler) {
         webView.getEngine().setPromptHandler(new PromptDelegationHandler(handler));
     }

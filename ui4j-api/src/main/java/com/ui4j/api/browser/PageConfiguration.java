@@ -1,5 +1,6 @@
 package com.ui4j.api.browser;
 
+import com.ui4j.api.dialog.AlertHandler;
 import com.ui4j.api.interceptor.Interceptor;
 
 /**
@@ -16,6 +17,8 @@ public class PageConfiguration {
     private String userAgent;
 
     private Interceptor interceptor;
+
+    private AlertHandler alertHandler;
 
     public PageConfiguration() {
         this(null);
@@ -96,6 +99,15 @@ public class PageConfiguration {
         return this;
     }
 
+    public PageConfiguration setAlertHandler(AlertHandler alertHandler) {
+        this.alertHandler = alertHandler;
+        return this;
+    }
+
+    public AlertHandler getAlertHandler() {
+        return alertHandler;
+    }    
+
     /**
      * Returns a string representation of this instance and its current properties.
      *
@@ -108,5 +120,5 @@ public class PageConfiguration {
         return "PageConfiguration [selectorEngine=" + selectorEngine
                 + ", userAgent=" + userAgent + ", interceptor=" + interceptor
                 + "]";
-    }    
+    }
 }

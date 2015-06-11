@@ -52,6 +52,7 @@ import com.ui4j.webkit.browser.WebKitURLHandler;
 import com.ui4j.webkit.browser.WebKitPage;
 import com.ui4j.webkit.browser.WebKitPageContext;
 import com.ui4j.webkit.browser.WebKitWindow;
+import com.ui4j.webkit.browser.WebKitPage.AlertDelegationHandler;
 import com.ui4j.webkit.dom.WebKitDocument;
 import com.ui4j.webkit.dom.WebKitElement;
 import com.ui4j.webkit.proxy.WebKitProxy;
@@ -287,6 +288,7 @@ class WebKitBrowser implements BrowserEngine {
             if (configuration.getUserAgent() != null) {
                 engine.getEngine().setUserAgent(configuration.getUserAgent());
             }
+            engine.getEngine().setOnAlert(new AlertDelegationHandler(configuration.getAlertHandler()));
             engine.getEngine().load(url);
             WorkerLoadListener loadListener = new WorkerLoadListener(engine, context, listener, handler);
             webView.getEngine().getLoadWorker(). progressProperty().addListener(new ProgressListener(webView.getEngine()));
