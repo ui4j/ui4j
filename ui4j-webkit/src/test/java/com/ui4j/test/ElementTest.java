@@ -466,7 +466,7 @@ public class ElementTest {
     @Test public void t38_possition() {
         Element div = document.parseHTML("<div style=\"position: absolute; top: 20px; left: 20px\">foo</div>").get(0);
         document.getBody().append(div);
-        Assert.assertEquals(new Point(20, 20), div.getPosition());
+        Assert.assertEquals(new Point(20, 20), div.getPosition().get());
         div.remove();
     }
 
