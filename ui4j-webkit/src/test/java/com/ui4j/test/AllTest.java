@@ -8,7 +8,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({ ElementTest.class, FormClearTest.class,
                 SizzleTest.class, DialogTest.class,
                 JavaScriptEngineTest.class, UserAgentTest.class,
-                ClearCookiesTest.class,
+                ClearCookiesTest.class, IsolatedSessionTest.class,
                 CookieTest.class, SiblingTest.class, ChildTest.class })
 public class AllTest {
 
