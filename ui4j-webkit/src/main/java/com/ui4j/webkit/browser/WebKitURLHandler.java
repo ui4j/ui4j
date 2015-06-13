@@ -9,6 +9,7 @@ import java.net.URLConnection;
 import java.net.URLStreamHandler;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.ui4j.api.interceptor.Interceptor;
 import com.ui4j.api.interceptor.Request;
@@ -25,12 +26,16 @@ public class WebKitURLHandler extends URLStreamHandler {
 
     private CookieHandler cookieHandler;
 
+    private AtomicInteger requestCounter = new AtomicInteger(0);
+
     public WebKitURLHandler(Interceptor interceptor) {
         this.interceptor = interceptor;
     }
 
     @Override
     protected URLConnection openConnection(URL u) throws IOException {
+        int rcount = requestCounter.incrementAndGet();
+
         String protocol = u.getProtocol();
 
         if (!protocol.startsWith(UI4J_PROTOCOL)) {
@@ -40,10 +45,8 @@ public class WebKitURLHandler extends URLStreamHandler {
         // url without ui4j prefix
         String url = u.toString().substring(protocol.length() + 1, u.toString().length());
 
-        boolean isContext = false;
         if (context == null && url.startsWith("http")) {
             context = url;
-            isContext = true;
         }
 
         if (context != null &&
@@ -56,12 +59,16 @@ public class WebKitURLHandler extends URLStreamHandler {
 
         URLConnection connection = new URL(url).openConnection();
 
-        if (isContext) {
+        if (rcount == 1) {
             contextConnection = connection;
         }
 
         Request request = new Request(url);
-        interceptor.beforeLoad(request);
+
+        if (rcount == 1) { // apply the interceptor for only first request
+            interceptor.beforeLoad(request);
+        }
+
         if (request != null) {
             for (Map.Entry<String, List<String>> entry : request.getHeaders().entrySet()) {
                 String key = entry.getKey();

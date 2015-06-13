@@ -1,34 +1,74 @@
 package com.ui4j.test;
 
+import static org.junit.Assert.assertEquals;
+
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.junit.Test;
 
-import com.ui4j.api.browser.BrowserEngine;
 import com.ui4j.api.browser.BrowserFactory;
-import com.ui4j.api.browser.Page;
 import com.ui4j.api.browser.PageConfiguration;
 import com.ui4j.api.interceptor.Interceptor;
 import com.ui4j.api.interceptor.Request;
 import com.ui4j.api.interceptor.Response;
 
+import static org.junit.Assert.assertTrue;
+
 public class InterceptorTest {
 
     @Test
-    public void test() {
-        BrowserEngine webkit = BrowserFactory.getWebKit();
-        PageConfiguration configuration = new PageConfiguration(new Interceptor() {
+    public void testOffline() {
+        String url = getClass().getResource("/ChildTest.html").toExternalForm();
+
+        AtomicInteger beforeCounter = new AtomicInteger();
+        AtomicInteger afterCounter = new AtomicInteger();
+
+        StringBuilder builder = new StringBuilder();
+
+        BrowserFactory.getWebKit().navigate(url, new PageConfiguration(new Interceptor() {
 
             @Override
             public void beforeLoad(Request request) {
-                // no op
+                builder.append(request.getUrl());
+                beforeCounter.incrementAndGet();
             }
-            
+
             @Override
             public void afterLoad(Response response) {
-                // no op
+                afterCounter.incrementAndGet();
             }
-        });
-        try (Page page = webkit.navigate(SiblingTest.class.getResource("/SiblingTest.html").toExternalForm(), configuration)) {
-            // no op
-        }
+        }));
+
+        assertTrue(builder.toString().endsWith("ChildTest.html"));
+        assertEquals(1, beforeCounter.get());
+        assertEquals(1, afterCounter.get());
+    }
+
+    @Test
+    public void testOnline() {
+        String url = "http://www.oracle.com";
+
+        AtomicInteger beforeCounter = new AtomicInteger();
+        AtomicInteger afterCounter = new AtomicInteger();
+
+        StringBuilder builder = new StringBuilder();
+
+        BrowserFactory.getWebKit().navigate(url, new PageConfiguration(new Interceptor() {
+
+            @Override
+            public void beforeLoad(Request request) {
+                builder.append(request.getUrl());
+                beforeCounter.incrementAndGet();
+            }
+
+            @Override
+            public void afterLoad(Response response) {
+                afterCounter.incrementAndGet();
+            }
+        }));
+
+        assertEquals(url, builder.toString());
+        assertEquals(1, beforeCounter.get());
+        assertEquals(1, afterCounter.get());
     }
 }
