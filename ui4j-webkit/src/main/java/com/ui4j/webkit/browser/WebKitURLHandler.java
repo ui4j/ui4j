@@ -40,16 +40,18 @@ public class WebKitURLHandler extends URLStreamHandler {
         // url without ui4j prefix
         String url = u.toString().substring(protocol.length() + 1, u.toString().length());
 
-
-        if (!url.startsWith("/") && context != null && !context.endsWith("/")) {
-            String f = u.getFile().replaceAll("https://", "");
-            url = context + "/" + f;
-        }
-
         boolean isContext = false;
         if (context == null && url.startsWith("http")) {
             context = url;
             isContext = true;
+        }
+
+        if (context != null &&
+                        !url.startsWith("http") &&
+                            !url.startsWith("/") &&
+                            !context.endsWith("/")) {
+            String f = u.getFile().replaceAll("https://", "");
+            url = context + "/" + f;
         }
 
         URLConnection connection = new URL(url).openConnection();
