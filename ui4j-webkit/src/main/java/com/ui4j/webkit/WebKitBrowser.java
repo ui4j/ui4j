@@ -476,6 +476,9 @@ class WebKitBrowser implements BrowserEngine {
     @SuppressWarnings("rawtypes")
     public synchronized void clearCookies() {
         CookieHandler cookieHandler = CookieHandler.getDefault();
+        if (cookieHandler == null) {
+        	return;
+        }
         CookieManager manager = (CookieManager) cookieHandler;
         Field fieldStore;
         try {
