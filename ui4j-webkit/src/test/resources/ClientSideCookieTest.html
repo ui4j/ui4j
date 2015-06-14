@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <title>Session Test</title>
+  </head>
+  <body>
+
+    <ul id="cookies"></ul>
+
+
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.4.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+      var pairs = document.cookie.split( ";" );
+      for( var i = 0; i < pairs.length; i++ ) {
+        if( pairs[ i ] !== "" ) {
+          var pair = pairs[ i ].split( "=" );
+          $( "#cookies" ).append( "<li>" + pair[ 0 ] + "=" + unescape( pair[1] ) );
+        }
+      }
+
+      function createCookie(name, value, days) {
+          var expires;
+
+          if (days) {
+              var date = new Date();
+              date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+              expires = "; expires=" + date.toGMTString();
+          } else {
+              expires = "";
+          }
+          document.cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value) + expires + "; path=/";
+      }
+
+      function guid() {
+        function s4() {
+          return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+        }
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+          s4() + '-' + s4() + s4() + s4();
+      }
+
+      function readCookie(name) {
+          var nameEQ = encodeURIComponent(name) + "=";
+          var ca = document.cookie.split(';');
+          for (var i = 0; i < ca.length; i++) {
+              var c = ca[i];
+              while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+              if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+          }
+          return null;
+      }
+
+      if( readCookie( "foobar" ) == null ) {
+        createCookie( "foobar", guid(), 1 );
+        createCookie( "xyz", guid(), 1 );
+      }
+
+    </script>
+
+  </body>
+</html>

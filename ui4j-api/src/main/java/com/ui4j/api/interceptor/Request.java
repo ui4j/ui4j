@@ -77,7 +77,7 @@ public class Request {
         }
         List<HttpCookie> list = new ArrayList<>();
         for (String next : cookie.split(";")) {
-            list.add(HttpCookie.parse(next).get(0));
+            list.addAll(HttpCookie.parse(next));
         }
         return list;
     }
