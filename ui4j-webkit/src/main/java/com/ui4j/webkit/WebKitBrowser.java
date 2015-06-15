@@ -477,20 +477,24 @@ class WebKitBrowser implements BrowserEngine {
     public synchronized void clearCookies() {
         CookieHandler cookieHandler = CookieHandler.getDefault();
         if (cookieHandler == null) {
-        	return;
+            return;
         }
-        CookieManager manager = (CookieManager) cookieHandler;
-        Field fieldStore;
-        try {
-            fieldStore = manager.getClass().getDeclaredField("store");
-            fieldStore.setAccessible(true);
-            Object store = fieldStore.get(manager);
-            Field fieldBuckets = store.getClass().getDeclaredField("buckets");
-            fieldBuckets.setAccessible(true);
-            Map buckets = (Map) fieldBuckets.get(store);
-            buckets.clear();
-        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-            throw new Ui4jException(e);
+        if (cookieHandler instanceof CookieManager) {
+            CookieManager manager = (CookieManager) cookieHandler;
+            Field fieldStore;
+            try {
+                fieldStore = manager.getClass().getDeclaredField("store");
+                fieldStore.setAccessible(true);
+                Object store = fieldStore.get(manager);
+                Field fieldBuckets = store.getClass().getDeclaredField("buckets");
+                fieldBuckets.setAccessible(true);
+                Map buckets = (Map) fieldBuckets.get(store);
+                buckets.clear();
+            } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+                throw new Ui4jException(e);
+            }
+        } else if (cookieHandler instanceof WebKitIsolatedCookieHandler) {
+            ((WebKitIsolatedCookieHandler) cookieHandler).clear();
         }
     }
 }

@@ -9,6 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.net.CookieHandler;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -161,5 +162,16 @@ public class WebKitIsolatedCookieHandler extends CookieHandler {
     public void clear() {
         threadWebViewMappings.clear();
         cookieManagers.clear();
+    }
+
+    public void remove(WebView webView) {
+        cookieManagers.remove(webView);
+        List<Long> list = new ArrayList<>();
+        for (Map.Entry<Long, WebView> entry : threadWebViewMappings.entrySet()) {
+            if (entry.getValue().equals(webView)) {
+                list.add(entry.getKey());
+            }
+        }
+        list.forEach(id -> threadWebViewMappings.remove(id));
     }
 }

@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
+import java.net.CookieHandler;
 import java.net.URLStreamHandler;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
@@ -45,6 +46,7 @@ import com.ui4j.api.event.DocumentLoadEvent;
 import com.ui4j.api.util.Ui4jException;
 import com.ui4j.spi.JavaScriptEngine;
 import com.ui4j.spi.PageView;
+import com.ui4j.webkit.WebKitIsolatedCookieHandler;
 import com.ui4j.webkit.spi.WebKitJavaScriptEngine;
 
 public class WebKitPage implements Page, PageView, JavaScriptEngine {
@@ -184,6 +186,12 @@ public class WebKitPage implements Page, PageView, JavaScriptEngine {
             handlers.remove("ui4j-" + String.valueOf(pageId));
         } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
             throw new Ui4jException(e);
+        }
+        CookieHandler cookieHandler = CookieHandler.getDefault();
+        if (cookieHandler != null
+                        && cookieHandler instanceof WebKitIsolatedCookieHandler) {
+            WebKitIsolatedCookieHandler whandler = (WebKitIsolatedCookieHandler) cookieHandler;
+            whandler.remove(getWebView());
         }
         // HACK #26
         if (getStage() != null) {
