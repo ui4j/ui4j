@@ -32,7 +32,7 @@ Support
 
 Ui4j is optimized using [JProfiler](http://www.ej-technologies.com/products/jprofiler/overview.html).
 
-Thanks so much to [ej-technologies](https://www.ej-technologies.com) to let us to use [JProfiler](http://www.ej-technologies.com/products/jprofiler/overview.html) with an open source project license.
+Thanks so much to [ej-technologies](https://www.ej-technologies.com) to let us to use the [JProfiler](http://www.ej-technologies.com/products/jprofiler/overview.html) with an open source project license.
 
 Stability
 ---------
