@@ -10,7 +10,6 @@ Ui4j
 
 Ui4j is a web-automation library for Java. It is a thin wrapper library around the JavaFx WebKit Engine, and can be used for automating the use of web pages and for testing web pages.
 
-
 Supported Java Versions
 -----------------------
 
@@ -26,6 +25,14 @@ Ui4j is released under the terms of the MIT License (MIT).
 
 You are free to use Ui4j or any of its constituent parts in any other project (even commercial projects) so long as its copyright headers are left intact.
 
+Support
+--------
+
+![JProfiler] (https://www.ej-technologies.com/images/product_banners/jprofiler_large.png)
+
+Ui4j is optimized using [JProfiler](http://www.ej-technologies.com/products/jprofiler/overview.html).
+
+Thanks so much to [ej-technologies](https://www.ej-technologies.com) to let us to use [JProfiler](http://www.ej-technologies.com/products/jprofiler/overview.html) with an open source project license.
 
 Stability
 ---------
