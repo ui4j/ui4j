@@ -20,6 +20,7 @@ public class ClientSideCookieTest extends AbstractFileServerTest {
         System.out.println(page.executeScript("typeof document.cookie"));
         System.out.println(page.executeScript("document.readyState"));
         String cookie = (String) page.executeScript("document.cookie");
+        System.out.println(cookie);
         String[] array = cookie.split(";");
         List<HttpCookie> cookies = new ArrayList<>();
         for (String next : array) {
