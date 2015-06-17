@@ -19,5 +19,6 @@ public class ClientSideCookieListTest extends AbstractFileServerTest {
         String cookie = page.getDocument().query("#cookies").get().getChildren().get(0).getText().get();
         String cookieName = cookie.split("=")[0];
         assertEquals("foobar", cookieName);
+        assertEquals("foobar", ((String) page.executeScript("document.cookie")).split("=")[0]);
     }
 }
