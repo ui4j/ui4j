@@ -21,9 +21,6 @@ public class ClientSideCookieTest extends AbstractFileServerTest {
     public void test() throws IOException, InterruptedException {
     	CookieHandler.setDefault(new CookieManager());
         Page page = BrowserFactory.getWebKit().navigate("http://localhost:58844/ClientSideCookieTest.html");
-        System.out.println(page.executeScript("typeof document"));
-        System.out.println(page.executeScript("typeof document.cookie"));
-        System.out.println(page.executeScript("document.readyState"));
         String cookie = (String) page.executeScript("document.cookie");
         System.out.println(cookie);
         String[] array = cookie.split(";");
