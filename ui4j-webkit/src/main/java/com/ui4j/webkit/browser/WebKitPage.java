@@ -8,8 +8,6 @@ import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.net.CookieHandler;
 import java.net.URLStreamHandler;
-import java.text.NumberFormat;
-import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -231,16 +229,6 @@ public class WebKitPage implements Page, PageView, JavaScriptEngine {
     @Override
     public Object executeScript(String script) {
         Object result = engine.executeScript(script);
-
-        String resultStr = String.valueOf(result);
-
-        NumberFormat formatter = NumberFormat.getInstance();
-        ParsePosition pos = new ParsePosition(0);
-        Number number = formatter.parse(resultStr, pos);
-        if (resultStr.length() == pos.getIndex()) {
-            return number;
-        }
-
         return result;
     }
 
