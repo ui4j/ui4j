@@ -1,8 +1,5 @@
 package com.ui4j.webkit.spi;
 
-import java.text.NumberFormat;
-import java.text.ParsePosition;
-
 import javafx.scene.web.WebEngine;
 
 import com.ui4j.spi.JavaScriptEngine;
@@ -23,20 +20,6 @@ public class WebKitJavaScriptEngine implements JavaScriptEngine {
     @Override
     public Object executeScript(String script) {
         Object result = engine.executeScript(script);
-
-        String resultStr = String.valueOf(result);
-
-        try {
-            NumberFormat formatter = NumberFormat.getInstance();
-            ParsePosition pos = new ParsePosition(0);
-            Number number = formatter.parse(resultStr, pos);
-            if (resultStr.length() == pos.getIndex()) {
-                return number;
-            }
-        } catch (Throwable t) {
-            // ignore issue #55
-        }
-
         return result;
     }
 }

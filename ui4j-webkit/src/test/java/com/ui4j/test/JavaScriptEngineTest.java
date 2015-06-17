@@ -32,16 +32,6 @@ public class JavaScriptEngineTest {
         Assert.assertEquals(String.class, result.getClass());
     }
 
-    @Test public void testLong() {
-        Object result = page.executeScript("'20'");
-        Assert.assertEquals(Long.class, result.getClass());
-    }
-
-    @Test public void testDouble() {
-        Object result = page.executeScript("'20.20'");
-        Assert.assertEquals(Double.class, result.getClass());
-    }
-
     @Test public void testNull() {
         Object result = page.executeScript("null");
         Assert.assertNull(result);
