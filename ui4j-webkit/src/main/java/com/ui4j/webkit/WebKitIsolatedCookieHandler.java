@@ -25,6 +25,12 @@ import com.sun.webkit.WebPage;
 import com.sun.webkit.WebPageClient;
 import com.sun.webkit.network.CookieManager;
 
+/**
+ * Custom CookieHandler that help to isolate CookieStore per WebView.
+ * 
+ * Warning! This class is not ready to use for the production environments.
+ * Implementation is tested for the server side cookies but <b>broken</b> for the client side cookies.
+ */
 public class WebKitIsolatedCookieHandler extends CookieHandler {
 
     private static final Map<Long, WebView> threadWebViewMappings = 
