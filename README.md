@@ -197,3 +197,12 @@ use default handlers from [Dialogs.java](https://github.com/ui4j/ui4j/blob/maste
 #### What is the easiest way clear all input elements?
 
 Use [clear](https://github.com/ui4j/ui4j/blob/master/ui4j-api/src/main/java/com/ui4j/api/dom/Form.java#L13) method of the Form class.
+
+Donations
+---------
+Donations are accepted via Amazon.
+
+[Ui4j Amazon Wishlist](https://www.amazon.com/registry/wishlist/1IPPMT8VAXN2F)
+
+
+
