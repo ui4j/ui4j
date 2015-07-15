@@ -1,6 +1,7 @@
 package com.ui4j.test;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -17,13 +18,13 @@ public class ImageOffsetTest {
         BrowserEngine webkit = BrowserFactory.getWebKit();
         String location = JSObjectTest.class.getResource("/ImageOffsetTest.html").toExternalForm();
         try (Page page = webkit.navigate(location)) {
+            page.show();
             List<Element> elements = page.getDocument().queryAll("img");
             elements.forEach(e -> {
                 System.out.println(e.getAttribute("alt").get() + " offset: " + e.getOffset());
             });
-            Element image2 = elements.get(1);
-            Assert.assertEquals(200, image2.getOffset().getLeft());
-            Assert.assertEquals(200, image2.getOffset().getTop());
+            Optional<Element> element = page.getDocument().getElementFromPoint(200, 200);
+            Assert.assertEquals("image 2", element.get().getAttribute("alt").get());
         }
     }
 }
