@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $('[type="submit"]').click(function() {
+                var name = $('[name="custname"]').val();
+                $.ajax({
+                    type: 'GET',
+                    url: 'http://httpbin.org/get?name=' + name
+                }).done(function(data) {
+                    $('label').text(data.args.name);
+                });
+            });
+        });
+    </script>
+    <body>
+        <input name="custname">
+        <input type="submit">
+        <br>
+        <label></label>
+    </body>
+</html>
