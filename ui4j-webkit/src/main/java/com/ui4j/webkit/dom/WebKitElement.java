@@ -40,6 +40,7 @@ import com.ui4j.api.util.Point;
 import com.ui4j.spi.DelegatingEventHandler;
 import com.ui4j.spi.NodeUnbindVisitor;
 import com.ui4j.spi.PageContext;
+import com.ui4j.webkit.WebKitMapper;
 import com.ui4j.webkit.browser.WebKitPageContext;
 import com.ui4j.webkit.spi.WebKitJavaScriptEngine;
 
@@ -902,4 +903,14 @@ public class WebKitElement implements Element, EventTarget {
     public String toString() {
         return "WebKitElement [element=" + this.getInnerHTML() + "]";
     }
+
+	@Override
+	public Object eval(String expression) {
+		Object result = getHtmlElement().eval(expression);
+		if (result instanceof JSObject) {
+			return new WebKitMapper(engine).toJava((JSObject) result);
+		} else {
+			return result;
+		}
+	}
 }

@@ -40,4 +40,8 @@ public class Form {
     public Element getElement() {
         return element;
     }
+
+    public void submit() {
+    	element.eval("this.submit()");
+    }
 }

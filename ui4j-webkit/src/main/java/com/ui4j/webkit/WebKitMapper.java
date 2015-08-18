@@ -1,4 +1,4 @@
-package com.ui4j.test;
+package com.ui4j.webkit;
 
 import static java.lang.Integer.parseInt;
 import static java.lang.String.valueOf;
