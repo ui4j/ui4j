@@ -16,7 +16,10 @@ public class DocumentLoadEvent {
     }
 
     public Document getDocument() {
-        return window.getDocument();
+        if (window != null) {
+            return window.getDocument();
+        }
+        return null;
     }
 
     @Override

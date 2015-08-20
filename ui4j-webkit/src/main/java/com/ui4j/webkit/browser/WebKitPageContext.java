@@ -88,6 +88,9 @@ public class WebKitPageContext implements PageContext {
         @Override
         public void onLoad(DocumentLoadEvent event) {
             Document document = event.getDocument();
+            if (document == null) {
+                return;
+            }
             List<Element> elements = document.queryAll("[ui4j-registered-event=true]");
             if (elements.isEmpty()) {
                 return;
