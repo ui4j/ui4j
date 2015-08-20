@@ -182,4 +182,6 @@ public interface Element extends Node {
     Optional<Element> closest(String selector);
 
     Optional<Document> getContentDocument();
+
+    Object eval(String expression);
 }

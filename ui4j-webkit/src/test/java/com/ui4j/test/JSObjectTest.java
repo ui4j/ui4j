@@ -1,17 +1,18 @@
 package com.ui4j.test;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.List;
 import java.util.Map;
-
-import netscape.javascript.JSObject;
 
 import org.junit.Test;
 
 import com.ui4j.api.browser.BrowserEngine;
 import com.ui4j.api.browser.BrowserFactory;
 import com.ui4j.api.browser.Page;
+import com.ui4j.webkit.WebKitMapper;
 
-import static org.junit.Assert.assertEquals;
+import netscape.javascript.JSObject;
 
 public class JSObjectTest {
 

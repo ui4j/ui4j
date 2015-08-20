@@ -497,4 +497,10 @@ public class ElementTest {
         document.getBody().remove();
         Assert.assertEquals("bar", document.getBody().getAttribute("foo").get());
     }
+
+    @Test public void t43_eval() {
+        Element div = document.parseHTML("<input type='text'>").get(0);
+        Object eval = div.eval("this.getAttribute('type')");
+        System.out.println(eval);
+    }
 }
