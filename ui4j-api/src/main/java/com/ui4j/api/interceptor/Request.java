@@ -1,6 +1,7 @@
 package com.ui4j.api.interceptor;
 
 import java.net.HttpCookie;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +19,8 @@ public class Request {
     private String url;
 
     private Map<String, List<String>> headers = new HashMap<>();
+
+    private URLConnection urlConnection;
 
     public Request(String url) {
         this.url = url;
@@ -119,8 +122,17 @@ public class Request {
         return this;
     }
 
+    public URLConnection getUrlConnection() {
+        return urlConnection;
+    }
+
+    public void setUrlConnection(URLConnection urlConnection) {
+        this.urlConnection = urlConnection;
+    }
+
     @Override
     public String toString() {
-        return "Request [url=" + url + ", headers=" + headers + "]";
+        return "Request [url=" + url + ", headers=" + headers
+                + ", urlConnection=" + urlConnection + "]";
     }
 }

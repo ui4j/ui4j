@@ -28,8 +28,11 @@ public class WebKitURLHandler extends URLStreamHandler {
 
     private AtomicInteger requestCounter = new AtomicInteger(0);
 
-    public WebKitURLHandler(Interceptor interceptor) {
+    private boolean interceptAllRequests;
+
+    public WebKitURLHandler(Interceptor interceptor, boolean interceptAllRequests) {
         this.interceptor = interceptor;
+        this.interceptAllRequests = interceptAllRequests;
     }
 
     @Override
@@ -65,8 +68,14 @@ public class WebKitURLHandler extends URLStreamHandler {
 
         Request request = new Request(url);
 
-        if (rcount == 1) { // apply the interceptor for only first request
+        if (rcount == 1 && !interceptAllRequests) { // apply the interceptor for only first request
             interceptor.beforeLoad(request);
+        } else if (interceptAllRequests) {
+            interceptor.beforeLoad(request);
+            URLConnection conn = request.getUrlConnection();
+            if (conn != null) {
+                return conn;
+            }
         }
 
         if (request != null) {

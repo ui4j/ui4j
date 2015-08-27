@@ -26,6 +26,8 @@ public class PageConfiguration {
 
     private PromptHandler promptHandler;
 
+    private boolean interceptAllRequests;
+
     public PageConfiguration() {
         this(null);
     }
@@ -132,17 +134,20 @@ public class PageConfiguration {
         return this;
     }
 
-    /**
-     * Returns a string representation of this instance and its current properties.
-     *
-     * @return    A non-null human-readable string representation of this instance and its current
-     *     properties. The precise content of this string is not defined here and is subject to
-     *     change in future releases.
-     */
+    public boolean isInterceptAllRequests() {
+        return interceptAllRequests;
+    }
+
+    public void setInterceptAllRequests(boolean interceptAllRequests) {
+        this.interceptAllRequests = interceptAllRequests;
+    }
+
     @Override
     public String toString() {
         return "PageConfiguration [selectorEngine=" + selectorEngine
                 + ", userAgent=" + userAgent + ", interceptor=" + interceptor
-                + "]";
+                + ", alertHandler=" + alertHandler + ", confirmHandler="
+                + confirmHandler + ", promptHandler=" + promptHandler
+                + ", interceptAllRequests=" + interceptAllRequests + "]";
     }
 }

@@ -356,7 +356,7 @@ class WebKitBrowser implements BrowserEngine {
         if (interceptor != null) {
             String ui4jProtocol = "ui4j-" + pageId;
             ui4jUrl = ui4jProtocol + ":" + url;
-            handler = new WebKitURLHandler(interceptor);
+            handler = new WebKitURLHandler(interceptor, configuration.isInterceptAllRequests());
             try {
                 // HACK #26
                 Field handlerMap = URLs.class.getDeclaredField("handlerMap");
