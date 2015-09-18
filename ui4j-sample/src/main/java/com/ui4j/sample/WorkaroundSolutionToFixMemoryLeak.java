@@ -14,7 +14,7 @@ import com.ui4j.api.interceptor.Response;
 /**
  * Workaround solution to fix the WebView memory leaks
  * 
- * @see https://bugs.openjdk.java.net/browse/JDK-8087888
+ * https://bugs.openjdk.java.net/browse/JDK-8087888
  *
  */
 public class WorkaroundSolutionToFixMemoryLeak {

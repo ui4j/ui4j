@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ui4j</groupId>
     <artifactId>ui4j-sample</artifactId>
-    <version>2.0.0</version>
+    <version>2.1.0</version>
     <name>Ui4j - Sample</name>
     <description>Web Automation for Java</description>
     <url>https://github.com/ui4j/ui4j</url>
@@ -70,7 +70,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.10.1</version>
+                <version>2.10.3</version>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
@@ -97,12 +97,12 @@
         <dependency>
             <groupId>com.ui4j</groupId>
             <artifactId>ui4j-api</artifactId>
-            <version>2.0.0</version>
+            <version>2.1.0</version>
         </dependency>
         <dependency>
             <groupId>com.ui4j</groupId>
             <artifactId>ui4j-webkit</artifactId>
-            <version>2.0.0</version>
+            <version>2.1.0</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
