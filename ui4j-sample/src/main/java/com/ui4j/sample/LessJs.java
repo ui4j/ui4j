@@ -24,7 +24,7 @@ public class LessJs {
 
 	public static void main(String[] args) throws IOException {
 		BrowserEngine webkit = BrowserFactory.getWebKit();
-        String url = ReadHtmlFile.class.getResource("/Less.html").toExternalForm();
+		String url = ReadHtmlFile.class.getResource("/Less.html").toExternalForm();
 		Page page = webkit.navigate(url);
 		page.show();
 		JSObject obj = (JSObject) page.executeScript("window");
@@ -33,9 +33,16 @@ public class LessJs {
 
 		obj.setMember("mycallback", callback);
 
+		// solution 1
 		page.executeScript("less.render('.class { width: (1 + 1) }', function (e, output) { mycallback.setCss(output.css); });");
 
 		System.out.println(callback.getCss());
+
+		// solution 2 without custom Java callback
+		page.executeScript("var mymap = { }");
+		page.executeScript("less.render('.class { width: (2 + 2) }', function (e, output) { mymap.css = output.css; });");
+
+		System.out.println(page.executeScript("mymap.css"));
 
 		page.close();
 	}
