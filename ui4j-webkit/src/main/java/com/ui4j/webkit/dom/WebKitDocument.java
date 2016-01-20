@@ -75,6 +75,12 @@ public class WebKitDocument implements Document, EventTarget {
         return element;
     }
 
+    @Override
+    public Element getHead() {
+        Element element = ((WebKitPageContext) context).createElement(document.getHead(), this, engine);
+        return element;
+    }
+
     public WebEngine getEngine() {
         return engine.getEngine();
     }

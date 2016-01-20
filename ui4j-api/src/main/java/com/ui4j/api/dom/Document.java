@@ -21,6 +21,8 @@ public interface Document {
 
     Element getBody();
 
+    Element getHead();
+
     void setTitle(String title);
 
     Optional<String> getTitle();
