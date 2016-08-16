@@ -109,7 +109,7 @@ If slf4j is available on classpath com.ui4j.api.util.LoggerFactory use slf4j els
 CSS Selector Engine
 -------------------
 Ui4j use W3C selector engine which is default selector engine of WebKit. Alternatively [Sizzle](http://http://sizzlejs.com) selector engine might be used.
-Sizzle is the css selector engine of JQuery and it supports extra selectors like _:has(div)_, _:text_, _containts(text)_ etc.
+Sizzle is the css selector engine of JQuery and it supports extra selectors like _:has(div)_, _:text_, _contains(text)_ etc.
 Check the [Sizzle.java](https://github.com/ui4j/ui4j/blob/master/ui4j-sample/src/main/java/com/ui4j/sample/Sizzle.java) for using sizzle with Ui4j.
 
 
