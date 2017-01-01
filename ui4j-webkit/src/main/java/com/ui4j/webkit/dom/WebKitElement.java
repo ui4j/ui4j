@@ -9,8 +9,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import netscape.javascript.JSObject;
-
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.html.HTMLElement;
@@ -43,6 +41,8 @@ import com.ui4j.spi.PageContext;
 import com.ui4j.webkit.WebKitMapper;
 import com.ui4j.webkit.browser.WebKitPageContext;
 import com.ui4j.webkit.spi.WebKitJavaScriptEngine;
+
+import netscape.javascript.JSObject;
 
 public class WebKitElement implements Element, EventTarget {
 

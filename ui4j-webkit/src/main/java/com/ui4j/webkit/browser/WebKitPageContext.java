@@ -1,6 +1,7 @@
 package com.ui4j.webkit.browser;
 
 import java.util.List;
+import java.util.Map;
 import java.util.WeakHashMap;
 
 import javafx.beans.value.ChangeListener;
@@ -54,9 +55,9 @@ public class WebKitPageContext implements PageContext {
 
     private WebKitProxy pageFactory;
 
-    private WeakHashMap<DocumentImpl, Document> contentDocuments = new WeakHashMap<>();
+    private Map<DocumentImpl, Document> contentDocuments = new WeakHashMap<>();
 
-    private WeakHashMap<DocumentImpl, SelectorEngine> selectorEngines = new WeakHashMap<>();
+    private Map<DocumentImpl, SelectorEngine> selectorEngines = new WeakHashMap<>();
 
     public static class DefaultErrorEventHandler implements EventHandler<WebErrorEvent> {
 

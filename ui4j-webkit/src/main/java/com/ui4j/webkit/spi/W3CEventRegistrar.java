@@ -1,6 +1,7 @@
 package com.ui4j.webkit.spi;
 
 import java.util.Collections;
+import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 
@@ -18,7 +19,7 @@ public class W3CEventRegistrar implements EventRegistrar {
 
     private PageContext context;
 
-    private WeakHashMap<EventHandler, EventListener> listeners = new WeakHashMap<>();
+    private Map<EventHandler, EventListener> listeners = new WeakHashMap<>();
 
     public W3CEventRegistrar(PageContext context) {
         this.context = context;

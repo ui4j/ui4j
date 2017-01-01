@@ -24,12 +24,11 @@ public class NativeEventManager implements EventManager {
         Map<String, Object> map = new HashMap<>();
         map.put("event", event);
         map.put("listener", handler);
-        Object events = target.getProperty("events");
+        List<Map<String, Object>> events = (List<Map<String, Object>>) target.getProperty("events");
         if (events == null || "undefined".equals(events.toString().trim())) {
-            target.setProperty("events", new ArrayList<>(1));
+            target.setProperty("events", events = new ArrayList<>(1));
         }
-        List<Map<String, Object>> list = (List<Map<String, Object>>) target.getProperty("events");
-        list.add(map);
+        events.add(map);
     }
 
     public void unbind(EventTarget target) {
@@ -37,7 +36,7 @@ public class NativeEventManager implements EventManager {
         if (eventObject == null || "undefined".equals(eventObject.toString().trim())) {
             return;
         }
-        List<Map<String, Object>> events = (List<Map<String, Object>>) target.getProperty("events");
+        List<Map<String, Object>> events = (List<Map<String, Object>>) eventObject;
         for (Map<String, Object> next : events) {
             String event = next.get("event").toString();
             EventHandler handler = (EventHandler) next.get("listener");
@@ -53,7 +52,7 @@ public class NativeEventManager implements EventManager {
         if (eventObject == null || "undefined".equals(eventObject.toString().trim())) {
             return;
         }
-        List<Map<String, Object>> events = (List<Map<String, Object>>) target.getProperty("events");
+        List<Map<String, Object>> events = (List<Map<String, Object>>) eventObject;
         List<Map<String, Object>> founds = new ArrayList<>();
         for (Map<String, Object> next : events) {
             String nextEvent = next.get("event").toString();
@@ -72,7 +71,7 @@ public class NativeEventManager implements EventManager {
         if (eventObject == null || "undefined".equals(eventObject.toString().trim())) {
             return;
         }
-        List<Map<String, Object>> events = (List<Map<String, Object>>) target.getProperty("events");
+        List<Map<String, Object>> events = (List<Map<String, Object>>) eventObject;
         Map<String, Object> found = Collections.<String, Object>emptyMap();
         for (Map<String, Object> next : events) {
             EventHandler nextHandler = (EventHandler) next.get("listener");
