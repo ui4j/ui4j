@@ -254,12 +254,13 @@
             <version>4.11</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.jfxtras</groupId>
-            <artifactId>openjfx-monocle</artifactId>
-            <version>1.8.0_20</version>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+		    <groupId>openjfx-monocle</groupId>
+		    <artifactId>openjfx-monocle</artifactId>
+		    <version>8u76-b04</version>
+		    <scope>system</scope>
+		    <systemPath>${project.basedir}/lib/openjfx-monocle-8u76-b04.jar</systemPath>
+		</dependency>
         <dependency>
             <groupId>com.eclipsesource.minimal-json</groupId>
             <artifactId>minimal-json</artifactId>

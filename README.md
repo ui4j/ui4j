@@ -94,7 +94,7 @@ monocle dependency:
 
 ```xml
 <dependency>
-    <groupId>org.jfxtras</groupId>
+    <groupId>org.testfx</groupId>
     <artifactId>openjfx-monocle</artifactId>
     <version>8u76-b04</version>
     <scope>test</scope>

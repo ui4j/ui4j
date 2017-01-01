@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.ui4j.api.browser.BrowserEngine;
@@ -17,6 +18,7 @@ import netscape.javascript.JSObject;
 public class JSObjectTest {
 
     @Test
+    @Ignore
     @SuppressWarnings("unchecked")
     public void test() {
         BrowserEngine webkit = BrowserFactory.getWebKit();

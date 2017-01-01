@@ -76,6 +76,11 @@
                                     <artifact>net.bytebuddy:byte-buddy</artifact>
                                 </filter>
                             </filters>
+                            <artifactSet>
+                            	<excludes>
+                            		<exclude>openjfx-monocle:openjfx-monocle</exclude>
+                            	</excludes>
+                            </artifactSet>
                             <relocations>
                                 <relocation>
                                     <pattern>net.bytebuddy</pattern>

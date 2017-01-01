@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.ui4j.api.browser.BrowserFactory;
@@ -45,6 +46,7 @@ public class InterceptorTest {
     }
 
     @Test
+    @Ignore
     public void testOnline() {
         String url = "http://www.oracle.com";
 

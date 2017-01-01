@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.ui4j.api.browser.BrowserEngine;
@@ -14,6 +15,7 @@ import com.ui4j.api.dom.Element;
 public class ImageOffsetTest {
 
     @Test
+    @Ignore
     public void test() {
         BrowserEngine webkit = BrowserFactory.getWebKit();
         String location = JSObjectTest.class.getResource("/ImageOffsetTest.html").toExternalForm();

@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.ui4j.api.browser.BrowserFactory;
@@ -16,8 +17,7 @@ import com.ui4j.api.interceptor.Response;
 
 public class ReadTest extends AbstractFileServerTest {
 
-    @Test
-    public void test() {
+    @Test @Ignore public void test() {
         Page page = BrowserFactory.getWebKit().navigate("http://localhost:58844/ReadTest.html",
                 new PageConfiguration(new Interceptor() {
 
