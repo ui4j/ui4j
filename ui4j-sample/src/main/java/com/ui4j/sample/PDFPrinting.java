@@ -2,6 +2,9 @@ package com.ui4j.sample;
 
 import java.util.Iterator;
 
+import com.ui4j.api.browser.BrowserFactory;
+import com.ui4j.api.browser.Page;
+
 import javafx.print.PageLayout;
 import javafx.print.PageOrientation;
 import javafx.print.Paper;
@@ -9,9 +12,6 @@ import javafx.print.Printer;
 import javafx.print.Printer.MarginType;
 import javafx.print.PrinterJob;
 import javafx.scene.web.WebEngine;
-
-import com.ui4j.api.browser.BrowserFactory;
-import com.ui4j.api.browser.Page;
 
 public class PDFPrinting {
 

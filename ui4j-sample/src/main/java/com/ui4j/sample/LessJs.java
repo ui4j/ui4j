@@ -2,11 +2,11 @@ package com.ui4j.sample;
 
 import java.io.IOException;
 
-import netscape.javascript.JSObject;
-
 import com.ui4j.api.browser.BrowserEngine;
 import com.ui4j.api.browser.BrowserFactory;
 import com.ui4j.api.browser.Page;
+
+import netscape.javascript.JSObject;
 
 public class LessJs {
 
