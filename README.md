@@ -1,7 +1,7 @@
 Ui4j
 ====
 
-[![Download](http://img.shields.io/badge/download-latest--jar-orange.svg)](https://repo1.maven.org/maven2/com/ui4j/ui4j-all/2.1.0/ui4j-all-2.1.0.jar) [![Maven](http://img.shields.io/maven-central/v/com.ui4j/ui4j-all.svg)](http://search.maven.org/#search%7Cga%7C1%7Cui4j) [![License](http://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT) [![Build Status](https://drone.io/github.com/ui4j/ui4j/status.png)](https://drone.io/github.com/ui4j/ui4j/latest) [![Coverage Status](https://img.shields.io/coveralls/ui4j/ui4j.svg)](https://coveralls.io/r/ui4j/ui4j?branch=master)
+[![License](http://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT) [![Build Status](https://drone.io/github.com/ui4j/ui4j/status.png)](https://drone.io/github.com/ui4j/ui4j/latest) [![Coverage Status](https://img.shields.io/coveralls/ui4j/ui4j.svg)](https://coveralls.io/r/ui4j/ui4j?branch=master)
 
 #### Talk with us and ask questions via Gitter
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/ui4j/ui4j?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
@@ -48,17 +48,28 @@ Integration with Maven
 
 To use the official release of Ui4j, please use the following snippet in your pom.xml
 
+Add the following to your POM's `<repositories>` tag:
+
 ```xml
-    <dependency>
-        <groupId>com.ui4j</groupId>
-        <artifactId>ui4j-all</artifactId>
-        <version>2.1.0</version>
-    </dependency>
+<repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+</repository>
+```
+
+then add the following dependency:
+
+```xml
+<dependency>
+    <groupId>com.github.ui4j.ui4j</groupId>
+    <artifactId>ui4j-all</artifactId>
+    <version>2.2.0</version>
+</dependency>
 ```
 
 Using Ui4j without Maven
 ------------------------
-If you use Ui4j without Maven, download [pre built jar file](https://repo1.maven.org/maven2/com/ui4j/ui4j-all/2.1.0/ui4j-all-2.1.0.jar).
+If you use Ui4j without Maven, download [pre built jar file](https://jitpack.io/com/github/ui4j/ui4j/ui4j-all/2.2.0/ui4j-all-2.2.0.jar).
 
 
 Supported Platforms
