@@ -96,7 +96,7 @@ monocle dependency:
 <dependency>
     <groupId>org.jfxtras</groupId>
     <artifactId>openjfx-monocle</artifactId>
-    <version>1.8.0_20</version>
+    <version>8u76-b04</version>
     <scope>test</scope>
 </dependency>
 ```
