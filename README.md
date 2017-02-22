@@ -10,6 +10,8 @@ Ui4j
 
 Ui4j is a web-automation library for Java. It is a thin wrapper library around the JavaFx WebKit Engine, and can be used for automating the use of web pages and for testing web pages.
 
+Ui4j sponsored by [https://webfolder.io](https://webfolder.io)
+
 Supported Java Versions
 -----------------------
 
