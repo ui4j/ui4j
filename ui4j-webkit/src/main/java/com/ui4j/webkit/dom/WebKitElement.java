@@ -691,7 +691,7 @@ public class WebKitElement implements Element, EventTarget {
 
     @Override
     public float getOuterHeight() {
-        int height = getHtmlElement().getOffsetHeight();
+        int height = (int) getHtmlElement().getOffsetHeight();
         float marginTop = 
                 Float.parseFloat(getHtmlElement().eval("parseFloat(window.getComputedStyle(this, null).marginTop, 10)").toString());
         float marginBottom = 
@@ -701,17 +701,17 @@ public class WebKitElement implements Element, EventTarget {
 
     @Override
     public float getClientHeight() {
-        return getHtmlElement().getClientHeight();
+        return (float) getHtmlElement().getClientHeight();
     }
 
     @Override
     public float getClientWidth() {
-        return getHtmlElement().getClientWidth();
+        return (float) getHtmlElement().getClientWidth();
     }
 
     @Override
     public float getOuterWidth() {
-        int width = getHtmlElement().getOffsetWidth();
+        int width = (int) getHtmlElement().getOffsetWidth();
         float marginLeft = 
                 Float.parseFloat(getHtmlElement().eval("parseFloat(window.getComputedStyle(this, null).marginLeft, 10)").toString());
         float marginRight = 
@@ -787,7 +787,7 @@ public class WebKitElement implements Element, EventTarget {
     public Optional<Point> getPosition() {
         HTMLElementImpl htmlElementImpl = getHtmlElement();
         if (htmlElementImpl != null) {
-            Point point = new Point(htmlElementImpl.getOffsetLeft(), htmlElementImpl.getOffsetTop());
+            Point point = new Point(new Double(htmlElementImpl.getOffsetLeft()).intValue(), new Double(htmlElementImpl.getOffsetTop()).intValue());
             return Optional.of(point);
         } else {
             return Optional.empty();
