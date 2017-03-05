@@ -304,7 +304,9 @@ class WebKitBrowser implements BrowserEngine {
             }
             installErrorHandler();
 
-            latch.countDown();
+            if (latch != null) {
+                latch.countDown();
+            }
         }
 
         protected void installErrorHandler() {
