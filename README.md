@@ -1,7 +1,7 @@
 Ui4j
 ====
 
-[![License](http://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT) [![Build Status](https://drone.io/github.com/ui4j/ui4j/status.png)](https://drone.io/github.com/ui4j/ui4j/latest) [![Coverage Status](https://img.shields.io/coveralls/ui4j/ui4j.svg)](https://coveralls.io/r/ui4j/ui4j?branch=master)
+[![License](http://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT) [![Coverage Status](https://img.shields.io/coveralls/ui4j/ui4j.svg)](https://coveralls.io/r/ui4j/ui4j?branch=master)
 
 #### Talk with us and ask questions via Gitter
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/ui4j/ui4j?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
@@ -63,7 +63,7 @@ then add the following dependency:
 <dependency>
     <groupId>com.github.ui4j.ui4j</groupId>
     <artifactId>ui4j-all</artifactId>
-    <version>2.2.0</version>
+    <version>2.2.3</version>
 </dependency>
 ```
 

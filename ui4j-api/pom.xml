@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.ui4j</groupId>
     <artifactId>ui4j-api</artifactId>
-    <version>2.2.2</version>
+    <version>2.2.3</version>
     <name>Ui4j - API</name>
     <description>Web Automation for Java</description>
     <url>https://github.com/ui4j/ui4j</url>
-    <packaging>bundle</packaging>
+    <packaging>jar</packaging>
     <scm>
         <url>https://github.com/ui4j/ui4j.git</url>
     </scm>
@@ -66,23 +66,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>bundle</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <extensions>true</extensions>
-                <configuration>
-                    <instructions>
-                        <Bundle-License>https://raw.githubusercontent.com/ui4j/ui4j/master/LICENSE</Bundle-License>
-                    </instructions>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

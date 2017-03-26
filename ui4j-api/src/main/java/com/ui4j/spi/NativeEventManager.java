@@ -20,15 +20,17 @@ public class NativeEventManager implements EventManager {
 
     @Override
     public void bind(EventTarget target, String event, EventHandler handler) {
-        context.getEventRegistrar().register(target, event, handler);
-        Map<String, Object> map = new HashMap<>();
-        map.put("event", event);
-        map.put("listener", handler);
-        List<Map<String, Object>> events = (List<Map<String, Object>>) target.getProperty("events");
-        if (events == null || "undefined".equals(events.toString().trim())) {
-            target.setProperty("events", events = new ArrayList<>(1));
+        if (target != null && List.class.isAssignableFrom(target.getClass())) {
+            context.getEventRegistrar().register(target, event, handler);
+            Map<String, Object> map = new HashMap<>();
+            map.put("event", event);
+            map.put("listener", handler);
+            List<Map<String, Object>> events = (List<Map<String, Object>>) target.getProperty("events");
+            if (events == null || "undefined".equals(events.toString().trim())) {
+                target.setProperty("events", events = new ArrayList<>(1));
+            }
+            events.add(map);
         }
-        events.add(map);
     }
 
     public void unbind(EventTarget target) {
@@ -36,14 +38,16 @@ public class NativeEventManager implements EventManager {
         if (eventObject == null || "undefined".equals(eventObject.toString().trim())) {
             return;
         }
-        List<Map<String, Object>> events = (List<Map<String, Object>>) eventObject;
-        for (Map<String, Object> next : events) {
-            String event = next.get("event").toString();
-            EventHandler handler = (EventHandler) next.get("listener");
-            context.getEventRegistrar().unregister(target, event, handler);
+        if (List.class.isAssignableFrom(eventObject.getClass())) {
+            List<Map<String, Object>> events = (List<Map<String, Object>>) eventObject;
+            for (Map<String, Object> next : events) {
+                String event = next.get("event").toString();
+                EventHandler handler = (EventHandler) next.get("listener");
+                context.getEventRegistrar().unregister(target, event, handler);
+            }
+            events.clear();
+            target.removeProperty("events");
         }
-        events.clear();
-        target.removeProperty("events");
     }
 
     @Override
