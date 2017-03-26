@@ -63,7 +63,7 @@ then add the following dependency:
 <dependency>
     <groupId>com.github.ui4j.ui4j</groupId>
     <artifactId>ui4j-all</artifactId>
-    <version>2.2.3</version>
+    <version>2.2.5</version>
 </dependency>
 ```
 
