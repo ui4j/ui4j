@@ -69,7 +69,7 @@ then add the following dependency:
 
 Using Ui4j without Maven
 ------------------------
-If you use Ui4j without Maven, download [pre built jar file](https://jitpack.io/com/github/ui4j/ui4j/ui4j-all/2.2.0/ui4j-all-2.2.0.jar).
+If you use Ui4j without Maven, download [pre built jar file](https://jitpack.io/com/github/ui4j/ui4j/ui4j-all/2.2.5/ui4j-all-2.2.5.jar).
 
 
 Supported Platforms
