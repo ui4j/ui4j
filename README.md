@@ -8,9 +8,9 @@ Ui4j
 
 Ui4j is a web-automation library for Java. It is a thin wrapper library around the JavaFx WebKit Engine, and can be used for automating the use of web pages and for testing web pages.
 
-cdp4j (Automation for Chrome)
+cdp4j (Automation for Chrome & Chromium)
 =============================
-Use [cdp4j](https://github.com/webfolderio/cdp4j) Java library if you need to automate  Chrome or Chromium based browser.
+Use [cdp4j](https://github.com/webfolderio/cdp4j) Java library if you need to automate  Chrome or Chromium based browsers.
 
 Supported Java Versions
 -----------------------
