@@ -3,9 +3,6 @@ Ui4j
 
 [![License](http://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT) [![Coverage Status](https://img.shields.io/coveralls/ui4j/ui4j.svg)](https://coveralls.io/r/ui4j/ui4j?branch=master)
 
-#### Talk with us and ask questions via Gitter
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/ui4j/ui4j?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-
 Ui4j is a web-automation library for Java. It is a thin wrapper library around the JavaFx WebKit Engine, and can be used for automating the use of web pages and for testing web pages.
 
 cdp4j (Automation for Chrome & Chromium)
@@ -26,15 +23,6 @@ Licensing
 Ui4j is released under the terms of the MIT License (MIT).
 
 You are free to use Ui4j or any of its constituent parts in any other project (even commercial projects) so long as its copyright headers are left intact.
-
-Support
---------
-
-![JProfiler] (https://www.ej-technologies.com/images/product_banners/jprofiler_large.png)
-
-Ui4j is optimized using [JProfiler](http://www.ej-technologies.com/products/jprofiler/overview.html).
-
-Thanks so much to [ej-technologies](https://www.ej-technologies.com) to let us to use the [JProfiler](http://www.ej-technologies.com/products/jprofiler/overview.html) with an open source project license.
 
 Stability
 ---------
@@ -199,12 +187,5 @@ use default handlers from [Dialogs.java](https://github.com/ui4j/ui4j/blob/maste
 #### What is the easiest way clear all input elements?
 
 Use [clear](https://github.com/ui4j/ui4j/blob/master/ui4j-api/src/main/java/com/ui4j/api/dom/Form.java#L13) method of the Form class.
-
-Donations
----------
-Donations are accepted via Amazon.
-
-[Ui4j Amazon Wishlist](https://www.amazon.com/registry/wishlist/1IPPMT8VAXN2F)
-
 
 
