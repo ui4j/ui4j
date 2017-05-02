@@ -29,10 +29,6 @@ Stability
 
 This library is suitable for use in production systems.
 
-
-If you have found a defect or you want to request a feature enhancement an issue report is the way to bring the attention to the Ui4j Community.
-
-
 Integration with Maven
 ----------------------
 
@@ -65,7 +61,7 @@ If you use Ui4j without Maven, download [pre built jar file](https://jitpack.io/
 Supported Platforms
 -------------------
 
-Ui4j has been tested under Windows 8.1 and Ubuntu 14.04, but should work on any platform where a Java 8 JRE or JDK is available.
+Ui4j has been tested under Windows 10 but should work on any platform where a Java 8 JRE or JDK is available.
 
 
 Headless Mode
