@@ -162,12 +162,6 @@ Building Ui4j
 -------------
 mvn install
 
-Getting help and getting involved
----------------------------------
-
-Please do not hesitate to submit pull requests.
-We are happy to accept documentation and sample code contributions.
-
 FAQ
 ---
 
@@ -188,4 +182,11 @@ use default handlers from [Dialogs.java](https://github.com/ui4j/ui4j/blob/maste
 
 Use [clear](https://github.com/ui4j/ui4j/blob/master/ui4j-api/src/main/java/com/ui4j/api/dom/Form.java#L13) method of the Form class.
 
+Getting Help
+--------------------------------------------------------------------------------------------
+
+![WebFolder](https://raw.githubusercontent.com/webfolderio/cdp4j/master/images/logo.png)
+
+ui4j is an MIT licensed open source project and completely free to use. However, the amount of effort needed to maintain and develop new features for the project is not sustainable without proper financial backing. You can support ui4j development by 
+**buying** support package. Please [contact us](https://webfolder.io/support) for support packages & pricing.
 
