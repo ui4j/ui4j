@@ -14,7 +14,7 @@
     <developers>
         <developer>
             <id>ui4j</id>
-            <email>admin@atolyemayis.com</email>
+            <email>support@webfolder.io</email>
             <roles>
                 <role>developer</role>
             </roles>
@@ -96,15 +96,6 @@
                 <version>4.3.0</version>
                 <configuration>
                     <repoToken>${coveralls.token}</repoToken>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
-                    </archive>
                 </configuration>
             </plugin>
         </plugins>
