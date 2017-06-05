@@ -47,15 +47,15 @@ then add the following dependency:
 
 ```xml
 <dependency>
-    <groupId>com.github.ui4j.ui4j</groupId>
-    <artifactId>ui4j-all</artifactId>
-    <version>2.2.5</version>
+    <groupId>com.github.webfolderio.ui4j</groupId>
+    <artifactId>ui4j</artifactId>
+    <version>2.2.6</version>
 </dependency>
 ```
 
 Using Ui4j without Maven
 ------------------------
-If you use Ui4j without Maven, download [pre built jar file](https://jitpack.io/com/github/ui4j/ui4j/ui4j-all/2.2.5/ui4j-all-2.2.5.jar).
+If you use Ui4j without Maven, download [pre built jar file](https://jitpack.io/com/github/webfolderio/ui4j/ui4j-all/2.2.6/ui4j-all-2.2.6.jar).
 
 
 Supported Platforms
