@@ -20,7 +20,7 @@ public class NativeEventManager implements EventManager {
 
     @Override
     public void bind(EventTarget target, String event, EventHandler handler) {
-        if (target != null && List.class.isAssignableFrom(target.getClass())) {
+        if (target != null) {
             context.getEventRegistrar().register(target, event, handler);
             Map<String, Object> map = new HashMap<>();
             map.put("event", event);

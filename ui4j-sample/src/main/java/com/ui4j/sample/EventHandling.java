@@ -24,7 +24,7 @@ public class EventHandling {
 
         // find the input element with an id #txt and bind the listener to the input event
         document.query("#txt").get().bind("input", (h) -> {
-            System.out.println(h.getTarget().getValue());
+            System.out.println(h.getTarget().getValue().get());
         });
 
         // find the button and bind the click listener
