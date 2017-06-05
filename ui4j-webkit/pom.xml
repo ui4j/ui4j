@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.ui4j</groupId>
     <artifactId>ui4j-webkit</artifactId>
-    <version>2.2.5</version>
+    <version>2.2.6</version>
     <name>Ui4j - WebKit</name>
     <description>Web Automation for Java</description>
     <url>https://github.com/ui4j/ui4j</url>
-    <packaging>bundle</packaging>
+    <packaging>jar</packaging>
     <scm>
         <url>https://github.com/ui4j/ui4j.git</url>
     </scm>
@@ -107,46 +107,6 @@
                     </archive>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>bundle</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <extensions>true</extensions>
-                <configuration>
-                    <instructions>
-                        <Bundle-License>https://raw.githubusercontent.com/ui4j/ui4j/master/LICENSE</Bundle-License>
-                        <Import-Package>
-                                !com.sun.webkit.dom,
-                                !com.sun.webkit.network,
-                                !com.sun.webkit.network.about,
-                                !com.sun.webkit.network.data,
-                                !javafx.application,
-                                !javafx.beans,
-                                !javafx.beans.property,
-                                !javafx.beans.value,
-                                !javafx.concurrent,
-                                !javafx.event,
-                                !javafx.scene,
-                                !javafx.scene.web,
-                                !javafx.stage,
-                                !javafx.util,
-                                !netscape.javascript,
-                                !org.w3c.dom,
-                                !org.w3c.dom.events,
-                                !org.w3c.dom.css,
-                                !org.w3c.dom.html,
-                                *
-                        </Import-Package>
-                        <Require-Bundle>com.ui4j.api;bundle-version="2.0.0",net.bytebuddy.byte-buddy;bundle-version="1.5.13"</Require-Bundle>
-                    </instructions>
-                </configuration>
-            </plugin>
         </plugins>
         <pluginManagement>
             <plugins>
@@ -171,22 +131,6 @@
                                         <ignore />
                                     </action>
                                 </pluginExecution>
-                                <pluginExecution>
-                                    <pluginExecutionFilter>
-                                        <groupId>org.apache.felix</groupId>
-                                        <artifactId>maven-bundle-plugin</artifactId>
-                                        <versionRange>[0,)</versionRange>
-                                        <goals>
-                                            <goal>manifest</goal>
-                                        </goals>
-                                    </pluginExecutionFilter>
-                                    <action>
-                                        <execute>
-                                            <runOnIncremental>false</runOnIncremental>
-                                        </execute>
-                                        <ignore />
-                                    </action>
-                                </pluginExecution>
                             </pluginExecutions>
                         </lifecycleMappingMetadata>
                     </configuration>
@@ -198,7 +142,7 @@
         <dependency>
             <groupId>com.github.ui4j</groupId>
             <artifactId>ui4j-api</artifactId>
-            <version>2.2.5</version>
+            <version>2.2.6</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
