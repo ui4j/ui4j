@@ -4,7 +4,7 @@
     <groupId>com.github.webfolderio</groupId>
     <artifactId>ui4j</artifactId>
     <packaging>pom</packaging>
-    <version>2.2.6</version>
+    <version>3.0.0</version>
     <name>Ui4j - Web Automation for Java</name>
     <description>Web Automation for Java</description>
     <url>https://github.com/ui4j/ui4j</url>
@@ -25,7 +25,6 @@
         <module>ui4j-api</module>
         <module>ui4j-webkit</module>
         <module>ui4j-sample</module>
-        <module>ui4j-all</module>
     </modules>
     <licenses>
         <license>

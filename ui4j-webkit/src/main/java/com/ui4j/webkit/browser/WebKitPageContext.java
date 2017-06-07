@@ -4,15 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebErrorEvent;
-import javafx.scene.web.WebView;
-import javafx.stage.Stage;
-
+import org.w3c.dom.Node;
 import com.sun.webkit.dom.DocumentImpl;
 import com.ui4j.api.browser.PageConfiguration;
 import com.ui4j.api.browser.SelectorEngine;
@@ -29,11 +21,23 @@ import com.ui4j.spi.EventRegistrar;
 import com.ui4j.spi.JavaScriptEngine;
 import com.ui4j.spi.NativeEventManager;
 import com.ui4j.spi.PageContext;
-import com.ui4j.webkit.proxy.WebKitProxy;
+import com.ui4j.webkit.dom.WebKitDocument;
+import com.ui4j.webkit.dom.WebKitElement;
+import com.ui4j.webkit.dom.WebKitPage;
+import com.ui4j.webkit.dom.WebKitWindow;
 import com.ui4j.webkit.spi.SizzleSelectorEngine;
 import com.ui4j.webkit.spi.W3CEventRegistrar;
 import com.ui4j.webkit.spi.W3CSelectorEngine;
 import com.ui4j.webkit.spi.WebKitJavaScriptEngine;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebErrorEvent;
+import javafx.scene.web.WebView;
+import javafx.stage.Stage;
 
 public class WebKitPageContext implements PageContext {
 
@@ -46,14 +50,6 @@ public class WebKitPageContext implements PageContext {
     private SelectorEngine selector;
 
     private PageConfiguration configuration;
-
-    private WebKitProxy elementFactory;
-
-    private WebKitProxy documentFactory;
-
-    private WebKitProxy windowFactory;
-
-    private WebKitProxy pageFactory;
 
     private Map<DocumentImpl, Document> contentDocuments = new WeakHashMap<>();
 
@@ -104,16 +100,8 @@ public class WebKitPageContext implements PageContext {
         }
     }
 
-    public WebKitPageContext(PageConfiguration configuration,
-                        WebKitProxy elementFactory,
-                        WebKitProxy documentFactory,
-                        WebKitProxy windowFactory,
-                        WebKitProxy pageFactory) {
+    public WebKitPageContext(PageConfiguration configuration) {
         this.configuration = configuration;
-        this.elementFactory = elementFactory;
-        this.documentFactory = documentFactory;
-        this.windowFactory = windowFactory;
-        this.pageFactory = pageFactory;
     }
 
     @Override
@@ -127,7 +115,7 @@ public class WebKitPageContext implements PageContext {
     }
 
     public Element createElement(Object node, Document document, JavaScriptEngine engine) {
-        return (Element) elementFactory.newInstance(new Object[] { node, document, this, engine });
+        return (Element) new WebKitElement((Node) node, document, this, (WebKitJavaScriptEngine) engine);
     }
 
     public Document createDocument(JavaScriptEngine engine) {
@@ -139,7 +127,7 @@ public class WebKitPageContext implements PageContext {
         }
         webEngine.getLoadWorker().exceptionProperty().addListener(new ExceptionListener(log));
         webEngine.setOnError(new DefaultErrorEventHandler());
-        Document document = (Document) documentFactory.newInstance(new Object[] { this, documentImpl, engine });
+        Document document = new WebKitDocument(this, documentImpl, (WebKitJavaScriptEngine) engine);
         selector = initializeSelectorEngine(document, (WebKitJavaScriptEngine) engine);
         return document;
     }
@@ -150,7 +138,7 @@ public class WebKitPageContext implements PageContext {
             if (existingDocument != null) {
                 return existingDocument;
             } else {
-                Document document = (Document) documentFactory.newInstance(new Object[] { this, documentImpl, engine });
+                Document document = new WebKitDocument(this, documentImpl, (WebKitJavaScriptEngine) engine);
                 contentDocuments.put(documentImpl, document);
 
                 SelectorEngine selector = initializeSelectorEngine(document, (WebKitJavaScriptEngine) engine);
@@ -166,12 +154,12 @@ public class WebKitPageContext implements PageContext {
     }
 
     public Window createWindow(Document document) {
-        return (Window) windowFactory.newInstance(new Object[] { document });
+        return (Window) new WebKitWindow(document);
     }
 
     public WebKitPage newPage(Object view, JavaScriptEngine engine, Window window, Stage stage, Scene scene, Document document, int pageId) {
         WebView webView = (WebView) view;
-        WebKitPage page = (WebKitPage) pageFactory.newInstance(new Object[] { webView, engine, window, stage, scene, document, pageId });
+        WebKitPage page = new WebKitPage(webView, (WebKitJavaScriptEngine) engine, window, stage, scene, document, pageId);
         page.addDocumentListener(new GlobalEventCleaner());
         return page;
     }

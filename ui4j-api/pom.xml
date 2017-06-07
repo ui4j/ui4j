@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.webfolderio</groupId>
     <artifactId>ui4j-api</artifactId>
-    <version>2.2.6</version>
+    <version>3.0.0</version>
     <name>Ui4j - API</name>
     <description>Web Automation for Java</description>
     <url>https://github.com/ui4j/ui4j</url>

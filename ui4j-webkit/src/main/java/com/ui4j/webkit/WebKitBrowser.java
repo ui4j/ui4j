@@ -15,21 +15,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.beans.InvalidationListener;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Worker;
-import javafx.scene.Scene;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
-import javafx.stage.Stage;
-import netscape.javascript.JSObject;
-
-import org.w3c.dom.Node;
-
-import com.sun.webkit.dom.DocumentImpl;
 import com.sun.webkit.network.CookieManager;
 import com.sun.webkit.network.URLs;
 import com.ui4j.api.browser.BrowserEngine;
@@ -48,17 +33,25 @@ import com.ui4j.api.util.Ui4jException;
 import com.ui4j.spi.PageContext;
 import com.ui4j.spi.ShutdownListener;
 import com.ui4j.spi.Ui4jExecutionTimeoutException;
-import com.ui4j.webkit.browser.WebKitPage;
-import com.ui4j.webkit.browser.WebKitPage.AlertDelegationHandler;
-import com.ui4j.webkit.browser.WebKitPage.ConfirmDelegationHandler;
-import com.ui4j.webkit.browser.WebKitPage.PromptDelegationHandler;
 import com.ui4j.webkit.browser.WebKitPageContext;
 import com.ui4j.webkit.browser.WebKitURLHandler;
-import com.ui4j.webkit.browser.WebKitWindow;
-import com.ui4j.webkit.dom.WebKitDocument;
-import com.ui4j.webkit.dom.WebKitElement;
-import com.ui4j.webkit.proxy.WebKitProxy;
+import com.ui4j.webkit.dom.WebKitPage;
+import com.ui4j.webkit.dom.WebKitPage.AlertDelegationHandler;
+import com.ui4j.webkit.dom.WebKitPage.ConfirmDelegationHandler;
+import com.ui4j.webkit.dom.WebKitPage.PromptDelegationHandler;
 import com.ui4j.webkit.spi.WebKitJavaScriptEngine;
+
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Worker;
+import javafx.scene.Scene;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+import javafx.stage.Stage;
+import netscape.javascript.JSObject;
 
 class WebKitBrowser implements BrowserEngine {
 
@@ -71,26 +64,6 @@ class WebKitBrowser implements BrowserEngine {
     private AtomicInteger pageCounter = new AtomicInteger(0);
 
     private static final Logger LOG = LoggerFactory.getLogger(WebKitBrowser.class);
-
-    private WebKitProxy elementFactory = new WebKitProxy(WebKitElement.class, new Class[] {
-                                                Node.class, Document.class,
-                                                PageContext.class, WebKitJavaScriptEngine.class
-    });
-
-    private WebKitProxy documentFactory = new WebKitProxy(WebKitDocument.class, new Class[] {
-                                                PageContext.class, DocumentImpl.class,
-                                                WebKitJavaScriptEngine.class
-    });
-    
-    private WebKitProxy windowFactory = new WebKitProxy(WebKitWindow.class, new Class[] {
-                                                Document.class
-    });
-    
-    private WebKitProxy pageFactory = new WebKitProxy(WebKitPage.class, new Class[] {
-                                                WebView.class, WebKitJavaScriptEngine.class,
-                                                Window.class, Stage.class, Scene.class,
-                                                Document.class, int.class
-    });
 
     WebKitBrowser(ShutdownListener shutdownListener) {
         this.shutdownListener = shutdownListener;
@@ -340,9 +313,7 @@ class WebKitBrowser implements BrowserEngine {
     @Override
     @SuppressWarnings("unchecked")
     public Page navigate(String url, PageConfiguration configuration) {
-        WebKitPageContext context = new WebKitPageContext(configuration,
-                                elementFactory, documentFactory,
-                                windowFactory, pageFactory);
+        WebKitPageContext context = new WebKitPageContext(configuration);
 
         int pageId = pageCounter.incrementAndGet();
 

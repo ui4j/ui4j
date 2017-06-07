@@ -1,4 +1,4 @@
-package com.ui4j.webkit.browser;
+package com.ui4j.webkit.dom;
 
 import static javafx.embed.swing.SwingFXUtils.fromFXImage;
 
@@ -11,21 +11,6 @@ import java.net.URLStreamHandler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import javafx.animation.AnimationTimer;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Worker;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.SnapshotParameters;
-import javafx.scene.image.WritableImage;
-import javafx.scene.web.PromptData;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebEvent;
-import javafx.scene.web.WebView;
-import javafx.stage.Stage;
-import javafx.util.Callback;
 
 import javax.imageio.ImageIO;
 
@@ -46,6 +31,21 @@ import com.ui4j.spi.JavaScriptEngine;
 import com.ui4j.spi.PageView;
 import com.ui4j.webkit.WebKitIsolatedCookieHandler;
 import com.ui4j.webkit.spi.WebKitJavaScriptEngine;
+
+import javafx.animation.AnimationTimer;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Worker;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.image.WritableImage;
+import javafx.scene.web.PromptData;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebEvent;
+import javafx.scene.web.WebView;
+import javafx.stage.Stage;
+import javafx.util.Callback;
 
 public class WebKitPage implements Page, PageView, JavaScriptEngine {
 

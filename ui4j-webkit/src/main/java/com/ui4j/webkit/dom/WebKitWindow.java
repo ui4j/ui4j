@@ -1,10 +1,9 @@
-package com.ui4j.webkit.browser;
-
-import javafx.scene.web.WebEngine;
+package com.ui4j.webkit.dom;
 
 import com.ui4j.api.dom.Document;
 import com.ui4j.api.dom.Window;
-import com.ui4j.webkit.dom.WebKitDocument;
+
+import javafx.scene.web.WebEngine;
 
 public class WebKitWindow implements Window {
 

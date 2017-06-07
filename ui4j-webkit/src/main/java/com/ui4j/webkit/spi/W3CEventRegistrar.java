@@ -11,9 +11,9 @@ import com.ui4j.api.dom.EventTarget;
 import com.ui4j.api.event.EventHandler;
 import com.ui4j.spi.EventRegistrar;
 import com.ui4j.spi.PageContext;
+import com.ui4j.webkit.browser.WebKitEventListener;
 import com.ui4j.webkit.dom.WebKitDocument;
 import com.ui4j.webkit.dom.WebKitElement;
-import com.ui4j.webkit.dom.WebKitEventListener;
 
 public class W3CEventRegistrar implements EventRegistrar {
 

@@ -36,6 +36,7 @@ import com.ui4j.api.dom.Select;
 import com.ui4j.api.event.EventHandler;
 import com.ui4j.api.util.Point;
 import com.ui4j.spi.DelegatingEventHandler;
+import com.ui4j.spi.JavaScriptEngine;
 import com.ui4j.spi.NodeUnbindVisitor;
 import com.ui4j.spi.PageContext;
 import com.ui4j.webkit.WebKitMapper;
@@ -913,4 +914,8 @@ public class WebKitElement implements Element, EventTarget {
 			return result;
 		}
 	}
+
+    public JavaScriptEngine getEngine() {
+        return engine;
+    }
 }

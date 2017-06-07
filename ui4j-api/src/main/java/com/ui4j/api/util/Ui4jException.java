@@ -11,4 +11,8 @@ public class Ui4jException extends RuntimeException {
     public Ui4jException(Exception e) {
         super(e);
     }
+
+    public Ui4jException(Throwable e) {
+        super(e);
+    }
 }

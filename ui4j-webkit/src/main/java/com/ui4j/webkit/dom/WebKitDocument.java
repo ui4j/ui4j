@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import javafx.scene.web.WebEngine;
-
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.events.Event;
@@ -18,8 +16,11 @@ import com.ui4j.api.dom.Element;
 import com.ui4j.api.dom.EventTarget;
 import com.ui4j.api.event.EventHandler;
 import com.ui4j.spi.PageContext;
+import com.ui4j.webkit.browser.WebKitHtmlParser;
 import com.ui4j.webkit.browser.WebKitPageContext;
 import com.ui4j.webkit.spi.WebKitJavaScriptEngine;
+
+import javafx.scene.web.WebEngine;
 
 public class WebKitDocument implements Document, EventTarget {
 

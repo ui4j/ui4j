@@ -1,4 +1,4 @@
-package com.ui4j.webkit.dom;
+package com.ui4j.webkit.browser;
 
 import netscape.javascript.JSObject;
 
@@ -11,7 +11,7 @@ import com.sun.webkit.dom.NodeImpl;
 import com.ui4j.api.event.EventAdapter;
 import com.ui4j.api.event.EventHandler;
 import com.ui4j.spi.PageContext;
-import com.ui4j.webkit.browser.WebKitPageContext;
+import com.ui4j.webkit.dom.WebKitElement;
 
 public class WebKitEventListener implements EventListener {
 
@@ -37,8 +37,8 @@ public class WebKitEventListener implements EventListener {
         com.sun.webkit.dom.EventImpl eventImpl = (com.sun.webkit.dom.EventImpl) evt;
         Node target = (Node) evt.getTarget();
         Node currentTarget = (Node) evt.getCurrentTarget();
-        WebKitElement elementImpl = (WebKitElement) ((WebKitPageContext) context).createElement(target, element.getDocument(), element.engine);
-        WebKitElement currentElementImpl = (WebKitElement) ((WebKitPageContext) context).createElement(currentTarget, element.getDocument(), element.engine);
+        WebKitElement elementImpl = (WebKitElement) ((WebKitPageContext) context).createElement(target, element.getDocument(), element.getEngine());
+        WebKitElement currentElementImpl = (WebKitElement) ((WebKitPageContext) context).createElement(currentTarget, element.getDocument(), element.getEngine());
         EventAdapter ui4jEvent = new EventAdapter(evt.getType(), elementImpl, currentElementImpl);
         if (eventImpl instanceof MouseEventImpl) {
             MouseEventImpl mouseEventImpl = (MouseEventImpl) eventImpl;

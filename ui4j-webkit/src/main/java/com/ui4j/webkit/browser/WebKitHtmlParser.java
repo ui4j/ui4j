@@ -1,4 +1,4 @@
-package com.ui4j.webkit.dom;
+package com.ui4j.webkit.browser;
 
 import netscape.javascript.JSObject;
 
@@ -8,7 +8,7 @@ import org.w3c.dom.html.HTMLDocument;
 
 import com.ui4j.spi.JavaScriptEngine;
 
-class WebKitHtmlParser {
+public class WebKitHtmlParser {
 
     private JavaScriptEngine engine;
 
@@ -34,11 +34,11 @@ class WebKitHtmlParser {
         }
     }
 
-    WebKitHtmlParser(JavaScriptEngine engine) {
+    public WebKitHtmlParser(JavaScriptEngine engine) {
         this.engine = engine;
     }
 
-    NodeList parse(String html, HTMLDocument document) {
+    public NodeList parse(String html, HTMLDocument document) {
         JSObject wrapperDiv = (JSObject) engine.executeScript("document.createElement('div')");
         wrapperDiv.setMember("innerHTML", html);
         JSObject childNodes = (JSObject) wrapperDiv.getMember("childNodes");
