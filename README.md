@@ -176,7 +176,7 @@ Contribution Guidelines
 
 You can contribute to ui4j by opening a Pull Request.
 
-## Rules for the Contribution:
+### Rules for the Contribution:
 
 * In most cases, pull requests for bug fixes and new features should be based on the `main` branch.
 * It is important to write a good commit message explaining why the feature is needed.
