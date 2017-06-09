@@ -32,30 +32,23 @@ This library is suitable for use in production systems.
 Integration with Maven
 ----------------------
 
-To use the official release of Ui4j, please use the following snippet in your pom.xml
+To use the official release of ui4j, please use the following snippet in your pom.xml file.
 
-Add the following to your POM's `<repositories>` tag:
-
-```xml
-<repository>
-      <id>jitpack.io</id>
-      <url>https://jitpack.io</url>
-</repository>
-```
-
-then add the following dependency:
+Add the following to your POM's <dependencies> tag:
 
 ```xml
 <dependency>
-    <groupId>com.github.webfolderio.ui4j</groupId>
-    <artifactId>ui4j</artifactId>
-    <version>2.2.6</version>
+    <groupId>io.webfolder</groupId>
+    <artifactId>ui4j-webkit</artifactId>
+    <version>3.0.0</version>
 </dependency>
 ```
 
-Using Ui4j without Maven
-------------------------
-If you use Ui4j without Maven, download [pre built jar file](https://jitpack.io/com/github/webfolderio/ui4j/ui4j-all/2.2.6/ui4j-all-2.2.6.jar).
+Download
+--------
+[ui4j-webkit-3.0.0.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/ui4j-webkit/3.0.0/ui4j-webkit-3.0.0.jar) - 400 KB
+
+[ui4j-webkit-3.0.0-sources.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/ui4j-webkit/3.0.0/ui4j-webkit-3.0.0-sources.jar) - 200 KB
 
 
 Supported Platforms
