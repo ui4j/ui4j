@@ -1,13 +1,13 @@
 /*
  * Copyright 2013-2014 SmartBear Software
- * Copyright 2014-2015 The TestFX Contributors
+ * Copyright 2014-2017 The TestFX Contributors
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by the
  * European Commission - subsequent versions of the EUPL (the "Licence"); You may
  * not use this work except in compliance with the Licence.
  *
  * You may obtain a copy of the Licence at:
- * http://ec.europa.eu/idabc/eupl
+ * http://ec.europa.eu/idabc/eupl.html
  *
  * Unless required by applicable law or agreed to in writing, software distributed
  * under the Licence is distributed on an "AS IS" basis, WITHOUT WARRANTIES OR
@@ -16,10 +16,11 @@
  */
 package io.webfolder.ui4j.webkit;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.Objects;
-
 import javafx.application.Application;
+
 
 public class ApplicationLauncher {
 
@@ -30,26 +31,21 @@ public class ApplicationLauncher {
     private static final String PROPERTY_JAVAFX_MACOSX_EMBEDDED = "javafx.macosx.embedded";
     private static final String PROPERTY_UI4J_HEADLESS = "ui4j.headless";
 
-    private static final String PLATFORM_FACTORY =
-        "com.sun.glass.ui.PlatformFactory";
-    private static final String MONOCLE_PLATFORM_FACTORY =
-        "com.sun.glass.ui.monocle.MonoclePlatformFactory";
+    private static final String PLATFORM_FACTORY = "com.sun.glass.ui.PlatformFactory";
+    private static final String MONOCLE_PLATFORM_FACTORY = "com.sun.glass.ui.monocle.MonoclePlatformFactory";
 
-    private static final String NATIVE_PLATFORM_FACTORY =
-        "com.sun.glass.ui.monocle.NativePlatformFactory";
-    private static final String HEADLESS_NATIVE_PLATFORM =
-        "com.sun.glass.ui.monocle.headless.HeadlessPlatform";
-    private static final String HEADLESS_U40_NATIVE_PLATFORM =
-        "com.sun.glass.ui.monocle.HeadlessPlatform";
+    private static final String NATIVE_PLATFORM_FACTORY = "com.sun.glass.ui.monocle.NativePlatformFactory";
+    private static final String HEADLESS_PLATFORM = "com.sun.glass.ui.monocle.headless.HeadlessPlatform";
+    private static final String HEADLESS_PLATFORM_U40 = "com.sun.glass.ui.monocle.HeadlessPlatform";
 
     //---------------------------------------------------------------------------------------------
     // METHODS.
     //---------------------------------------------------------------------------------------------
 
-    public void launch(Class<? extends Application> appClass) {
+    public void launch(Class<? extends Application> appClass, String... appArgs) {
         initMacosxEmbedded();
         initMonocleHeadless();
-        Application.launch(appClass);
+        Application.launch(appClass, appArgs);
     }
 
     //---------------------------------------------------------------------------------------------
@@ -93,12 +89,14 @@ public class ApplicationLauncher {
                                  throws Exception {
         Class<?> nativePlatformFactoryClass = Class.forName(NATIVE_PLATFORM_FACTORY);
         try {
-            Object nativePlatformImpl = Class.forName(HEADLESS_U40_NATIVE_PLATFORM).newInstance();
-            assignPrivateStaticField(nativePlatformFactoryClass, "platform", nativePlatformImpl);
+            Constructor<?> nativePlatformCtor = Class.forName(HEADLESS_PLATFORM_U40).getDeclaredConstructor();
+            nativePlatformCtor.setAccessible(true);
+            assignPrivateStaticField(nativePlatformFactoryClass, "platform", nativePlatformCtor.newInstance());
         }
         catch (ClassNotFoundException exception) {
-            Object nativePlatformImpl = Class.forName(HEADLESS_NATIVE_PLATFORM).newInstance();
-            assignPrivateStaticField(nativePlatformFactoryClass, "platform", nativePlatformImpl);
+            Constructor<?> nativePlatformCtor = Class.forName(HEADLESS_PLATFORM).getDeclaredConstructor();
+            nativePlatformCtor.setAccessible(true);
+            assignPrivateStaticField(nativePlatformFactoryClass, "platform", nativePlatformCtor.newInstance());
         }
     }
 
@@ -111,5 +109,4 @@ public class ApplicationLauncher {
         field.set(cls, value);
         field.setAccessible(false);
     }
-
 }

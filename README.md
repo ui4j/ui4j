@@ -77,7 +77,7 @@ Sample configuration for ubuntu running with *headless* mode:
 
 **Headless Mode with Monocle**
 
-1. Download and add the maven dependency of latest [openjfx-monocle](https://github.com/ui4j/ui4j/blob/master/ui4j-webkit/lib/openjfx-monocle-8u76-b04.jar?raw=true)
+1. [Download](https://search.maven.org/remotecontent?filepath=org/testfx/openjfx-monocle/8u76-b04/openjfx-monocle-8u76-b04.jar) or add the [maven dependency](https://search.maven.org/#artifactdetails%7Corg.testfx%7Copenjfx-monocle%7C8u76-b04%7Cjar) of latest openjfx-monocle.
 2. Add **-Dui4j.headless** Java system parameter from command line or with using api ```System.setProperty("ui4j.headless", "true");```
 
 Logging
