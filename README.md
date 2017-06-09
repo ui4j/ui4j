@@ -1,7 +1,7 @@
 Ui4j
 ====
 
-[![License](http://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT) [![Coverage Status](https://img.shields.io/coveralls/ui4j/ui4j.svg)](https://coveralls.io/r/ui4j/ui4j?branch=master)
+[![License](http://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)
 
 Ui4j is a web-automation library for Java. It is a thin wrapper library around the JavaFx WebKit Engine, and can be used for automating the use of web pages and for testing web pages.
 
