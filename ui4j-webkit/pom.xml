@@ -106,7 +106,7 @@
 					<relocations>
 						<relocation>
 							<pattern>org.aspectj</pattern>
-							<shadedPattern>com.ui4j.internal.aspectj</shadedPattern>
+							<shadedPattern>io.webfolder.ui4j.internal.aspectj</shadedPattern>
 						</relocation>
 					</relocations>
 					<transformers>

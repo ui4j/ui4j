@@ -90,7 +90,7 @@ Sample configuration for ubuntu running with *headless* mode:
 Logging
 -------
 Both simple logger for java (SLF4J) and Java utility logger (JUL) is supported.
-If slf4j is available on classpath com.ui4j.api.util.LoggerFactory use slf4j else java utility logger is used.
+If slf4j is available on classpath io.webfolder.ui4j.api.util.LoggerFactory use slf4j else java utility logger is used.
 
 CSS Selector Engine
 -------------------
@@ -105,11 +105,11 @@ Usage Examples
 Here is a very basic sample program that uses Ui4j to display a web page with a "hello, world!" message. See the [ui4j-sample](https://github.com/ui4j/ui4j/tree/master/ui4j-sample/src/main/java/com/ui4j/sample) project for more sample code snippets.
 
 ```java
-package com.ui4j.sample;
+package io.webfolder.ui4j.sample;
 
-import com.ui4j.api.browser.BrowserEngine;
-import com.ui4j.api.browser.BrowserFactory;
-import com.ui4j.api.browser.Page;
+import io.webfolder.ui4j.api.browser.BrowserEngine;
+import io.webfolder.ui4j.api.browser.BrowserFactory;
+import io.webfolder.ui4j.api.browser.Page;
 
 public class HelloWorld {
 
@@ -132,11 +132,11 @@ public class HelloWorld {
 Here is another sampe code that list all front page news from Hacker News.
 
 ```java
-package com.ui4j.sample;
+package io.webfolder.ui4j.sample;
 
-import static com.ui4j.api.browser.BrowserFactory.getWebKit;
+import static io.webfolder.ui4j.api.browser.BrowserFactory.getWebKit;
 
-import com.ui4j.api.browser.Page;
+import io.webfolder.ui4j.api.browser.Page;
 
 public class HackerNews {
 

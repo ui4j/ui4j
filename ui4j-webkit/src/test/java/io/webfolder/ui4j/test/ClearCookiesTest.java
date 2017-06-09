@@ -1,0 +1,49 @@
+package io.webfolder.ui4j.test;
+
+import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
+import org.junit.runners.MethodSorters;
+
+import com.eclipsesource.json.JsonObject;
+
+import io.webfolder.ui4j.api.browser.BrowserEngine;
+import io.webfolder.ui4j.api.browser.Page;
+import io.webfolder.ui4j.webkit.WebKitBrowserProvider;
+
+import static org.junit.Assert.assertEquals;
+
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+public class ClearCookiesTest {
+
+    private static BrowserEngine engine;
+
+    @BeforeClass
+    public static void setup() {
+        WebKitBrowserProvider provider = new WebKitBrowserProvider();
+        engine = provider.create();
+        engine.clearCookies();
+    }
+
+    @Test
+    public void testFirstSession() {
+        Page page = engine.navigate("http://httpbin.org/cookies/set?session1=value1");
+        String session = page.getDocument().getBody().getText().get();
+        JsonObject json = JsonObject.readFrom(session);
+        JsonObject cookies = json.get("cookies").asObject();
+        assertEquals(1, cookies.size());
+        assertEquals("value1", cookies.get("session1").asString());
+
+        engine.clearCookies();
+    }
+
+    @Test
+    public void testSecondSession() {
+        Page page = engine.navigate("http://httpbin.org/cookies/set?session2=value2");
+        String session = page.getDocument().getBody().getText().get();
+        JsonObject json = JsonObject.readFrom(session);
+        JsonObject cookies = json.get("cookies").asObject();
+        assertEquals(1, cookies.size());
+        assertEquals("value2", cookies.get("session2").asString());
+    }
+}
