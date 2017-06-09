@@ -137,7 +137,10 @@ public class HackerNews {
 
 Building Ui4j
 -------------
-mvn install
+
+```bash
+mvn package
+```
 
 FAQ
 ---
