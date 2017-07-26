@@ -1,7 +1,7 @@
 Ui4j
 ====
 
-[![License](http://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/3e29f77ded47488f9ae4a1f609def42f)](https://www.codacy.com/app/WebFolder/ui4j?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=webfolderio/ui4j&amp;utm_campaign=Badge_Grade)
+[![License](http://img.shields.io/badge/license-AGPL-blue.svg)](https://github.com/webfolderio/ui4j/blob/master/LICENSE) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/3e29f77ded47488f9ae4a1f609def42f)](https://www.codacy.com/app/WebFolder/ui4j?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=webfolderio/ui4j&amp;utm_campaign=Badge_Grade)
 [![circleci](https://img.shields.io/circleci/project/github/webfolderio/ui4j.svg?label=linux)](https://circleci.com/gh/webfolderio/ui4j)
 [![CLA assistant](https://cla-assistant.io/readme/badge/webfolderio/ui4j)](https://cla-assistant.io/webfolderio/ui4j)
 
@@ -22,9 +22,10 @@ Both the JRE and the JDK are suitable for use with this library.
 Licensing
 ---------
 
-Ui4j is released under the terms of the MIT License (MIT).
+Ui4j is licensed as [AGPL](https://github.com/webfolderio/ui4j/blob/master/LICENSE) software.
 
-You are free to use Ui4j or any of its constituent parts in any other project (even commercial projects) so long as its copyright headers are left intact.
+Buying a license is __mandatory__ as soon as you develop commercial activities distributing the
+cormorant software inside your product or deploying it on a network without disclosing the source code of your own applications under the AGPL license.
 
 Stability
 ---------
@@ -42,15 +43,15 @@ Add the following to your POM's <dependencies> tag:
 <dependency>
     <groupId>io.webfolder</groupId>
     <artifactId>ui4j-webkit</artifactId>
-    <version>3.0.0</version>
+    <version>3.1.0</version>
 </dependency>
 ```
 
 Download
 --------
-[ui4j-webkit-3.0.0.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/ui4j-webkit/3.0.0/ui4j-webkit-3.0.0.jar) - 400 KB
+[ui4j-webkit-3.1.0.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/ui4j-webkit/3.0.0/ui4j-webkit-3.0.0.jar) - 394 KB
 
-[ui4j-webkit-3.0.0-sources.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/ui4j-webkit/3.0.0/ui4j-webkit-3.0.0-sources.jar) - 200 KB
+[ui4j-webkit-3.1.0-sources.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/ui4j-webkit/3.0.0/ui4j-webkit-3.0.0-sources.jar) - 198 KB
 
 
 Supported Platforms
@@ -168,6 +169,6 @@ Getting Help
 
 ![WebFolder](https://raw.githubusercontent.com/webfolderio/cdp4j/master/images/logo.png)
 
-ui4j is an MIT licensed open source project and completely free to use. However, the amount of effort needed to maintain and develop new features for the project is not sustainable without proper financial backing. You can support ui4j development by 
+ui4j is an AGPL licensed open source project and completely free to use. However, the amount of effort needed to maintain and develop new features for the project is not sustainable without proper financial backing. You can support ui4j development by 
 **buying** support package. Please [contact us](https://webfolder.io/support) for support packages & pricing.
 
