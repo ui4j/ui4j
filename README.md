@@ -25,7 +25,7 @@ Licensing
 Ui4j is licensed as [AGPL](https://github.com/webfolderio/ui4j/blob/master/LICENSE) software.
 
 Buying a license is __mandatory__ as soon as you develop commercial activities distributing the
-cormorant software inside your product or deploying it on a network without disclosing the source code of your own applications under the AGPL license.
+ui4j software inside your product or deploying it on a network without disclosing the source code of your own applications under the AGPL license.
 
 Stability
 ---------
