@@ -31,6 +31,6 @@ public class Input {
     }
 
     public boolean isHidden() {
-        return "hidden".equals(element.getAttribute("type").get());
+        return "hidden".equals(element.getAttribute("type"));
     }
 }

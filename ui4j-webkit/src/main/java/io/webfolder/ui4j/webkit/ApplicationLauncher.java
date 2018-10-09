@@ -81,7 +81,7 @@ public class ApplicationLauncher {
     private void assignMonoclePlatform()
                                 throws Exception {
         Class<?> platformFactoryClass = Class.forName(PLATFORM_FACTORY);
-        Object platformFactoryImpl = Class.forName(MONOCLE_PLATFORM_FACTORY).newInstance();
+        Object platformFactoryImpl = Class.forName(MONOCLE_PLATFORM_FACTORY).getDeclaredConstructor().newInstance();
         assignPrivateStaticField(platformFactoryClass, "instance", platformFactoryImpl);
     }
 

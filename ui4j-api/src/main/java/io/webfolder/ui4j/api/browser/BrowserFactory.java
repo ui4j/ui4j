@@ -150,8 +150,4 @@ public final class BrowserFactory {
     public static synchronized BrowserEngine getWebKit() {
         return getBrowser(BrowserType.WebKit);
     }
-
-    public static synchronized BrowserEngine getJxBrowser() {
-        return getBrowser(BrowserType.JxBrowser);
-    }
 }

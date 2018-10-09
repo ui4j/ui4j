@@ -3,7 +3,6 @@ package io.webfolder.ui4j.webkit.dom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -40,7 +39,7 @@ public class WebKitDocument implements Document, EventTarget {
     }
 
     @Override
-    public Optional<Element> query(String selector) {
+    public Element query(String selector) {
         return ((WebKitPageContext) context).getSelectorEngine(document).query(selector);
     }
 
@@ -87,12 +86,12 @@ public class WebKitDocument implements Document, EventTarget {
     }
 
     @Override
-    public Optional<String> getTitle() {
+    public String getTitle() {
         String title = document.getTitle();
         if (title == null || title.isEmpty()) {
-            return Optional.empty();
+            return null;
         }
-        return Optional.of(title);
+        return title;
     }
 
     @Override
@@ -143,13 +142,13 @@ public class WebKitDocument implements Document, EventTarget {
     }
 
     @Override
-    public Optional<Element> getElementFromPoint(int x, int y) {
+    public Element getElementFromPoint(int x, int y) {
         org.w3c.dom.Element w3cElement = document.elementFromPoint(x, y);
         if (w3cElement == null) {
-            return Optional.empty();
+            return null;
         }
         Element element = ((WebKitPageContext) context).createElement(w3cElement, this, engine);
-        return Optional.of(element);
+        return element;
     }
 
     public DocumentImpl getDocument() {

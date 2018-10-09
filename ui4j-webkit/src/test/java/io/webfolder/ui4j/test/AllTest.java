@@ -5,11 +5,28 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ ElementTest.class, FormClearTest.class,
-                SizzleTest.class, DialogTest.class,
-                JavaScriptEngineTest.class, UserAgentTest.class,
-                ClearCookiesTest.class, IsolatedSessionTest.class,
-                CookieTest.class, SiblingTest.class, ChildTest.class })
+@SuiteClasses({
+        ChildTest.class,
+        ClearCookiesTest.class,
+        ClientSideCookieListTest.class,
+        ClientSideCookieTest.class,
+        DialogTest.class,
+        ElementTest.class,
+        FormClearTest.class,
+        FrameTest.class,
+        HeadTest.class,
+        HiddenTest.class,
+        ImageOffsetTest.class,
+        IsolatedSessionTest.class,
+        JavaScriptEngineTest.class,
+        JSObjectTest.class,
+        ReadTest.class,
+        SetInnerHTMLTest.class,
+        SiblingTest.class,
+        SizzleTest.class,
+        UserAgentTest.class,
+        WaitTest.class
+    })
 public class AllTest {
 
 }

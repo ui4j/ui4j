@@ -5,16 +5,10 @@ import static javafx.embed.swing.SwingFXUtils.fromFXImage;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.reflect.Field;
-import java.net.CookieHandler;
-import java.net.URLStreamHandler;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.imageio.ImageIO;
-
-import com.sun.webkit.network.URLs;
 
 import io.webfolder.ui4j.api.browser.BrowserType;
 import io.webfolder.ui4j.api.browser.Page;
@@ -30,7 +24,6 @@ import io.webfolder.ui4j.api.event.DocumentLoadEvent;
 import io.webfolder.ui4j.api.util.Ui4jException;
 import io.webfolder.ui4j.spi.JavaScriptEngine;
 import io.webfolder.ui4j.spi.PageView;
-import io.webfolder.ui4j.webkit.WebKitIsolatedCookieHandler;
 import io.webfolder.ui4j.webkit.spi.WebKitJavaScriptEngine;
 import javafx.animation.AnimationTimer;
 import javafx.beans.value.ChangeListener;
@@ -173,25 +166,7 @@ public class WebKitPage implements Page, PageView, JavaScriptEngine {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public void close() {
-        // HACK #26
-        Field handlerMap;
-        try {
-            handlerMap = URLs.class.getDeclaredField("handlerMap");
-            handlerMap.setAccessible(true);
-            Map<String, URLStreamHandler> handlers = (Map<String, URLStreamHandler>) handlerMap.get(null);
-            handlers.remove("ui4j-" + String.valueOf(pageId));
-        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-            throw new Ui4jException(e);
-        }
-        CookieHandler cookieHandler = CookieHandler.getDefault();
-        if (cookieHandler != null
-                        && cookieHandler instanceof WebKitIsolatedCookieHandler) {
-            WebKitIsolatedCookieHandler whandler = (WebKitIsolatedCookieHandler) cookieHandler;
-            whandler.remove(getWebView());
-        }
-        // HACK #26
         if (getStage() != null) {
             getStage().close();
         }

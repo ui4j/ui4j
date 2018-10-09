@@ -100,6 +100,7 @@ public class WebKitIsolatedCookieHandler extends CookieHandler {
                     threadFactory);
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         protected void beforeExecute(Thread t, Runnable r) {
             WebPage webPage = null;
@@ -121,7 +122,6 @@ public class WebKitIsolatedCookieHandler extends CookieHandler {
             } catch (IllegalArgumentException e) {
                 throw new RuntimeException(e);
             }
-            @SuppressWarnings("unchecked")
             WebPageClient<WebView> client = webPage.getPageClient();
             WebView webView = client.getContainer();
             threadWebViewMappings.put(t.getId(), webView);

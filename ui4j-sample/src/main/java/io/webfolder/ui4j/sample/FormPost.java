@@ -14,15 +14,15 @@ public class FormPost {
         String url = FrameSample.class.getResource("/FormPost.html").toExternalForm();
         Page page = BrowserFactory.getWebKit().navigate(url);
 
-        Element custname = page.getDocument().query("[name='custname']").get();
+        Element custname = page.getDocument().query("[name='custname']");
         custname.setValue("foo");
 
-        page.getDocument().query("[type='submit']").get().click();
+        page.getDocument().query("[type='submit']").click();
 
         CountDownLatch latch = new CountDownLatch(1);
 
-        page.getDocument().query("label").get().bind("DOMSubtreeModified", e -> {
-            result = e.getTarget().getText().get();
+        page.getDocument().query("label").bind("DOMSubtreeModified", e -> {
+            result = e.getTarget().getText();
             latch.countDown();
         });
 

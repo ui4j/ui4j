@@ -21,8 +21,7 @@ public class GoogleSearch {
 
         document
             .query("input[name='q']")
-            .get()
-            .setValue("java book")
+            .setValue("cdp4j")
             .focus();
 
         Thread.sleep(1000);

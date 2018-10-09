@@ -27,9 +27,9 @@ public class WaitTest {
     }
 
     @Test @Ignore public void test() {
-        Assert.assertEquals("Hacker News", document.getTitle().get());
-        document.query("a[href='https://github.com/HackerNews/API']").get().click();
-        Assert.assertTrue(document.getTitle().get().toLowerCase(Locale.ENGLISH).contains("hackernews"));
+        Assert.assertEquals("Hacker News", document.getTitle());
+        document.query("a[href='https://github.com/HackerNews/API']").click();
+        Assert.assertTrue(document.getTitle().toLowerCase(Locale.ENGLISH).contains("hackernews"));
         page.close();
     }
 }

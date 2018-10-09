@@ -3,7 +3,6 @@ package io.webfolder.ui4j.webkit.spi;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -34,7 +33,7 @@ public class W3CSelectorEngine implements SelectorEngine {
     }
 
     @Override
-    public Optional<Element> query(String selector) {
+    public Element query(String selector) {
         DocumentImpl documentImpl = ((WebKitDocument) document).getDocument();
         String escapedSelector = selector.replace('\'', '"');
         if (documentImpl == null) {
@@ -42,9 +41,9 @@ public class W3CSelectorEngine implements SelectorEngine {
         }
         org.w3c.dom.Element element = documentImpl.querySelector(escapedSelector);
         if (element != null) {
-            return Optional.of(((WebKitPageContext) context).createElement(element, document, engine));
+            return ((WebKitPageContext) context).createElement(element, document, engine);
         } else {
-            return Optional.empty();
+            return null;
         }
     }
 
@@ -68,7 +67,7 @@ public class W3CSelectorEngine implements SelectorEngine {
     }
 
     @Override
-    public Optional<Element> query(Element element, String selector) {
+    public Element query(Element element, String selector) {
         if (!(element instanceof WebKitElement)) {
             return null;
         }
@@ -77,9 +76,9 @@ public class W3CSelectorEngine implements SelectorEngine {
         String escapedSelector = selector.replace('\'', '"');
         org.w3c.dom.Element found = elementImpl.querySelector(escapedSelector);
         if (found == null) {
-            return Optional.empty();
+            return null;
         }
-        return Optional.of(((WebKitPageContext) context).createElement(found, document, engine));
+        return ((WebKitPageContext) context).createElement(found, document, engine);
     }
 
     @Override

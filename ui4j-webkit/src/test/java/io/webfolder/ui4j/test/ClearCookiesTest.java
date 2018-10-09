@@ -28,7 +28,7 @@ public class ClearCookiesTest {
     @Test
     public void testFirstSession() {
         Page page = engine.navigate("http://httpbin.org/cookies/set?session1=value1");
-        String session = page.getDocument().getBody().getText().get();
+        String session = page.getDocument().getBody().getText();
         JsonObject json = JsonObject.readFrom(session);
         JsonObject cookies = json.get("cookies").asObject();
         assertEquals(1, cookies.size());
@@ -40,7 +40,7 @@ public class ClearCookiesTest {
     @Test
     public void testSecondSession() {
         Page page = engine.navigate("http://httpbin.org/cookies/set?session2=value2");
-        String session = page.getDocument().getBody().getText().get();
+        String session = page.getDocument().getBody().getText();
         JsonObject json = JsonObject.readFrom(session);
         JsonObject cookies = json.get("cookies").asObject();
         assertEquals(1, cookies.size());

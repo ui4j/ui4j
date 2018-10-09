@@ -28,7 +28,7 @@ public class W3CEventRegistrar implements EventRegistrar {
     @Override
     public void register(EventTarget node, String event, EventHandler handler) {
         if (node instanceof WebKitDocument) {
-            node = ((WebKitDocument) node).getBody().getParent().get();
+            node = ((WebKitDocument) node).getBody().getParent();
         }
         if (node instanceof WebKitElement) {
             WebKitElement elementImpl = (WebKitElement) node;
@@ -42,7 +42,7 @@ public class W3CEventRegistrar implements EventRegistrar {
     @Override
     public void unregister(EventTarget node, String event, EventHandler handler) {
         if (node instanceof WebKitDocument) {
-            node = ((WebKitDocument) node).getBody().getParent().get();
+            node = ((WebKitDocument) node).getBody().getParent();
         }
         if (node instanceof WebKitElement) {
             WebKitElement elementImpl = (WebKitElement) node;

@@ -2,14 +2,13 @@ package io.webfolder.ui4j.api.dom;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import io.webfolder.ui4j.api.event.EventHandler;
 import io.webfolder.ui4j.api.util.Point;
 
 public interface Element extends Node {
 
-    Optional<String> getAttribute(String name);
+    String getAttribute(String name);
 
     Element setAttribute(String name, String value);
 
@@ -29,11 +28,11 @@ public interface Element extends Node {
 
     List<String> getClasses();
 
-    Optional<String> getText();
+    String getText();
 
     String getTagName();
 
-    Optional<String> getValue();
+    String getValue();
 
     Element setValue(String value);
 
@@ -43,7 +42,7 @@ public interface Element extends Node {
 
     Element setTitle(String title);
 
-    Optional<String> getTitle();
+    String getTitle();
 
     Element unbind(EventHandler handler);
 
@@ -59,21 +58,21 @@ public interface Element extends Node {
 
     Element click();
 
-    Optional<Element> getParent();
+    Element getParent();
 
-    Optional<Input> getInput();
+    Input getInput();
 
-    Optional<CheckBox> getCheckBox();
+    CheckBox getCheckBox();
 
-    Optional<RadioButton> getRadioButton();
+    RadioButton getRadioButton();
 
-    Optional<Option> getOption();
+    Option getOption();
 
-    Optional<Form> getForm();
+    Form getForm();
 
-    Optional<Select> getSelect();
+    Select getSelect();
 
-    Optional<String> getId();
+    String getId();
 
     Element setId(String id);
 
@@ -109,7 +108,7 @@ public interface Element extends Node {
 
     Element focus();
 
-    Optional<Element> query(String selector);
+    Element query(String selector);
 
     List<Element> queryAll(String selector);
 
@@ -123,7 +122,7 @@ public interface Element extends Node {
 
     Point getOffset();
 
-    Optional<Point> getPosition();
+    Point getPosition();
 
     Element detach();
 
@@ -139,11 +138,11 @@ public interface Element extends Node {
 
     Element setCss(String propertyName, String value, String important);
 
-    Optional<String> getCss(String propertyName);
+    String getCss(String propertyName);
 
-    Optional<Element> getPrev();
+    Element getPrev();
 
-    Optional<Element> getNext();
+    Element getNext();
 
     boolean hasChildNodes();
 
@@ -167,7 +166,7 @@ public interface Element extends Node {
 
     boolean is(String selector);
 
-    Optional<Element> getOffsetParent();
+    Element getOffsetParent();
 
     Element replaceWith(String html);
 
@@ -177,11 +176,11 @@ public interface Element extends Node {
 
     List<Element> getSiblings();
 
-    Optional<Element> getNextSibling();
+    Element getNextSibling();
 
-    Optional<Element> closest(String selector);
+    Element closest(String selector);
 
-    Optional<Document> getContentDocument();
+    Document getContentDocument();
 
     Object eval(String expression);
 }

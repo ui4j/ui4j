@@ -17,7 +17,7 @@ public class HiddenTest {
         BrowserEngine webkit = BrowserFactory.getWebKit();
         try (Page page = webkit.navigate(HiddenTest.class.getResource("/HiddenTest.html").toExternalForm())) {
             Document document = page.getDocument();
-            Input input = document.query("input[name='b']").get().getInput().get();
+            Input input = document.query("input[name='b']").getInput();
             assertTrue(input.isHidden());
         }
     }

@@ -19,7 +19,7 @@ public class IsolatedSessionTest {
 
     @BeforeClass
     public static void before() {
-        CookieHandler.setDefault(new WebKitIsolatedCookieHandler());;
+        CookieHandler.setDefault(new WebKitIsolatedCookieHandler());
     }
     
     @AfterClass
@@ -30,7 +30,7 @@ public class IsolatedSessionTest {
     @Test
     public void test() {
         Page session1 = BrowserFactory.getWebKit().navigate("http://httpbin.org/cookies/set?session1=value1");
-        String content1 = session1.getDocument().getBody().getText().get();
+        String content1 = session1.getDocument().getBody().getText();
         JsonObject json1 = JsonObject.readFrom(content1);
         JsonObject cookies1 = json1.get("cookies").asObject();
 
@@ -38,7 +38,7 @@ public class IsolatedSessionTest {
         assertEquals("value1", cookies1.get("session1").asString());
 
         Page session2 = BrowserFactory.getWebKit().navigate("http://httpbin.org/cookies/set?session2=value2");
-        String content2 = session2.getDocument().getBody().getText().get();
+        String content2 = session2.getDocument().getBody().getText();
         JsonObject json2 = JsonObject.readFrom(content2);
         JsonObject cookies2 = json2.get("cookies").asObject();
 

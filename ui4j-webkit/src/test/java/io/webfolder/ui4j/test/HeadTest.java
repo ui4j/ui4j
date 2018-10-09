@@ -21,6 +21,6 @@ public class HeadTest {
         Element head = page.getWindow().getDocument().getHead();
         List<Element> list = head.find("[charset]");
         assertEquals(1, list.size());
-        assertEquals("utf-8", list.get(0).getAttribute("charset").get());
+        assertEquals("utf-8", list.get(0).getAttribute("charset"));
     }
 }

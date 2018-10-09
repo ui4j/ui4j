@@ -11,26 +11,12 @@ import io.webfolder.ui4j.api.browser.BrowserFactory;
 import io.webfolder.ui4j.api.browser.Page;
 import io.webfolder.ui4j.api.browser.PageConfiguration;
 import io.webfolder.ui4j.api.dom.Element;
-import io.webfolder.ui4j.api.interceptor.Interceptor;
-import io.webfolder.ui4j.api.interceptor.Request;
-import io.webfolder.ui4j.api.interceptor.Response;
 
 public class ReadTest extends AbstractFileServerTest {
 
     @Test @Ignore public void test() {
         Page page = BrowserFactory.getWebKit().navigate("http://localhost:58844/ReadTest.html",
-                new PageConfiguration(new Interceptor() {
-
-            @Override
-            public void beforeLoad(Request request) {
-                // no op
-            }
-
-            @Override
-            public void afterLoad(Response response) {
-                // no op
-            }
-        }));
+                new PageConfiguration());
         List<Element> images = page.getDocument().queryAll("img");
 
         Element image1 = images.get(0);

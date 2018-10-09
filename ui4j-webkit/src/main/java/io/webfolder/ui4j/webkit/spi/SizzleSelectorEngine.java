@@ -5,9 +5,6 @@ import static java.lang.String.format;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-
-import netscape.javascript.JSObject;
 
 import org.w3c.dom.Node;
 
@@ -19,6 +16,7 @@ import io.webfolder.ui4j.api.dom.Element;
 import io.webfolder.ui4j.spi.PageContext;
 import io.webfolder.ui4j.webkit.browser.WebKitPageContext;
 import io.webfolder.ui4j.webkit.dom.WebKitElement;
+import netscape.javascript.JSObject;
 
 public class SizzleSelectorEngine implements SelectorEngine {
 
@@ -35,7 +33,7 @@ public class SizzleSelectorEngine implements SelectorEngine {
     }
 
     @Override
-    public Optional<Element> query(String selector) {
+    public Element query(String selector) {
         String escapedSelector = selector.replace('\'', '"');
         JSObject result = (JSObject) engine.getEngine().executeScript(format("Sizzle('%s')", escapedSelector));
         int length = (int) result.getMember("length");
@@ -45,9 +43,9 @@ public class SizzleSelectorEngine implements SelectorEngine {
             Node found = (Node) result.getSlot(0);
             Element element = ((WebKitPageContext) context).createElement(found, document, engine);
             if (element == null) {
-                return Optional.empty();
+                return null;
             } else {
-                return Optional.of(element);
+                return element;
             }
         }
     }
@@ -71,7 +69,7 @@ public class SizzleSelectorEngine implements SelectorEngine {
     }
 
     @Override
-    public Optional<Element> query(Element element, String selector) {
+    public Element query(Element element, String selector) {
         if (!(element instanceof WebKitElement)) {
             return null;
         }
@@ -86,9 +84,9 @@ public class SizzleSelectorEngine implements SelectorEngine {
             Node found = (Node) result.getSlot(0);
             Element ret = ((WebKitPageContext) context).createElement(found, document, engine);
             if (ret == null) {
-                return Optional.empty();
+                return null;
             } else {
-                return Optional.of(ret);
+                return ret;
             }
         }
     }

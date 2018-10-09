@@ -21,7 +21,5 @@ public enum BrowserType {
      * The "WebKit" browser engine, as built into JavaFX as its embedded web browser (and based on
      * the open-source <a href="https://www.webkit.org/">webkit</a> project).
      */
-    WebKit,
-
-    JxBrowser
+    WebKit
 }

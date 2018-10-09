@@ -1,7 +1,6 @@
 package io.webfolder.ui4j.test;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -23,10 +22,10 @@ public class ImageOffsetTest {
             page.show();
             List<Element> elements = page.getDocument().queryAll("img");
             elements.forEach(e -> {
-                System.out.println(e.getAttribute("alt").get() + " offset: " + e.getOffset());
+                System.out.println(e.getAttribute("alt") + " offset: " + e.getOffset());
             });
-            Optional<Element> element = page.getDocument().getElementFromPoint(200, 200);
-            Assert.assertEquals("image 2", element.get().getAttribute("alt").get());
+            Element element = page.getDocument().getElementFromPoint(200, 200);
+            Assert.assertEquals("image 2", element.getAttribute("alt"));
         }
     }
 }

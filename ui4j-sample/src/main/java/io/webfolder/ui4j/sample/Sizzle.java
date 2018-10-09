@@ -17,7 +17,7 @@ public class Sizzle {
         Page page = webkit.navigate("http://sizzlejs.com", configuration);
         Document document = page.getDocument();
 
-        Element element = document.query("h1:contains('Sizzle JavaScript Selector Library')").get();
+        Element element = document.query("h1:contains('Sizzle JavaScript Selector Library')");
 
         System.out.println(element.getInnerHTML());
 

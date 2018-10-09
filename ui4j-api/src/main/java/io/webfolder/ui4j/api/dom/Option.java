@@ -15,7 +15,7 @@ public class Option {
     }
 
     public Input getInput() {
-        return getElement().getInput().get();
+        return getElement().getInput();
     }
 
     public boolean isSelected() {

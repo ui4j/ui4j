@@ -15,7 +15,7 @@ public class SetInnerHTMLTest {
     public void test() throws InterruptedException {
         BrowserEngine webkit = BrowserFactory.getWebKit();
         try (Page page = webkit.navigate(ChildTest.class.getResource("/SetInnerTest.html").toExternalForm())) {
-            Element withInner = page.getDocument().query("#with-inner").get();
+            Element withInner = page.getDocument().query("#with-inner");
             withInner.setInnerHTML("<span id=\"blub\"></span>");
             String innerHTML = withInner.getInnerHTML();
             assertEquals(innerHTML, "<span id=\"blub\"></span>");

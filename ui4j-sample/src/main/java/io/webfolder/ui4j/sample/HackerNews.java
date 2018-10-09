@@ -13,7 +13,7 @@ public class HackerNews {
                 .getDocument()
                 .queryAll(".title a")
                 .forEach(e -> {
-                    System.out.println(e.getText().get());
+                    System.out.println(e.getText());
                 });
         }
     }

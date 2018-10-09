@@ -3,7 +3,6 @@ package io.webfolder.ui4j.api.browser;
 import io.webfolder.ui4j.api.dialog.AlertHandler;
 import io.webfolder.ui4j.api.dialog.ConfirmHandler;
 import io.webfolder.ui4j.api.dialog.PromptHandler;
-import io.webfolder.ui4j.api.interceptor.Interceptor;
 
 /**
  * The browser configuration to be used for requesting and processing a web page. This includes the
@@ -18,23 +17,11 @@ public class PageConfiguration {
 
     private String userAgent;
 
-    private Interceptor interceptor;
-
     private AlertHandler alertHandler;
 
     private ConfirmHandler confirmHandler;
 
     private PromptHandler promptHandler;
-
-    private boolean interceptAllRequests;
-
-    public PageConfiguration() {
-        this(null);
-    }
-
-    public PageConfiguration(Interceptor interceptor) {
-        this.interceptor = interceptor;
-    }
 
     /**
      * Returns the type of CSS selector engine to be used when processing a web page.
@@ -98,15 +85,6 @@ public class PageConfiguration {
         return this;
     }
 
-    public Interceptor getInterceptor() {
-        return interceptor;
-    }
-
-    public PageConfiguration setInterceptor(Interceptor interceptor) {
-        this.interceptor = interceptor;
-        return this;
-    }
-
     public PageConfiguration setAlertHandler(AlertHandler alertHandler) {
         this.alertHandler = alertHandler;
         return this;
@@ -134,20 +112,9 @@ public class PageConfiguration {
         return this;
     }
 
-    public boolean isInterceptAllRequests() {
-        return interceptAllRequests;
-    }
-
-    public void setInterceptAllRequests(boolean interceptAllRequests) {
-        this.interceptAllRequests = interceptAllRequests;
-    }
-
     @Override
     public String toString() {
-        return "PageConfiguration [selectorEngine=" + selectorEngine
-                + ", userAgent=" + userAgent + ", interceptor=" + interceptor
-                + ", alertHandler=" + alertHandler + ", confirmHandler="
-                + confirmHandler + ", promptHandler=" + promptHandler
-                + ", interceptAllRequests=" + interceptAllRequests + "]";
+        return "PageConfiguration [selectorEngine=" + selectorEngine + ", userAgent=" + userAgent + ", alertHandler="
+                + alertHandler + ", confirmHandler=" + confirmHandler + ", promptHandler=" + promptHandler + "]";
     }
 }

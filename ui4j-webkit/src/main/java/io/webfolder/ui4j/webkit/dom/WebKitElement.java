@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
 import org.w3c.dom.Node;
@@ -22,6 +21,7 @@ import org.w3c.dom.html.HTMLSelectElement;
 import com.sun.webkit.dom.DocumentImpl;
 import com.sun.webkit.dom.HTMLElementImpl;
 import com.sun.webkit.dom.HTMLFrameElementImpl;
+import com.sun.webkit.dom.HTMLIFrameElementImpl;
 import com.sun.webkit.dom.NodeImpl;
 
 import io.webfolder.ui4j.api.browser.SelectorType;
@@ -63,12 +63,12 @@ public class WebKitElement implements Element, EventTarget {
     }
 
     @Override
-    public Optional<String> getAttribute(String name) {
+    public String getAttribute(String name) {
         String val = getHtmlElement().getAttribute(name);
         if (val == null || val.isEmpty()) {
-            return Optional.empty();
+            return null;
         } else {
-            return Optional.of(val);
+            return val;
         }
     }
 
@@ -150,12 +150,12 @@ public class WebKitElement implements Element, EventTarget {
     }
 
     @Override
-    public Optional<String> getText() {
+    public String getText() {
         String textContent = element.getTextContent();
         if (textContent == null || textContent.isEmpty()) {
-            return Optional.empty();
+            return null;
         }
-        return Optional.of(textContent);
+        return textContent;
     }
 
     @Override
@@ -174,14 +174,14 @@ public class WebKitElement implements Element, EventTarget {
     }
 
     @Override
-    public Optional<String> getValue() {
+    public String getValue() {
         String value = null;
         if (element instanceof HTMLInputElement) {
             value = ((HTMLInputElement) element).getValue();
         } else if (element instanceof HTMLOptionElement) {
             value = ((HTMLOptionElement) element).getValue();
         }
-        return value == null || value.isEmpty() ? Optional.empty() : Optional.of(value);
+        return value == null || value.isEmpty() ? null : value;
     }
 
     @Override
@@ -301,62 +301,62 @@ public class WebKitElement implements Element, EventTarget {
     }
 
     @Override
-    public Optional<Element> getParent() {
+    public Element getParent() {
         Node parentNode = element.getParentNode();
         if (parentNode == null) {
-            return Optional.empty();
+            return null;
         }
-        return Optional.of(((WebKitPageContext) context).createElement(element.getParentNode(), document, engine));
+        return ((WebKitPageContext) context).createElement(element.getParentNode(), document, engine);
     }
 
     @Override
-    public Optional<Input> getInput() {
-        return Optional.of(new Input(this));
+    public Input getInput() {
+        return new Input(this);
     }
 
     @Override
-    public Optional<CheckBox> getCheckBox() {
-        return Optional.of(new CheckBox(this));
+    public CheckBox getCheckBox() {
+        return new CheckBox(this);
     }
 
     @Override
-    public Optional<RadioButton> getRadioButton() {
-        return Optional.of(new RadioButton(this));
+    public RadioButton getRadioButton() {
+        return new RadioButton(this);
     }
 
     @Override
-    public Optional<Option> getOption() {
+    public Option getOption() {
         if (element instanceof HTMLOptionElement) {
-            return Optional.of(new Option(this));
+            return new Option(this);
         } else {
-            return Optional.empty();
+            return null;
         }
     }
 
     @Override
-    public Optional<Select> getSelect() {
+    public Select getSelect() {
         if (element instanceof HTMLSelectElement) {
-            return Optional.of(new Select(this));
+            return new Select(this);
         } else {
-            return Optional.empty();
+            return null;
         }
     }
 
     @Override
-    public Optional<Form> getForm() {
+    public Form getForm() {
         if (element instanceof HTMLFormElement) {
-            return Optional.of(new Form(this));
+            return new Form(this);
         }
-        return Optional.empty();
+        return null;
     }
 
     @Override
-    public Optional<String> getId() {
+    public String getId() {
         String id = getHtmlElement().getId();
         if (id == null || id.isEmpty()) {
-            return Optional.empty();
+            return null;
         }
-        return Optional.of(id);
+        return id;
     }
 
     @Override
@@ -490,7 +490,7 @@ public class WebKitElement implements Element, EventTarget {
     }
 
     @Override
-    public Optional<Element> query(String selector) {
+    public Element query(String selector) {
         return ((WebKitPageContext) context).getSelectorEngine(getHtmlElement().getOwnerDocument()).query(this, selector);
     }
 
@@ -584,12 +584,12 @@ public class WebKitElement implements Element, EventTarget {
     }
 
     @Override
-    public Optional<String> getCss(String propertyName) {
+    public String getCss(String propertyName) {
         String value = getHtmlElement().getStyle().getPropertyValue(propertyName);
         if (value == null || value.isEmpty()) {
-            return Optional.empty();
+            return null;
         }
-        return Optional.of(value);
+        return value;
     }
 
     @Override
@@ -606,22 +606,22 @@ public class WebKitElement implements Element, EventTarget {
     }
 
     @Override
-    public Optional<Element> getPrev() {
+    public Element getPrev() {
         org.w3c.dom.Element prev = getHtmlElement().getPreviousElementSibling();
         if (prev != null) {
-            return Optional.of(((WebKitPageContext) context).createElement(prev, document, engine));
+            return ((WebKitPageContext) context).createElement(prev, document, engine);
         } else {
-            return Optional.empty();
+            return null;
         }
     }
 
     @Override
-    public Optional<Element> getNext() {
+    public Element getNext() {
         org.w3c.dom.Element next = getHtmlElement().getNextElementSibling();
         if (next != null) {
-            return Optional.of(((WebKitPageContext) context).createElement(next, document, engine));
+            return ((WebKitPageContext) context).createElement(next, document, engine);
         } else {
-            return Optional.empty();
+            return null;
         }
     }
 
@@ -632,12 +632,12 @@ public class WebKitElement implements Element, EventTarget {
     }
 
     @Override
-    public Optional<String> getTitle() {
+    public String getTitle() {
         String title = getHtmlElement().getTitle();
         if (title == null || title.isEmpty()) {
-            return Optional.empty();
+            return null;
         }
-        return Optional.of(title);
+        return title;
     }
 
     @Override
@@ -778,20 +778,20 @@ public class WebKitElement implements Element, EventTarget {
     }
 
     @Override
-    public Optional<Element> getOffsetParent() {
+    public Element getOffsetParent() {
         HTMLElementImpl htmlElementImpl = getHtmlElement();
         org.w3c.dom.Element offsetParent = htmlElementImpl.getOffsetParent();
-        return Optional.of(((WebKitPageContext) context).createElement(offsetParent, document, engine));
+        return ((WebKitPageContext) context).createElement(offsetParent, document, engine);
     }
 
     @Override
-    public Optional<Point> getPosition() {
+    public Point getPosition() {
         HTMLElementImpl htmlElementImpl = getHtmlElement();
         if (htmlElementImpl != null) {
-            Point point = new Point(new Double(htmlElementImpl.getOffsetLeft()).intValue(), new Double(htmlElementImpl.getOffsetTop()).intValue());
-            return Optional.of(point);
+            Point point = new Point(Double.valueOf(htmlElementImpl.getOffsetLeft()).intValue(), Double.valueOf(htmlElementImpl.getOffsetTop()).intValue());
+            return point;
         } else {
-            return Optional.empty();
+            return null;
         }
     }
 
@@ -814,11 +814,11 @@ public class WebKitElement implements Element, EventTarget {
 
     @Override
     public List<Element> getSiblings(String selector) {
-        Optional<Element> parent = getParent();
-        if (!parent.isPresent()) {
+        Element parent = getParent();
+        if (parent == null) {
             Collections.emptyList();
         }
-        List<Element> children = parent.get().getChildren();
+        List<Element> children = parent.getChildren();
         List<Element> siblings = new ArrayList<>();
         for (int i = 0; i < children.size(); i++) {
             Element next = children.get(i);
@@ -834,11 +834,11 @@ public class WebKitElement implements Element, EventTarget {
 
     @Override
     public List<Element> getSiblings() {
-        Optional<Element> parent = getParent();
-        if (!parent.isPresent()) {
+        Element parent = getParent();
+        if (parent == null) {
             Collections.emptyList();
         }
-        List<Element> children = parent.get().getChildren();
+        List<Element> children = parent.getChildren();
         List<Element> siblings = new ArrayList<>();
         for (int i = 0; i < children.size(); i++) {
             Element next = children.get(i);
@@ -859,7 +859,7 @@ public class WebKitElement implements Element, EventTarget {
     }
 
     @Override
-    public Optional<Element> closest(String selector) {
+    public Element closest(String selector) {
         HTMLElementImpl el = getHtmlElement();
         HTMLElementImpl parent = null;
         while (el != null) {
@@ -870,34 +870,34 @@ public class WebKitElement implements Element, EventTarget {
             }
             el = parent;
         }
-        return Optional.empty();
+        return null;
     }
 
     @Override
-    public Optional<Element> getNextSibling() {
+    public Element getNextSibling() {
         HTMLElementImpl el = getHtmlElement();
         Node sibling = el.getNextElementSibling();
         if (sibling == null) {
-            return Optional.empty();
+            return null;
         } else {
             Element element = ((WebKitPageContext) context).createElement(sibling, document, engine);
-            return Optional.of(element);
+            return element;
         }
     }
 
-    public Optional<Document> getContentDocument() {
+    public Document getContentDocument() {
         if (element instanceof HTMLFrameElement) {
             DocumentImpl documentImpl = (DocumentImpl) ((HTMLFrameElementImpl) element).getContentDocument();
             WebKitPageContext webkitPageContext = (WebKitPageContext) context;
             Document document = webkitPageContext.getContentDocument(documentImpl, engine);
-            return Optional.of(document);
+            return document;
         } else if (element instanceof HTMLIFrameElement) {
-            DocumentImpl documentImpl = (DocumentImpl) ((HTMLIFrameElement) element).getContentDocument();
+            DocumentImpl documentImpl = (DocumentImpl) ((HTMLIFrameElementImpl) element).getContentDocument();
             WebKitPageContext webkitPageContext = (WebKitPageContext) context;
             Document document = webkitPageContext.getContentDocument(documentImpl, engine);
-            return Optional.of(document);
+            return document;
         }
-        return Optional.empty();
+        return null;
     }
 
     @Override

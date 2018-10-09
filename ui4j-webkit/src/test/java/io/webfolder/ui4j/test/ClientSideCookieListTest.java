@@ -17,7 +17,7 @@ public class ClientSideCookieListTest extends AbstractFileServerTest {
     public void test() {
         CookieHandler.setDefault(new CookieManager());
         Page page = BrowserFactory.getWebKit().navigate("http://localhost:58844/ClientSideCookieList.html");
-        String cookie = page.getDocument().query("#cookies").get().getChildren().get(0).getText().get();
+        String cookie = page.getDocument().query("#cookies").getChildren().get(0).getText();
         String cookieName = cookie.split("=")[0];
         assertEquals("foobar", cookieName);
         assertEquals("foobar", ((String) page.executeScript("document.cookie")).split("=")[0]);

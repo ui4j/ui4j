@@ -1,22 +1,14 @@
 package io.webfolder.ui4j.webkit;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.net.CookieHandler;
-import java.net.URLConnection;
-import java.net.URLStreamHandler;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.sun.webkit.network.CookieManager;
-import com.sun.webkit.network.URLs;
 
 import io.webfolder.ui4j.api.browser.BrowserEngine;
 import io.webfolder.ui4j.api.browser.BrowserType;
@@ -26,8 +18,6 @@ import io.webfolder.ui4j.api.dom.Document;
 import io.webfolder.ui4j.api.dom.Window;
 import io.webfolder.ui4j.api.event.DocumentListener;
 import io.webfolder.ui4j.api.event.DocumentLoadEvent;
-import io.webfolder.ui4j.api.interceptor.Interceptor;
-import io.webfolder.ui4j.api.interceptor.Response;
 import io.webfolder.ui4j.api.util.Logger;
 import io.webfolder.ui4j.api.util.LoggerFactory;
 import io.webfolder.ui4j.api.util.Ui4jException;
@@ -35,7 +25,6 @@ import io.webfolder.ui4j.spi.PageContext;
 import io.webfolder.ui4j.spi.ShutdownListener;
 import io.webfolder.ui4j.spi.Ui4jExecutionTimeoutException;
 import io.webfolder.ui4j.webkit.browser.WebKitPageContext;
-import io.webfolder.ui4j.webkit.browser.WebKitURLHandler;
 import io.webfolder.ui4j.webkit.dom.WebKitPage;
 import io.webfolder.ui4j.webkit.dom.WebKitPage.AlertDelegationHandler;
 import io.webfolder.ui4j.webkit.dom.WebKitPage.ConfirmDelegationHandler;
@@ -160,13 +149,10 @@ class WebKitBrowser implements BrowserEngine {
 
         private WebKitJavaScriptEngine engine;
 
-        private WebKitURLHandler handler;
-
-        public WorkerLoadListener(WebKitJavaScriptEngine engine, PageContext context, DocumentListener documentListener, WebKitURLHandler handler) {
+        public WorkerLoadListener(WebKitJavaScriptEngine engine, PageContext context, DocumentListener documentListener) {
             this.engine = engine;
             this.configuration = (WebKitPageContext) context;
             this.documentListener = documentListener;
-            this.handler = handler;
         }
 
         @Override
@@ -177,15 +163,6 @@ class WebKitBrowser implements BrowserEngine {
                 Window window = configuration.createWindow(document);
                 DocumentLoadEvent event = new DocumentLoadEvent(window);
                 documentListener.onLoad(event);
-
-                if (configuration.getConfiguration().getInterceptor() != null && handler != null) {
-                    URLConnection connection = handler.getConnection();
-                    if (handler.getConnection() != null) {
-                        Map<String, List<String>> headers = connection.getHeaderFields();
-                        Response response = new Response(window.getLocation(), Collections.unmodifiableMap(new HashMap<>(headers)));
-                        configuration.getConfiguration().getInterceptor().afterLoad(response);
-                    }
-                }
             }
         }
     }
@@ -223,25 +200,22 @@ class WebKitBrowser implements BrowserEngine {
 
         private PageConfiguration configuration;
 
-        private WebKitURLHandler handler;
-
         private Stage stage;
 
         private Scene scene;
 
         public WebViewCreator(String url,
-                                PageContext context, DocumentListener listener, PageConfiguration configuration, WebKitURLHandler handler) {
-            this(url, context, listener, null, configuration, handler);
+                                PageContext context, DocumentListener listener, PageConfiguration configuration) {
+            this(url, context, listener, null, configuration);
         }
 
         public WebViewCreator(String url,
-                PageContext context, DocumentListener listener, CountDownLatch latch, PageConfiguration configuration, WebKitURLHandler handler) {
+                PageContext context, DocumentListener listener, CountDownLatch latch, PageConfiguration configuration) {
             this.url = url;
             this.latch = latch;
             this.context = context;
             this.listener = listener;
             this.configuration = configuration;
-            this.handler = handler;
         }
 
         @SuppressWarnings("unchecked")
@@ -267,7 +241,7 @@ class WebKitBrowser implements BrowserEngine {
                 engine.getEngine().setConfirmHandler(new ConfirmDelegationHandler(configuration.getConfirmHandler()));
             }
             engine.getEngine().load(url);
-            WorkerLoadListener loadListener = new WorkerLoadListener(engine, context, listener, handler);
+            WorkerLoadListener loadListener = new WorkerLoadListener(engine, context, listener);
             webView.getEngine().getLoadWorker(). progressProperty().addListener(new ProgressListener(webView.getEngine()));
             // load blank pages immediately
             if (url == null || url.trim().equals("about:blank") || url.trim().equals("")) {
@@ -311,41 +285,22 @@ class WebKitBrowser implements BrowserEngine {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public Page navigate(String url, PageConfiguration configuration) {
         WebKitPageContext context = new WebKitPageContext(configuration);
 
         int pageId = pageCounter.incrementAndGet();
 
-        Interceptor interceptor = configuration.getInterceptor();
         String ui4jUrl = url;
-        WebKitURLHandler handler = null;
-        if (interceptor != null) {
-            String ui4jProtocol = "ui4j-" + pageId;
-            ui4jUrl = ui4jProtocol + ":" + url;
-            handler = new WebKitURLHandler(interceptor, configuration.isInterceptAllRequests());
-            try {
-                // HACK #26
-                Field handlerMap = URLs.class.getDeclaredField("handlerMap");
-                handlerMap.setAccessible(true);
-                Map<String, URLStreamHandler> handlers = (Map<String, URLStreamHandler>) handlerMap.get(null);
-                handlers.put(ui4jProtocol, handler);
-                // HACK #26
-            } catch (IllegalArgumentException | IllegalAccessException
-                    | NoSuchFieldException | SecurityException e) {
-                throw new Ui4jException(e);
-            }
-        }
 
         CountDownLatch documentReadyLatch = new CountDownLatch(1);
         SyncDocumentListener adapter = new SyncDocumentListener(documentReadyLatch);
         WebViewCreator creator = null;
         if (Platform.isFxApplicationThread()) {
-            creator = new WebViewCreator(ui4jUrl, context, adapter, configuration, handler);
+            creator = new WebViewCreator(ui4jUrl, context, adapter, configuration);
             creator.run();
         } else {
             CountDownLatch webViewLatch = new CountDownLatch(1);
-            creator = new WebViewCreator(ui4jUrl, context, adapter, webViewLatch, configuration, handler);
+            creator = new WebViewCreator(ui4jUrl, context, adapter, webViewLatch, configuration);
             Platform.runLater(creator);
             try {
                 webViewLatch.await(10, TimeUnit.SECONDS);
@@ -372,7 +327,6 @@ class WebKitBrowser implements BrowserEngine {
     public synchronized void start() {
         if (launchedJFX.compareAndSet(false, true) &&
                             !Platform.isFxApplicationThread()) {
-            applyURLsHack();
             new LauncherThread().start();
             try {
                 startupLatch.await(10, TimeUnit.SECONDS);
@@ -400,43 +354,6 @@ class WebKitBrowser implements BrowserEngine {
     public BrowserType getBrowserType() {
         return BrowserType.WebKit;
     }
-
-    // Hack #26
-    //
-    // https://github.com/ui4j/ui4j/issues/26
-    //
-    // WebView api doesnt let to intercept HTTP request.
-    // we need to apply our modifiable handlers hack until public api supports interceptors.
-    // 
-    // We register custom URLStreamHandler per web page.
-    // Each page has its own handler so that we could intercept the request.
-    // @see Ui4jHandler class for implementation details.
-    //
-    // Hack #26
-    private void applyURLsHack() {
-        try {
-            ConcurrentHashMap<Object, Object> handlers = new ConcurrentHashMap<>();
-            handlers.put("about", new com.sun.webkit.network.about.Handler());
-            handlers.put("data", new com.sun.webkit.network.data.Handler());
-            setFinalStatic(URLs.class.getDeclaredField("handlerMap"), handlers);
-        } catch (NoSuchFieldException | SecurityException |
-                                IllegalArgumentException e) {
-            throw new Ui4jException(e);
-        }
-    }
-
-    private static void setFinalStatic(Field field, Object newValue) {
-        try {
-            field.setAccessible(true);
-            Field modifiersField = Field.class.getDeclaredField("modifiers");
-            modifiersField.setAccessible(true);
-            modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-            field.set(null, newValue);
-        } catch (NoSuchFieldException | SecurityException |
-                                IllegalArgumentException | IllegalAccessException e) {
-            throw new Ui4jException(e);
-        }
-     }
 
     @Override
     @SuppressWarnings("rawtypes")

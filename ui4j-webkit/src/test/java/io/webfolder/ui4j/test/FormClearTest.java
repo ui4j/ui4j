@@ -18,13 +18,13 @@ public class FormClearTest {
         try (Page page = webkit.navigate(ChildTest.class.getResource("/FormClearTest.html").toExternalForm())) {
             Document document = page.getDocument();
             
-            Form form = document.query("#myform").get().getForm().get();
+            Form form = document.query("#myform").getForm();
             form.clear();
 
-            assertFalse(form.getElement().query("#myinput").get().getValue().isPresent());
-            assertFalse(form.getElement().query("#myradio").get().getRadioButton().get().isChecked());
-            assertFalse(form.getElement().query("#mycheckbox").get().getCheckBox().get().isChecked());
-            assertFalse(form.getElement().query("#mytextarea").get().getText().isPresent());
+            assertFalse(form.getElement().query("#myinput").getValue() != null);
+            assertFalse(form.getElement().query("#myradio").getRadioButton().isChecked());
+            assertFalse(form.getElement().query("#mycheckbox").getCheckBox().isChecked());
+            assertFalse(form.getElement().query("#mytextarea").getText() != null);
         }
     }
 
@@ -34,15 +34,15 @@ public class FormClearTest {
         try (Page page = webkit.navigate(ChildTest.class.getResource("/FormClearTest.html").toExternalForm())) {
             Document document = page.getDocument();
             
-            Form form = document.query("#form").get().getForm().get();
+            Form form = document.query("#form").getForm();
 
-            form.getElement().getDocument().query("input[name='a']").get().setValue("foo");
-            form.getElement().getDocument().query("input[name='b']").get().setValue("bar");
+            form.getElement().getDocument().query("input[name='a']").setValue("foo");
+            form.getElement().getDocument().query("input[name='b']").setValue("bar");
 
             form.clear();
 
-            assertFalse(form.getElement().getDocument().query("input[name='a']").get().getValue().isPresent());
-            assertFalse(form.getElement().getDocument().query("input[name='b']").get().getValue().isPresent());
+            assertFalse(form.getElement().getDocument().query("input[name='a']").getValue() != null);
+            assertFalse(form.getElement().getDocument().query("input[name='b']").getValue() != null);
         }
     }
 }

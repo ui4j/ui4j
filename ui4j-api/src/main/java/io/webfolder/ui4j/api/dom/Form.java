@@ -1,7 +1,6 @@
 package io.webfolder.ui4j.api.dom;
 
 import java.util.List;
-import java.util.Optional;
 
 public class Form {
 
@@ -16,13 +15,13 @@ public class Form {
         for (Element next : inputs) {
             String tag = next.getTagName();
             if (tag.equals("input")) {
-                Optional<String> attribute = next.getAttribute("type");
-                if (attribute.isPresent()) {
-                    String type = attribute.get().trim();
+                String attribute = next.getAttribute("type");
+                if (attribute != null) {
+                    String type = attribute.trim();
                     if (type.equalsIgnoreCase("radio")) {
-                        next.getRadioButton().get().setChecked(false);
+                        next.getRadioButton().setChecked(false);
                     } else if (type.equalsIgnoreCase("checkbox")) {
-                        next.getCheckBox().get().setChecked(false);
+                        next.getCheckBox().setChecked(false);
                     } else if (type.equalsIgnoreCase("text")) {
                         next.setValue("");
                     }
@@ -30,7 +29,7 @@ public class Form {
                     next.setValue("");
                 }
             } else if (tag.equals("select")) {
-                next.getSelect().get().clearSelection();
+                next.getSelect().clearSelection();
             } else if (tag.equals("textarea")) {
                 next.setText("");
             }
