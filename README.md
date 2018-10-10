@@ -51,17 +51,15 @@ Download
 Supported Platforms
 -------------------
 
-Ui4j has been tested under Windows 10 but should work on any platform where a Java 8 JRE or JDK is available.
+Ui4j has been tested under Windows 10 but should work on any platform where a Java 8 or Java 11 is available.
 
 
 Headless Mode
 -------------
 
-Ui4j can be run in "headless" mode using [Xfvb](http://en.wikipedia.org/wiki/Xvfb) or with using [Monocle](https://wiki.openjdk.java.net/display/OpenJFX/Monocle).
+Ui4j can be run in "headless" mode using [Monocle](https://wiki.openjdk.java.net/display/OpenJFX/Monocle).
 
-**Headless Mode with Monocle**
-
-1. [Download](https://search.maven.org/remotecontent?filepath=org/testfx/openjfx-monocle/8u76-b04/openjfx-monocle-8u76-b04.jar) or add [maven dependency](https://search.maven.org/#artifactdetails%7Corg.testfx%7Copenjfx-monocle%7C8u76-b04%7Cjar) of the latest openjfx-monocle.
+1. Add [maven dependency](https://mvnrepository.com/artifact/org.testfx/openjfx-monocle) of the latest openjfx-monocle.
 2. Add **-Dui4j.headless** Java system parameter from command line or with using api ```System.setProperty("ui4j.headless", "true");```
 
 Logging
