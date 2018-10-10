@@ -1,9 +1,7 @@
 Ui4j
 ====
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/webfolderio/ui4j/blob/master/LICENSE) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/3e29f77ded47488f9ae4a1f609def42f)](https://www.codacy.com/app/WebFolder/ui4j?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=webfolderio/ui4j&amp;utm_campaign=Badge_Grade)
-[![circleci](https://img.shields.io/circleci/project/github/webfolderio/ui4j.svg?label=linux)](https://circleci.com/gh/webfolderio/ui4j)
-[![CLA assistant](https://cla-assistant.io/readme/badge/webfolderio/ui4j)](https://cla-assistant.io/webfolderio/ui4j)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/webfolderio/ui4j/blob/master/LICENSE)
 
 Ui4j is a web-automation library for Java. It is a thin wrapper library around the JavaFx WebKit Engine, and can be used for automating the use of web pages and for testing web pages.
 
@@ -14,10 +12,9 @@ Use [cdp4j](https://github.com/webfolderio/cdp4j) Java library if you need to au
 Supported Java Versions
 -----------------------
 
-Oracle Java 8.
+Oracle & OpenJDK Java 8 and 11.
 
 Both the JRE and the JDK are suitable for use with this library.
-
 
 Licensing
 ---------
@@ -85,52 +82,26 @@ Usage Examples
 Here is a very basic sample program that uses Ui4j to display a web page with a "hello, world!" message. See the [ui4j-sample](https://github.com/ui4j/ui4j/tree/master/ui4j-sample/src/main/java/com/ui4j/sample) project for more sample code snippets.
 
 ```java
-package io.webfolder.ui4j.sample;
-
-import io.webfolder.ui4j.api.browser.BrowserEngine;
-import io.webfolder.ui4j.api.browser.BrowserFactory;
-import io.webfolder.ui4j.api.browser.Page;
-
-public class HelloWorld {
-
-    public static void main(String[] args) {
-        // get the instance of the webkit
-        BrowserEngine browser = BrowserFactory.getWebKit();
-
-        // navigate to blank page
-        Page page = browser.navigate("about:blank");
-
-        // show the browser page
-        page.show();
-
-        // append html header to the document body
-        page.getDocument().getBody().append("<h1>Hello, World!</h1>");
-    }
-}
+	// get the instance of the webkit
+	BrowserEngine browser = BrowserFactory.getWebKit();
+	// navigate to blank page
+	Page page = browser.navigate("about:blank");
+	// show the browser page
+	page.show();
+	// append html header to the document body
+	page.getDocument().getBody().append("<h1>Hello, World!</h1>");
 ```
 
 Here is another sampe code that list all front page news from Hacker News.
 
 ```java
-package io.webfolder.ui4j.sample;
-
-import static io.webfolder.ui4j.api.browser.BrowserFactory.getWebKit;
-
-import io.webfolder.ui4j.api.browser.Page;
-
-public class HackerNews {
-
-    public static void main(String[] args) {
-
-        try (Page page = getWebKit().navigate("https://news.ycombinator.com")) {
-            page
-                .getDocument()
-                .queryAll(".title a")
-                .forEach(e -> {
-                    System.out.println(e.getText().get());
-                });
-        }
-    }
+try (Page page = getWebKit().navigate("https://news.ycombinator.com")) {
+    page
+        .getDocument()
+        .queryAll(".title a")
+        .forEach(e -> {
+            System.out.println(e.getText());
+        });
 }
 ```
 
