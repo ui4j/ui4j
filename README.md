@@ -73,23 +73,23 @@ CSS Selector Engine
 -------------------
 Ui4j use W3C selector engine which is default selector engine of WebKit. Alternatively [Sizzle](http://http://sizzlejs.com) selector engine might be used.
 Sizzle is the css selector engine of JQuery and it supports extra selectors like _:has(div)_, _:text_, _contains(text)_ etc.
-Check the [Sizzle.java](https://github.com/ui4j/ui4j/blob/master/ui4j-sample/src/main/java/com/ui4j/sample/Sizzle.java) for using sizzle with Ui4j.
+Check the [Sizzle.java](https://github.com/webfolderio/ui4j/blob/master/ui4j-sample/src/main/java/io/webfolder/ui4j/sample/Sizzle.java) for using sizzle with Ui4j.
 
 
 Usage Examples
 --------------
 
-Here is a very basic sample program that uses Ui4j to display a web page with a "hello, world!" message. See the [ui4j-sample](https://github.com/ui4j/ui4j/tree/master/ui4j-sample/src/main/java/com/ui4j/sample) project for more sample code snippets.
+Here is a very basic sample program that uses Ui4j to display a web page with a "hello, world!" message. See the [ui4j-sample](https://github.com/webfolderio/ui4j/tree/master/ui4j-sample/src/main/java/io/webfolder/ui4j/sample) project for more sample code snippets.
 
 ```java
-	// get the instance of the webkit
-	BrowserEngine browser = BrowserFactory.getWebKit();
-	// navigate to blank page
-	Page page = browser.navigate("about:blank");
-	// show the browser page
-	page.show();
-	// append html header to the document body
-	page.getDocument().getBody().append("<h1>Hello, World!</h1>");
+// get the instance of the webkit
+BrowserEngine browser = BrowserFactory.getWebKit();
+// navigate to blank page
+Page page = browser.navigate("about:blank");
+// show the browser page
+page.show();
+// append html header to the document body
+page.getDocument().getBody().append("<h1>Hello, World!</h1>");
 ```
 
 Here is another sampe code that list all front page news from Hacker News.
@@ -117,20 +117,20 @@ FAQ
 
 #### How can i set the user agent string?
 
-See [UserAgent.java](https://github.com/ui4j/ui4j/blob/master/ui4j-sample/src/main/java/com/ui4j/sample/UserAgent.java) sample.
+See [UserAgent.java](https://github.com/webfolderio/ui4j/blob/master/ui4j-sample/src/main/java/io/webfolder/ui4j/sample/UserAgent.java) sample.
 
 #### How can i execute javascript?
 
-See [JavaScriptExecution.java](https://github.com/ui4j/ui4j/blob/master/ui4j-sample/src/main/java/com/ui4j/sample/JavaScriptExecution.java) sample.
+See [JavaScriptExecution.java](https://github.com/webfolderio/ui4j/blob/master/ui4j-sample/src/main/java/io/webfolder/ui4j/sample/JavaScriptExecution.java) sample.
 
 #### How can i handle browser login, prompt or confirmation dialog?
 
-See [DialogTest.java](https://github.com/ui4j/ui4j/blob/master/ui4j-webkit/src/test/java/com/ui4j/test/DialogTest.java) for custom handlers or
-use default handlers from [Dialogs.java](https://github.com/ui4j/ui4j/blob/master/ui4j-api/src/main/java/com/ui4j/api/dialog/Dialogs.java).
+See [DialogTest.java](https://github.com/webfolderio/ui4j/blob/master/ui4j-webkit/src/test/java/io/webfolder/ui4j/test/DialogTest.java) for custom handlers or
+use default handlers from [Dialogs.java](https://github.com/webfolderio/ui4j/blob/master/ui4j-api/src/main/java/io/webfolder/ui4j/api/dialog/Dialogs.java).
 
 #### What is the easiest way clear all input elements?
 
-Use [clear](https://github.com/ui4j/ui4j/blob/master/ui4j-api/src/main/java/com/ui4j/api/dom/Form.java#L13) method of the Form class.
+Use [clear](https://github.com/webfolderio/ui4j/blob/master/ui4j-api/src/main/java/io/webfolder/ui4j/api/dom/Form.java#L13) method of the Form class.
 
 Getting Help
 ------------
