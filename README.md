@@ -139,7 +139,4 @@ Getting Help
 ui4j is an MIT licensed open source project and completely free to use. However, the amount of effort needed to maintain and develop new features for the project is not sustainable without proper financial backing. You can support ui4j development by 
 **buying** support package. Please [contact us](https://webfolder.io/support) for support packages & pricing.
 
-
-
-## License
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fwebfolderio%2Fui4j.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fwebfolderio%2Fui4j?ref=badge_large)
