@@ -38,7 +38,7 @@ Add the following to your POM's <dependencies> tag:
 <dependency>
     <groupId>io.webfolder</groupId>
     <artifactId>ui4j-webkit</artifactId>
-    <version>3.1.0</version>
+    <version>4.0.0</version>
 </dependency>
 ```
 

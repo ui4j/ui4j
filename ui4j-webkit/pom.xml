@@ -24,7 +24,7 @@
     </developers>
     <licenses>
         <license>
-            <name>GNU Affero General Public License</name>
+            <name>MIT</name>
             <url>https://github.com/webfolderio/ui4j/blob/master/LICENSE</url>
             <distribution>repo</distribution>
         </license>
@@ -248,7 +248,7 @@
         <dependency>
             <groupId>org.testfx</groupId>
             <artifactId>openjfx-monocle</artifactId>
-            <version>8u76-b04</version>
+            <version>jdk-11+26</version>
             <scope>test</scope>
         </dependency>
         <dependency>
