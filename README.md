@@ -43,9 +43,9 @@ Add the following to your POM's <dependencies> tag:
 
 Download
 --------
-[ui4j-webkit-3.1.0.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/ui4j-webkit/3.1.0/ui4j-webkit-3.1.0.jar) - 394 KB
+[ui4j-webkit-4.0.0.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/ui4j-webkit/4.0.0/ui4j-webkit-4.0.0.jar) - 387 KB
 
-[ui4j-webkit-3.1.0-sources.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/ui4j-webkit/3.1.0/ui4j-webkit-3.1.0-sources.jar) - 198 KB
+[ui4j-webkit-4.0.0-sources.jar](https://search.maven.org/remotecontent?filepath=io/webfolder/ui4j-webkit/4.0.0/ui4j-webkit-4.0.0-sources.jar) - 196 KB
 
 
 Supported Platforms
