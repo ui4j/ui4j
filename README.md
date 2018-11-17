@@ -2,6 +2,7 @@ Ui4j
 ====
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/webfolderio/ui4j/blob/master/LICENSE)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fwebfolderio%2Fui4j.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fwebfolderio%2Fui4j?ref=badge_shield)
 
 Ui4j is a web-automation library for Java. It is a thin wrapper library around the JavaFx WebKit Engine, and can be used for automating the use of web pages and for testing web pages.
 
@@ -138,3 +139,4 @@ Getting Help
 ui4j is an MIT licensed open source project and completely free to use. However, the amount of effort needed to maintain and develop new features for the project is not sustainable without proper financial backing. You can support ui4j development by 
 **buying** support package. Please [contact us](https://webfolder.io/support) for support packages & pricing.
 
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fwebfolderio%2Fui4j.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fwebfolderio%2Fui4j?ref=badge_large)
