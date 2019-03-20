@@ -285,7 +285,7 @@ class WebKitBrowser implements BrowserEngine {
     }
 
     @Override
-    public Page navigate(String url, PageConfiguration configuration) {
+    public synchronized Page navigate(String url, PageConfiguration configuration) {
         WebKitPageContext context = new WebKitPageContext(configuration);
 
         int pageId = pageCounter.incrementAndGet();
