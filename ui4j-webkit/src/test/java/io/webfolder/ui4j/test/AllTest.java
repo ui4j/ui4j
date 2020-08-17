@@ -17,7 +17,6 @@ import org.junit.runners.Suite.SuiteClasses;
         HeadTest.class,
         HiddenTest.class,
         ImageOffsetTest.class,
-        IsolatedSessionTest.class,
         JavaScriptEngineTest.class,
         JSObjectTest.class,
         ReadTest.class,

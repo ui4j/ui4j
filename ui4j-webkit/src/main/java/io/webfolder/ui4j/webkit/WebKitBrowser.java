@@ -376,8 +376,6 @@ class WebKitBrowser implements BrowserEngine {
             } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
                 throw new Ui4jException(e);
             }
-        } else if (cookieHandler instanceof WebKitIsolatedCookieHandler) {
-            ((WebKitIsolatedCookieHandler) cookieHandler).clear();
         }
     }
 }
