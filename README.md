@@ -60,20 +60,19 @@ Headless Mode
 
 Ui4j can be run in "headless" mode using [Monocle](https://wiki.openjdk.java.net/display/OpenJFX/Monocle).
 
-1. Add [maven dependency](https://mvnrepository.com/artifact/org.testfx/openjfx-monocle) of the latest openjfx-monocle.
+1. Add [maven dependency](https://github.com/TestFX/Monocle) of the latest openjfx-monocle.
 2. Add **-Dui4j.headless** Java system parameter from command line or with using api ```System.setProperty("ui4j.headless", "true");```
 
 Logging
 -------
 Both simple logger for java (SLF4J) and Java utility logger (JUL) is supported.
-If slf4j is available on classpath io.webfolder.ui4j.api.util.LoggerFactory use slf4j else java utility logger is used.
+If slf4j is available on classpath `io.webfolder.ui4j.api.util.LoggerFactory` use slf4j else java utility logger is used.
 
 CSS Selector Engine
 -------------------
 Ui4j use W3C selector engine which is default selector engine of WebKit. Alternatively [Sizzle](http://http://sizzlejs.com) selector engine might be used.
 Sizzle is the css selector engine of JQuery and it supports extra selectors like _:has(div)_, _:text_, _contains(text)_ etc.
 Check the [Sizzle.java](https://github.com/webfolderio/ui4j/blob/master/ui4j-sample/src/main/java/io/webfolder/ui4j/sample/Sizzle.java) for using sizzle with Ui4j.
-
 
 Usage Examples
 --------------
@@ -130,13 +129,5 @@ use default handlers from [Dialogs.java](https://github.com/webfolderio/ui4j/blo
 #### What is the easiest way clear all input elements?
 
 Use [clear](https://github.com/webfolderio/ui4j/blob/master/ui4j-api/src/main/java/io/webfolder/ui4j/api/dom/Form.java#L13) method of the Form class.
-
-Getting Help
-------------
-
-![WebFolder](https://raw.githubusercontent.com/webfolderio/cdp4j/master/images/logo.png)
-
-ui4j is an MIT licensed open source project and completely free to use. However, the amount of effort needed to maintain and develop new features for the project is not sustainable without proper financial backing. You can support ui4j development by 
-**buying** support package. Please [contact us](https://webfolder.io/support) for support packages & pricing.
 
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fwebfolderio%2Fui4j.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fwebfolderio%2Fui4j?ref=badge_large)
